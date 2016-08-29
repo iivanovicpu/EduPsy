@@ -1,7 +1,10 @@
 #macro(mainLayout)
-<?xml version="1.0" encoding="UTF-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
-      xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<!DOCTYPE html>
+<html lang="en">
+
+##<?xml version="1.0" encoding="UTF-8"?>
+##<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+##      xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 ##<html>
 <head>
 ##    <title>$msg.get("COMMON_TITLE")</title>
@@ -48,7 +51,7 @@
                     <li><a href="/korisnici">
                         Korisnici
                     </a></li>
-                    <li><a href="/books">
+                    <li><a href="/learning">
                         Nastavni materijali
                     </a></li>
                     <li><a href="/klijenti">
@@ -80,7 +83,6 @@
 ##<main>
 
     <div class="container">
-
         <header id="myCarousel" class="carousel" style="padding: 30px;">
             &nbsp;
         </header>
@@ -88,14 +90,16 @@
 
         <div class="row">
             <div class="col-lg-12">
+                <div>test čćlšllćžćčšđ</div>
+
                 $bodyContent
             </div>
         </div>
         <hr>
     </div>
 ##</main>
-##<footer>
-    $msg.get("COMMON_FOOTER_TEXT")
+##<footer style="align-content: center">
+##    $msg.get("COMMON_FOOTER_TEXT")
 ##</footer>
 <script src="/js/jquery.js"></script>
 

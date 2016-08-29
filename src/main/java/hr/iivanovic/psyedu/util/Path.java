@@ -12,6 +12,8 @@ public class Path {
         @Getter public static final String LOGOUT = "/logout/";
         @Getter public static final String BOOKS = "/books/";
         @Getter public static final String ONE_BOOK = "/books/:isbn/";
+
+        @Getter public static final String LEARNING = "/learning/";
     }
 
     public static class Template {
@@ -20,6 +22,9 @@ public class Path {
         public final static String BOOKS_ALL = "/velocity/book/all.vm";
         public static final String BOOKS_ONE = "/velocity/book/one.vm";
         public static final String NOT_FOUND = "/velocity/notFound.vm";
+
+        public final static String LEARNING_ALL = "/velocity/learning/all.vm";
+        public final static String LEARNING_ONE = "/velocity/learning/one.vm";
     }
 
 }

@@ -42,6 +42,6 @@ public class ViewUtil {
         configuredEngine.setProperty("runtime.references.strict", true);
         configuredEngine.setProperty("resource.loader", "class");
         configuredEngine.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
-        return new VelocityTemplateEngine(configuredEngine);
+        return new CustomizedVelocityTemplateEngine(configuredEngine);
     }
 }

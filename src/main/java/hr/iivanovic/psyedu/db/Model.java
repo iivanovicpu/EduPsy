@@ -10,6 +10,8 @@ public interface Model {
 
     List<User> getAllUsers();
 
+    User getUserByUsername(String username);
+
     List<Subject> getAllSubjects();
 
     Subject getSubject(long id);

@@ -2,6 +2,7 @@ package hr.iivanovic.psyedu.user;
 
 import lombok.Value;
 
+@Deprecated
 @Value // All fields are private and final. Getters (but not setters) are generated (https://projectlombok.org/features/Value.html)
 public class User {
     String username;

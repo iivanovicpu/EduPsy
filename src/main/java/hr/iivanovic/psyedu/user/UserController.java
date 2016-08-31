@@ -1,9 +1,15 @@
 package hr.iivanovic.psyedu.user;
 
 import org.mindrot.jbcrypt.BCrypt;
-import static hr.iivanovic.psyedu.Application.userDao;
+import org.sql2o.Sql2o;
+
+import hr.iivanovic.psyedu.db.Model;
+import hr.iivanovic.psyedu.db.Sql2oModel;
+import hr.iivanovic.psyedu.util.DbUtil;
 
 public class UserController {
+    static Sql2o sql2o = DbUtil.getH2DataSource();
+    static Model dbProvider = new Sql2oModel(sql2o);
 
     // Authenticate the user by hashing the inputted password using the stored salt,
     // then comparing the generated hashed password to the stored hashed password
@@ -11,12 +17,16 @@ public class UserController {
         if (username.isEmpty() || password.isEmpty()) {
             return false;
         }
-        User user = userDao.getUserByUsername(username);
+        hr.iivanovic.psyedu.db.User user = dbProvider.getUserByUsername(username);
         if (user == null) {
             return false;
         }
-        String hashedPassword = BCrypt.hashpw(password, user.getSalt());
-        return hashedPassword.equals(user.getHashedPassword());
+
+        // todo: create hashed password with salt and compare with hashed password from db (yes, init.sql must create users with hashed password
+        // todo: create backdoor login (hardcoded user/password)
+        return password.equals(user.getPassword());
+//        String hashedPassword = BCrypt.hashpw(password, user.getSalt());
+//        return hashedPassword.equals(user.getHashedPassword());
     }
 
     // This method doesn't do anything, it's just included as an example

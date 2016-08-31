@@ -13,7 +13,8 @@ public class Path {
         @Getter public static final String BOOKS = "/books/";
         @Getter public static final String ONE_BOOK = "/books/:isbn/";
 
-        @Getter public static final String LEARNING = "/learning/";
+        @Getter public static final String SUBJECTS = "/subjects/";
+        @Getter public static final String ONE_SUBJECTS = "/subjects/:id/";
     }
 
     public static class Template {
@@ -23,8 +24,8 @@ public class Path {
         public static final String BOOKS_ONE = "/velocity/book/one.vm";
         public static final String NOT_FOUND = "/velocity/notFound.vm";
 
-        public final static String LEARNING_ALL = "/velocity/learning/all.vm";
-        public final static String LEARNING_ONE = "/velocity/learning/one.vm";
+        public final static String SUBJECTS_ALL = "/velocity/subjects/all.vm";
+        public final static String SUBJECTS_ONE = "/velocity/subjects/one.vm";
     }
 
 }

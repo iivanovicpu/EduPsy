@@ -22,6 +22,9 @@ public class Filters {
         if (getQueryLocale(request) != null) {
             request.session().attribute("locale", getQueryLocale(request));
             response.redirect(request.pathInfo());
+        } else {
+            // ovaj dio postavlja jezik hr i onemogućuje switchanje jezika todo: ukloniti else kad bude trebala višejezičnost
+            request.session().attribute("locale", "hr");
         }
     };
 

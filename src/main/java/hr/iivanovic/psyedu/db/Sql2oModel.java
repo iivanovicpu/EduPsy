@@ -54,9 +54,20 @@ public class Sql2oModel implements Model {
     @Override
     public List<User> getAllUsers() {
         try (Connection conn = sql2o.open()) {
-            List<User> users = conn.createQuery("select * from korisnik")
+            List<User> users = conn.createQuery("select * from user")
                     .executeAndFetch(User.class);
             return users;
+        }
+    }
+
+    @Override
+    public User getUserByUsername(String username) {
+        try (Connection conn = sql2o.open()) {
+            User user = conn.createQuery("select * from user where username=:username")
+                    .addParameter("username", username)
+                    .executeAndFetchFirst(User.class);
+
+            return user;
         }
     }
 

@@ -15,7 +15,7 @@
     <div id="cnt">moj content</div>
     <script src="/js/jquery.js"></script>
     <script type="application/javascript">
-        $.get("/subject/1", function (data){
+        $.get("/api/subject/1", function (data){
             $("#nostyle").append(data.url)
             $.get(data.url, function (data) {
                 $("#cnt").append(data);

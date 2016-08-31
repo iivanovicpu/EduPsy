@@ -3,8 +3,15 @@ package hr.iivanovic.psyedu.user;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.sql2o.Sql2o;
+
 import com.google.common.collect.ImmutableList;
 
+import hr.iivanovic.psyedu.db.Model;
+import hr.iivanovic.psyedu.db.Sql2oModel;
+import hr.iivanovic.psyedu.util.DbUtil;
+
+@Deprecated
 public class UserDao {
 
     private final List<User> users = ImmutableList.of(

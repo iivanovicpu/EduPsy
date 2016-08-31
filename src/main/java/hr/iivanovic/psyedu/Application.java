@@ -45,14 +45,14 @@ public class Application {
         Sql2o sql2o = DbUtil.getH2DataSource();
         Model model = new Sql2oModel(sql2o);
 
-        /* rest */
-        get("/subjects/", (request, response) -> {
+        /* rest api */
+        get("/api/subjects/", (request, response) -> {
             response.status(200);
             response.type("application/json");
             return dataToJson(model.getAllSubjects());
         });
 
-        get("/subject/:id/", (request, response) -> {
+        get("/api/subject/:id/", (request, response) -> {
             long id = Long.parseLong(request.params(":id"));
             response.status(200);
             response.type("application/json");
@@ -66,7 +66,8 @@ public class Application {
         // Set up routes
         get(Path.Web.INDEX,          IndexController.serveIndexPage);
         get(Path.Web.BOOKS,          BookController.fetchAllBooks);
-        get(Path.Web.LEARNING,       LearningController.fetchAllBooks);
+        get(Path.Web.SUBJECTS,       LearningController.fetchAllSubjects);
+        get(Path.Web.ONE_SUBJECTS,   LearningController.fetchOneSubject);
         get(Path.Web.ONE_BOOK,       BookController.fetchOneBook);
         get(Path.Web.LOGIN,          LoginController.serveLoginPage);
         post(Path.Web.LOGIN,         LoginController.handleLoginPost);

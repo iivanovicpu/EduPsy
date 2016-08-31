@@ -16,6 +16,7 @@
 
     <!-- Bootstrap Core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/main.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -48,24 +49,35 @@
                     <li><a href="/index">
                         $msg.get("COMMON_TITLE")
                     </a></li>
-                    <li><a href="/korisnici">
+                    <li><a href="/users">
                         Korisnici
                     </a></li>
-                    <li><a href="/learning">
+                    <li><a href="/subjects">
                         Nastavni materijali
                     </a></li>
-                    <li><a href="/klijenti">
+                    <li><a href="/students">
                         Studenti
                     </a></li>
-                    <li><a href="/klijenti">
+                    <li><a href="/teachers">
                         $msg.get("COMMON_NAV_TEACHERS")
                     </a></li>
 
                 </ul>
+                #*<ul id="chooseLanguage">
+                    <form>
+                        <li>
+                            <button name="locale" value="hr" style="background-image: url(/img/german.png);"></button>
+                        </li>
+                        <li>
+                            <button name="locale" value="en" style="background-image: url(/img/english.png);"></button>
+                        </li>
+                    </form>
+                </ul>*#
                 <div class="userinfo" style="float: right; color: white; padding-top: 10px; text-align: right;">
                     #if($currentUser)
                         <li>
                             <form method="post" action="$WebPath.getLOGOUT()">
+                                $currentUser
                                 <button id="logout">$msg.get("COMMON_NAV_LOGOUT")</button>
                             </form>
                         </li>
@@ -90,8 +102,6 @@
 
         <div class="row">
             <div class="col-lg-12">
-                <div>test čćlšllćžćčšđ</div>
-
                 $bodyContent
             </div>
         </div>

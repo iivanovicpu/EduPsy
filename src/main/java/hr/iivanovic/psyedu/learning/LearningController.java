@@ -8,8 +8,10 @@ import java.util.HashMap;
 
 import org.sql2o.Sql2o;
 
+import hr.iivanovic.psyedu.controllers.AbstractController;
 import hr.iivanovic.psyedu.db.Model;
 import hr.iivanovic.psyedu.db.Sql2oModel;
+import hr.iivanovic.psyedu.db.Subject;
 import hr.iivanovic.psyedu.login.LoginController;
 import hr.iivanovic.psyedu.util.DbUtil;
 import hr.iivanovic.psyedu.util.Path;
@@ -22,20 +24,34 @@ import spark.Route;
  * @author iivanovic
  * @date 29.08.16.
  */
-public class LearningController {
+public class LearningController extends AbstractController {
 
-    public static Route fetchAllBooks = (Request request, Response response) -> {
+    public static Route fetchAllSubjects = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
-        Sql2o sql2o = DbUtil.getH2DataSource();
-        Model dbProvider = new Sql2oModel(sql2o);
         if (clientAcceptsHtml(request)) {
             HashMap<String, Object> model = new HashMap<>();
-            model.put("books", dbProvider.getAllSubjects());
-            return ViewUtil.render(request, model, Path.Template.LEARNING_ALL);
+            model.put("subjects", dbProvider.getAllSubjects());
+            return ViewUtil.render(request, model, Path.Template.SUBJECTS_ALL);
         }
         if (clientAcceptsJson(request)) {
             return dataToJson(dbProvider.getAllSubjects());
         }
         return ViewUtil.notAcceptable.handle(request, response);
     };
+
+    public static Route fetchOneSubject = (Request request, Response response) -> {
+        LoginController.ensureUserIsLoggedIn(request, response);
+        long id = Long.parseLong(request.params("id"));
+        if (clientAcceptsHtml(request)) {
+            HashMap<String, Object> model = new HashMap<>();
+            Subject subject = dbProvider.getSubject(id);
+            model.put("subject", subject);
+            return ViewUtil.render(request, model, Path.Template.SUBJECTS_ONE);
+        }
+        if (clientAcceptsJson(request)) {
+            return dataToJson(dbProvider.getSubject(id));
+        }
+        return ViewUtil.notAcceptable.handle(request, response);
+    };
+
 }

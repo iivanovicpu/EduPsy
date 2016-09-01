@@ -77,7 +77,7 @@
                     #if($currentUser)
                         <li>
                             <form method="post" action="$WebPath.getLOGOUT()">
-                                $currentUser
+                                <div>$currentUser.firstName $currentUser.lastName $currentUser.status</div>
                                 <button id="logout">$msg.get("COMMON_NAV_LOGOUT")</button>
                             </form>
                         </li>

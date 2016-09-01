@@ -26,6 +26,7 @@ public class Path {
 
         public final static String SUBJECTS_ALL = "/velocity/subjects/all.vm";
         public final static String SUBJECTS_ONE = "/velocity/subjects/one.vm";
+        public final static String SUBJECTS_ONE_EDIT = "/velocity/subjects/edit.vm";
     }
 
 }

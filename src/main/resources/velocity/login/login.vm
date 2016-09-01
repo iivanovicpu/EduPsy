@@ -4,7 +4,7 @@
     #if($authenticationFailed)
         <p class="bad notification">$msg.get("LOGIN_AUTH_FAILED")</p>
     #elseif($authenticationSucceeded)
-        <p class="good notification">$msg.get("LOGIN_AUTH_SUCCEEDED", $currentUser)</p>
+        <p class="good notification">$msg.get("LOGIN_AUTH_SUCCEEDED",$currentUser.firstName, $currentUser.lastName)</p>
     #elseif($loggedOut)
         <p class="notification">$msg.get("LOGIN_LOGGED_OUT")</p>
     #end

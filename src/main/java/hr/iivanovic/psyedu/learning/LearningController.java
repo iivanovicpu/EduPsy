@@ -46,7 +46,24 @@ public class LearningController extends AbstractController {
             HashMap<String, Object> model = new HashMap<>();
             Subject subject = dbProvider.getSubject(id);
             model.put("subject", subject);
+            model.put("editAllowed",LoginController.isEditAllowed(request));
             return ViewUtil.render(request, model, Path.Template.SUBJECTS_ONE);
+        }
+        if (clientAcceptsJson(request)) {
+            return dataToJson(dbProvider.getSubject(id));
+        }
+        return ViewUtil.notAcceptable.handle(request, response);
+    };
+
+    public static Route fetchOneSubjectEdit = (Request request, Response response) -> {
+        LoginController.ensureUserIsLoggedIn(request, response);
+        long id = Long.parseLong(request.params("id"));
+        if (clientAcceptsHtml(request)) {
+            HashMap<String, Object> model = new HashMap<>();
+            Subject subject = dbProvider.getSubject(id);
+            model.put("subject", subject);
+            model.put("editAllowed",LoginController.isEditAllowed(request));
+            return ViewUtil.render(request, model, Path.Template.SUBJECTS_ONE_EDIT);
         }
         if (clientAcceptsJson(request)) {
             return dataToJson(dbProvider.getSubject(id));

@@ -1,0 +1,51 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+    #if($subject)
+    <h1>$subject.getTitle()</h1>
+    <h2>$subject.getKeywords()</h2>
+    <div id="url">$subject.getUrl()</div>
+    #else
+    <h1>$msg.get("SUBJECTS_SUBJECT_NOT_FOUND")</h1>
+    #end
+    #if($editAllowed)
+
+    <form method="post">
+        <textarea id="subject" name="doc"></textarea>
+        <input type="submit" class="btn btn-primary" name="submit">
+    </form>
+
+    #end
+    <script src="/js/jquery.js"></script>
+    <script src='http://cdn.tinymce.com/4/tinymce.min.js'></script>
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            height: 500,
+            theme: 'modern',
+            plugins: [
+                'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+                'searchreplace wordcount visualblocks visualchars code fullscreen',
+                'insertdatetime media nonbreaking save table contextmenu directionality',
+                'emoticons template paste textcolor colorpicker textpattern imagetools'
+            ],
+            toolbar1: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+            toolbar2: 'print preview media | forecolor backcolor emoticons',
+            image_advtab: true,
+            templates: [
+                { title: 'Test template 1', content: 'Test 1' },
+                { title: 'Test template 2', content: 'Test 2' }
+            ],
+//            content_css: [
+//                'http://fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+//                'http://www.tinymce.com/css/codepen.min.css'
+//            ]
+        });
+    </script>
+
+    <script type="application/javascript">
+        $.get($("#url").html(), function (data) {
+            $("#subject").text(data);
+        });
+    </script>
+
+#end

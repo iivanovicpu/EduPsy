@@ -5,7 +5,12 @@
     <h2>$subject.getKeywords()</h2>
     <div id="url">$subject.getUrl()</div>
     #else
-    <h1>$msg.get("BOOKS_BOOK_NOT_FOUND")</h1>
+    <h1>$msg.get("SUBJECTS_SUBJECT_NOT_FOUND")</h1>
+    #end
+    #if($editAllowed)
+    <form method="post">
+        <button type="submit" class="btn btn-primary">$msg.get("SUBJECTS_ONE_BTN_EDIT")</button>
+    </form>
     #end
     <div id="cnt"></div>
     <script src="/js/jquery.js"></script>

@@ -68,6 +68,7 @@ public class Application {
         get(Path.Web.BOOKS,          BookController.fetchAllBooks);
         get(Path.Web.SUBJECTS,       LearningController.fetchAllSubjects);
         get(Path.Web.ONE_SUBJECTS,   LearningController.fetchOneSubject);
+        post(Path.Web.ONE_SUBJECTS,  LearningController.fetchOneSubjectEdit);
         get(Path.Web.ONE_BOOK,       BookController.fetchOneBook);
         get(Path.Web.LOGIN,          LoginController.serveLoginPage);
         post(Path.Web.LOGIN,         LoginController.handleLoginPost);

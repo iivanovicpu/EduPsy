@@ -9,6 +9,7 @@ import static hr.iivanovic.psyedu.util.RequestUtil.removeSessionAttrLoginRedirec
 import java.util.HashMap;
 import java.util.Map;
 
+import hr.iivanovic.psyedu.db.User;
 import hr.iivanovic.psyedu.user.UserController;
 import hr.iivanovic.psyedu.util.Path;
 import hr.iivanovic.psyedu.util.ViewUtil;
@@ -27,12 +28,13 @@ public class LoginController {
 
     public static Route handleLoginPost = (Request request, Response response) -> {
         Map<String, Object> model = new HashMap<>();
-        if (!UserController.authenticate(getQueryUsername(request), getQueryPassword(request))) {
+        User user = UserController.authenticate(getQueryUsername(request), getQueryPassword(request));
+        if (null == user) {
             model.put("authenticationFailed", true);
             return ViewUtil.render(request, model, Path.Template.LOGIN);
         }
         model.put("authenticationSucceeded", true);
-        request.session().attribute("currentUser", getQueryUsername(request));
+        request.session().attribute("currentUser", user);
         if (getQueryLoginRedirect(request) != null) {
             response.redirect(getQueryLoginRedirect(request));
         }
@@ -54,5 +56,10 @@ public class LoginController {
             response.redirect(Path.Web.LOGIN);
         }
     };
+
+    public static boolean isEditAllowed(Request request){
+        User currentUser = request.session().attribute("currentUser");
+        return currentUser != null && ("TEACHER".equals(currentUser.getStatus()) || "ADMIN".equals(currentUser.getStatus()));
+    }
 
 }

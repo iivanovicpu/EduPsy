@@ -4,7 +4,7 @@
     <h2>$msg.get("INDEX_REGISTERED_USERS", $users.size())</h2>
     <ul>
         #foreach($user in $users)
-            <li>$user</li>
+            <li>$user.getUsername()</li>
         #end
     </ul>
     <p>$msg.get("INDEX_PASSWORD_INFO")</p>

@@ -38,7 +38,11 @@ public class Application {
 
         // Configure Spark
         port(4567);
+        // static files in classpath
         staticFiles.location("/public");
+
+        // static files outside classpath (todo: load from settings)
+        staticFiles.externalLocation("/home/iivanovic/edupsy/");
         staticFiles.expireTime(600L);
         enableDebugScreen();
 
@@ -69,6 +73,7 @@ public class Application {
         get(Path.Web.SUBJECTS,       LearningController.fetchAllSubjects);
         get(Path.Web.ONE_SUBJECTS,   LearningController.fetchOneSubject);
         post(Path.Web.ONE_SUBJECTS,  LearningController.fetchOneSubjectEdit);
+        post(Path.Web.EDIT_SUBJECT,  LearningController.submitEditedSubject);
         get(Path.Web.ONE_BOOK,       BookController.fetchOneBook);
         get(Path.Web.LOGIN,          LoginController.serveLoginPage);
         post(Path.Web.LOGIN,         LoginController.handleLoginPost);

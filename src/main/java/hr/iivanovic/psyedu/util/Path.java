@@ -15,6 +15,7 @@ public class Path {
 
         @Getter public static final String SUBJECTS = "/subjects/";
         @Getter public static final String ONE_SUBJECTS = "/subjects/:id/";
+        @Getter public static final String EDIT_SUBJECT = "/subject/";
     }
 
     public static class Template {

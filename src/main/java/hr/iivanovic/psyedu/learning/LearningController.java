@@ -4,16 +4,18 @@ import static hr.iivanovic.psyedu.util.JsonUtil.dataToJson;
 import static hr.iivanovic.psyedu.util.RequestUtil.clientAcceptsHtml;
 import static hr.iivanovic.psyedu.util.RequestUtil.clientAcceptsJson;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 
-import org.sql2o.Sql2o;
-
 import hr.iivanovic.psyedu.controllers.AbstractController;
-import hr.iivanovic.psyedu.db.Model;
-import hr.iivanovic.psyedu.db.Sql2oModel;
 import hr.iivanovic.psyedu.db.Subject;
 import hr.iivanovic.psyedu.login.LoginController;
-import hr.iivanovic.psyedu.util.DbUtil;
 import hr.iivanovic.psyedu.util.Path;
 import hr.iivanovic.psyedu.util.ViewUtil;
 import spark.Request;
@@ -47,6 +49,7 @@ public class LearningController extends AbstractController {
             Subject subject = dbProvider.getSubject(id);
             model.put("subject", subject);
             model.put("editAllowed",LoginController.isEditAllowed(request));
+            model.put("successmsg", "");
             return ViewUtil.render(request, model, Path.Template.SUBJECTS_ONE);
         }
         if (clientAcceptsJson(request)) {
@@ -70,5 +73,60 @@ public class LearningController extends AbstractController {
         }
         return ViewUtil.notAcceptable.handle(request, response);
     };
+
+    public static Route submitEditedSubject = (Request request, Response response) -> {
+        LoginController.ensureUserIsLoggedIn(request, response);
+        long id = Long.parseLong(request.queryParams("id"));
+        String document = request.queryParams("doc");
+        HashMap<String, Object> model = new HashMap<>();
+        if (clientAcceptsHtml(request) && LoginController.isEditAllowed(request)) {
+            Subject subject = dbProvider.getSubject(id);
+
+            File sourceFile = new File("/home/iivanovic/edupsy/" + subject.getUrl());
+            // todo: backup file treba imati extenziju s datetime-om kreiranja
+            File backupFile = new File("/home/iivanovic/edupsy/" + subject.getUrl() + ".backup");
+
+            copyFileUsingStream(sourceFile, backupFile);
+
+            try {
+                FileWriter fileWriter = new FileWriter(sourceFile);
+                fileWriter.write(document);
+                fileWriter.flush();
+                fileWriter.close();
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+
+            System.out.println(document);
+            model.put("subject", subject);
+            model.put("editAllowed",Boolean.TRUE);
+            model.put("successmsg", "update success");
+            return ViewUtil.render(request, model, Path.Template.SUBJECTS_ONE);
+        } else {
+            model.put("successmsg", "update fail");
+        }
+        if (clientAcceptsJson(request)) {
+            return dataToJson(dbProvider.getSubject(id));
+        }
+        return ViewUtil.notAcceptable.handle(request, response);
+    };
+
+
+    private static void copyFileUsingStream(File source, File dest) throws IOException {
+        InputStream is = null;
+        OutputStream os = null;
+        try {
+            is = new FileInputStream(source);
+            os = new FileOutputStream(dest);
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = is.read(buffer)) > 0) {
+                os.write(buffer, 0, length);
+            }
+        } finally {
+            is.close();
+            os.close();
+        }
+    }
 
 }

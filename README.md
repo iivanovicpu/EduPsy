@@ -1,20 +1,24 @@
 # EduPsy learning system (Web application)
 
-Project prototype "Edu-Psy" learning system provides a customized learning based on pedagogical-psychological profile of students.
-
-#### Main features:
-* multi user platform
-* three type of user context (admin, teacher, student)
-* different presentation of same learning materilals based on pp profile
-* managing learning materials
-* managing students achievement
+Application EduPsy is based on idea to provide customized learning system to students, and managing students achievements and learning materials by teachers.
 
 #### Project based on these technologies:
 
 * [Java (1.8)](https://www.oracle.com/java/) - general programming language
 * [Spark framework](http://sparkjava.com/) - creating dynamic Web pages, templating etc.
 * [sql2o](http://www.sql2o.org/) - working with stored data
+* [H2 Database engine](http://h2database.com) - H2 in memory database (in development mode)
+* [PostgreSQL Database](https://www.postgresql.org/) - production database
+* [jQuery](https://jquery.com/) - javascript library for easy dynamic content managing on pages
 * [bootstrap](http://getbootstrap.com/) for responsive Web UI design
+
+#### Currently implemented features:
+* localisation support
+* internal rest API for main functions
+* essential security (authentication and authorisation based on username and password)
+* three type of user context (admin, teacher, student)
+* users and learning subjects persisting in database (h2 in memory database)
+* managing learning materials
 
 #### Running application:
 ##### requirements:

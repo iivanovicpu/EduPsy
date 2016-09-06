@@ -32,4 +32,4 @@ Project prototype "Edu-Psy" learning system provides a customized learning based
 4. running application:
 ```mvn -cpu exec:java -Dexec.mainClass="hr.iivanovic.psyedu.Application" ```
 5. from your browser go to address:
-```http://localhost:4567```
+>http://localhost:4567

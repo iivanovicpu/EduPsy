@@ -14,8 +14,9 @@ public class Path {
         @Getter public static final String ONE_BOOK = "/books/:isbn/";
 
         @Getter public static final String SUBJECTS = "/subjects/";
-        @Getter public static final String ONE_SUBJECTS = "/subjects/:id/";
-        @Getter public static final String EDIT_SUBJECT = "/subject/";
+        @Getter public static final String VIEW_SUBJECT = "/subjects/:id/";
+        @Getter public static final String EDIT_SUBJECT = "/edit_subject/:id/";
+        @Getter public static final String SUBMIT_EDITED_SUBJECT = "/edit_subject/";
     }
 
     public static class Template {

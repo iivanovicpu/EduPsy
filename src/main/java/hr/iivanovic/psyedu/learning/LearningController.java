@@ -11,8 +11,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
+import hr.iivanovic.psyedu.Configuration;
 import hr.iivanovic.psyedu.controllers.AbstractController;
 import hr.iivanovic.psyedu.db.Subject;
 import hr.iivanovic.psyedu.login.LoginController;
@@ -48,7 +51,7 @@ public class LearningController extends AbstractController {
             HashMap<String, Object> model = new HashMap<>();
             Subject subject = dbProvider.getSubject(id);
             model.put("subject", subject);
-            model.put("editAllowed",LoginController.isEditAllowed(request));
+            model.put("editAllowed", LoginController.isEditAllowed(request));
             model.put("successmsg", "");
             return ViewUtil.render(request, model, Path.Template.SUBJECTS_ONE);
         }
@@ -60,12 +63,12 @@ public class LearningController extends AbstractController {
 
     public static Route fetchOneSubjectEdit = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
-        long id = Long.parseLong(request.params("id"));
+        long id = Long.parseLong(request.params(":id"));
         if (clientAcceptsHtml(request)) {
             HashMap<String, Object> model = new HashMap<>();
             Subject subject = dbProvider.getSubject(id);
             model.put("subject", subject);
-            model.put("editAllowed",LoginController.isEditAllowed(request));
+            model.put("editAllowed", LoginController.isEditAllowed(request));
             return ViewUtil.render(request, model, Path.Template.SUBJECTS_ONE_EDIT);
         }
         if (clientAcceptsJson(request)) {
@@ -82,9 +85,8 @@ public class LearningController extends AbstractController {
         if (clientAcceptsHtml(request) && LoginController.isEditAllowed(request)) {
             Subject subject = dbProvider.getSubject(id);
 
-            File sourceFile = new File("/home/iivanovic/edupsy/" + subject.getUrl());
-            // todo: backup file treba imati extenziju s datetime-om kreiranja
-            File backupFile = new File("/home/iivanovic/edupsy/" + subject.getUrl() + ".backup");
+            File sourceFile = new File(Configuration.getInstance().getExternalLocation() + subject.getUrl());
+            File backupFile = new File(Configuration.getInstance().getExternalLocation() + subject.getUrl() + "-" + now() + ".backup");
 
             copyFileUsingStream(sourceFile, backupFile);
 
@@ -93,15 +95,15 @@ public class LearningController extends AbstractController {
                 fileWriter.write(document);
                 fileWriter.flush();
                 fileWriter.close();
-            } catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
             System.out.println(document);
-            model.put("subject", subject);
-            model.put("editAllowed",Boolean.TRUE);
             model.put("successmsg", "update success");
-            return ViewUtil.render(request, model, Path.Template.SUBJECTS_ONE);
+
+            response.redirect(Path.Web.getVIEW_SUBJECT().replaceFirst(":id", String.valueOf(subject.getId())));
+            return null;
         } else {
             model.put("successmsg", "update fail");
         }
@@ -129,4 +131,9 @@ public class LearningController extends AbstractController {
         }
     }
 
+    public static String now() {
+        String validPatterns5 = "dd.MM.yyyy-HH:mm:ss";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(validPatterns5);
+        return LocalDateTime.now().format(formatter);
+    }
 }

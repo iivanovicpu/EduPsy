@@ -41,8 +41,7 @@ public class Application {
         // static files in classpath
         staticFiles.location("/public");
 
-        // static files outside classpath (todo: load from settings)
-        staticFiles.externalLocation("/home/iivanovic/edupsy/");
+        staticFiles.externalLocation(Configuration.getInstance().getExternalLocation());
         staticFiles.expireTime(600L);
         enableDebugScreen();
 
@@ -70,10 +69,12 @@ public class Application {
         // Set up routes
         get(Path.Web.INDEX,          IndexController.serveIndexPage);
         get(Path.Web.BOOKS,          BookController.fetchAllBooks);
+
         get(Path.Web.SUBJECTS,       LearningController.fetchAllSubjects);
-        get(Path.Web.ONE_SUBJECTS,   LearningController.fetchOneSubject);
-        post(Path.Web.ONE_SUBJECTS,  LearningController.fetchOneSubjectEdit);
-        post(Path.Web.EDIT_SUBJECT,  LearningController.submitEditedSubject);
+        get(Path.Web.VIEW_SUBJECT,   LearningController.fetchOneSubject);
+        get(Path.Web.EDIT_SUBJECT,   LearningController.fetchOneSubjectEdit);
+        post(Path.Web.SUBMIT_EDITED_SUBJECT,   LearningController.submitEditedSubject);
+
         get(Path.Web.ONE_BOOK,       BookController.fetchOneBook);
         get(Path.Web.LOGIN,          LoginController.serveLoginPage);
         post(Path.Web.LOGIN,         LoginController.handleLoginPost);

@@ -24,8 +24,8 @@ import spark.Route;
  */
 public class DbApplication {
     public static void main(String[] args) {
-        Sql2o sql2o = getH2DataSource();
-        Model model = new Sql2oModel(sql2o);
+//        Sql2o sql2o = getH2DataSource();
+        Model model = Sql2oModel.getInstance();
 
         get("/subjects", (request, response) -> {
             response.status(200);

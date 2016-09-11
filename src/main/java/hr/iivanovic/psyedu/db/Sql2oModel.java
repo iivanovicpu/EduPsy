@@ -6,16 +6,27 @@ import java.util.UUID;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 
+import hr.iivanovic.psyedu.util.DbUtil;
 import hr.iivanovic.psyedu.util.RandomUuidGenerator;
 import hr.iivanovic.psyedu.util.UuidGenerator;
 
 public class Sql2oModel implements Model {
 
+    private static Sql2oModel instance = null;
+
+
     private Sql2o sql2o;
     private UuidGenerator uuidGenerator;
 
-    public Sql2oModel(Sql2o sql2o) {
-        this.sql2o = sql2o;
+    public static synchronized Sql2oModel getInstance(){
+        if(null == instance){
+            instance = new Sql2oModel();
+        }
+        return instance;
+    }
+
+    private Sql2oModel() {
+        this.sql2o = DbUtil.getH2DataSource();
         uuidGenerator = new RandomUuidGenerator();
     }
 

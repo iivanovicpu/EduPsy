@@ -11,7 +11,7 @@ import hr.iivanovic.psyedu.util.DbUtil;
  * @date 31.08.16.
  */
 public class AbstractController {
-    public static Sql2o sql2o = DbUtil.getH2DataSource();
-    public static Model dbProvider = new Sql2oModel(sql2o);
+//    public static Sql2o sql2o = DbUtil.getH2DataSource();
+    public static Model dbProvider = Sql2oModel.getInstance();
 
 }

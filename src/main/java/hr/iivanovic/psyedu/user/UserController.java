@@ -9,7 +9,7 @@ import hr.iivanovic.psyedu.util.DbUtil;
 
 public class UserController {
     static Sql2o sql2o = DbUtil.getH2DataSource();
-    static Model dbProvider = new Sql2oModel(sql2o);
+    static Model dbProvider = Sql2oModel.getInstance();
 
     // Authenticate the user by hashing the inputted password using the stored salt,
     // then comparing the generated hashed password to the stored hashed password

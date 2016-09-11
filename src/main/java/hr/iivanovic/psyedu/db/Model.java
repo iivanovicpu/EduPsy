@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.UUID;
 
 public interface Model {
-    UUID createUser(String username, String password, String firstName, String lastName, String email);
+    UUID createUser(long id, String username, String password, String firstName, String lastName, String email);
 
-    UUID createSubject(String title, String keywords, String url);
+    void createSubject(String title, String keywords, String url);
 
     List<User> getAllUsers();
 
@@ -15,4 +15,6 @@ public interface Model {
     List<Subject> getAllSubjects();
 
     Subject getSubject(long id);
+
+    void test();
 }

@@ -15,6 +15,8 @@ public class Configuration {
 
     private static final String EXTERNAL_LOCATION = "external.location";
 
+    private static final String H2_DB_FILE_LOCATION = "h2.db.file.location";
+
     private ResourceBundle config;
 
     public static synchronized Configuration getInstance() {
@@ -30,6 +32,10 @@ public class Configuration {
 
     public String getExternalLocation() {
         return config.getString(EXTERNAL_LOCATION);
+    }
+
+    public String getH2DbFileLocation() {
+        return config.getString(H2_DB_FILE_LOCATION);
     }
 
 }

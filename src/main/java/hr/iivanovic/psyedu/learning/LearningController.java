@@ -24,6 +24,7 @@ import hr.iivanovic.psyedu.util.ViewUtil;
 import spark.Request;
 import spark.Response;
 import spark.Route;
+import spark.utils.StringUtils;
 
 /**
  * @author iivanovic
@@ -113,6 +114,79 @@ public class LearningController extends AbstractController {
         return ViewUtil.notAcceptable.handle(request, response);
     };
 
+
+    public static Route addNewSubject = (Request request, Response response) -> {
+        if (clientAcceptsHtml(request)) {
+            HashMap<String, Object> model = new HashMap<>();
+            Subject subject = new Subject();
+            model.put("subject", subject);
+            model.put("validation", "");
+            model.put("editAllowed", LoginController.isEditAllowed(request));
+            return ViewUtil.render(request, model, Path.Template.SUBJECT_ADD);
+        }
+        return ViewUtil.notAcceptable.handle(request, response);
+    };
+
+    public static Route submitAddedSubject = (request, response) -> {
+        String title = request.queryParams("title");
+        String keywords = request.queryParams("keywords");
+        HashMap<String, Object> model = new HashMap<>();
+        System.out.println(title + " " + keywords);
+        String validationMsg = validateSubject(title);
+        if (!StringUtils.isEmpty(validationMsg)) {
+            model.put("validation", validationMsg);
+            model.put("editAllowed", LoginController.isEditAllowed(request));
+            return ViewUtil.render(request,model, Path.Template.SUBJECT_ADD);
+        }
+        String titleReplaced = title.replaceAll(" ", "");
+        String filename = titleReplaced.substring(0,titleReplaced.length() > 10 ? 10 : titleReplaced.length()).toLowerCase().concat("html");
+        String filePath = Configuration.getInstance().getExternalLocation().concat("materijali/").concat(filename);
+        createFileIfNotExists(filePath, title);
+
+        dbProvider.createSubject(title,keywords,"/materijali/".concat(filename));
+
+        // todo: napuni model s tim subjectom i renderiraj stranicu za edit subject-a
+        response.redirect(Path.Web.getSUBJECTS());
+
+        if (clientAcceptsHtml(request)) {
+//            HashMap<String, Object> model = new HashMap<>();
+//            Subject subject = new Subject();
+//            model.put("subject", subject);
+//            model.put("editAllowed", LoginController.isEditAllowed(request));
+        }
+        return ViewUtil.notAcceptable.handle(request,response);
+    };
+
+    private static void createFileIfNotExists(String filePath, String title){
+        try {
+            File file = new File(filePath);
+            if (file.createNewFile()) {
+                System.out.println("File is created!");
+                FileWriter fileWriter = new FileWriter(file);
+                fileWriter.write("<h1>" + title + "</h1>");
+                fileWriter.flush();
+                fileWriter.close();
+            } else {
+                System.out.println("File already exists.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static String validateSubject(String title) {
+        StringBuilder sb = new StringBuilder();
+        if(StringUtils.isEmpty(title)){
+            sb.append("naslov je obavezan podatak\n");
+        } else {
+            for (Subject subject : dbProvider.getAllSubjects()) {
+                if (subject.getTitle().equals(title)) {
+                    sb.append("naslov:\" ").append(title).append("\" već postoji u bazi!");
+                }
+            }
+        }
+        return sb.toString();
+    }
 
     private static void copyFileUsingStream(File source, File dest) throws IOException {
         InputStream is = null;

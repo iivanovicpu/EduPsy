@@ -20,21 +20,23 @@ public class Sql2oModel implements Model {
     }
 
     @Override
-    public UUID createSubject(String title, String keywords, String url) {
+    public void createSubject(String title, String keywords, String url) {
         try (Connection conn = sql2o.open()) {
-            UUID subjectUuid = uuidGenerator.generate();
-            conn.createQuery("insert into predmet(predmet_uuid, naslov, kljucne_rijeci, url) VALUES (:predmet_uuid, :naslov, :kljucne_rijeci, :url)")
-                    .addParameter("predmet_uuid", subjectUuid)
-                    .addParameter("naslov", title)
-                    .addParameter("kljucne_rijeci", keywords)
+            Integer id = (Integer) conn.createQuery("insert into subject(title, keywords, url) VALUES ( :title, :keywords, :url)")
+                    .addParameter("title", title)
+                    .addParameter("keywords", keywords)
                     .addParameter("url", url)
-                    .executeUpdate();
-            return subjectUuid;
+                    .executeUpdate().getKey();
+            System.out.println("id: " + id);
+            conn.commit();
+        } catch (Exception e){
+            e.printStackTrace();
         }
     }
 
+
     @Override
-    public UUID createUser(String username, String password, String firstName, String lastName, String email) {
+    public UUID createUser(long id, String username, String password, String firstName, String lastName, String email) {
         try (Connection conn = sql2o.beginTransaction()) {
             UUID userUuid = uuidGenerator.generate();
             conn.createQuery("insert into korisnik(korisnik_uuid, korisnicko_ime, lozinka, ime, prezime, email) VALUES (:korisnik_uuid, :korisnicko_ime, :lozinka, :ime, :prezime, :email)")
@@ -89,5 +91,17 @@ public class Sql2oModel implements Model {
 
             return subject;
         }
+    }
+
+    @Override
+    public void test() {
+        try (Connection conn = sql2o.open()) {
+            conn.createQuery("INSERT INTO subject (title, keywords, url) VALUES ('TEST', 'test','materijali/test.html');")
+                    .executeUpdate();
+            conn.commit();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 }

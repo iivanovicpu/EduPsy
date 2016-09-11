@@ -10,7 +10,7 @@ import lombok.Data;
  */
 @Data
 public class Subject {
-    private long id;
+    private int id;
     private String title;
     private String keywords;
     private String url;

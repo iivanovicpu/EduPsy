@@ -8,4 +8,9 @@
         </div>
     #end
 </div>
+<div class="row">
+    <form method="get" action="/addsubject/">
+        <button type="submit" class="btn btn-primary">$msg.get("SUBJECT_BTN_ADD")</button>
+    </form>
+</div>
 #end

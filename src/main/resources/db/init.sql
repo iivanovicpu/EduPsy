@@ -24,6 +24,8 @@ INSERT INTO subject (title, keywords, url) VALUES ('Relacijske baze podataka', '
 INSERT INTO user (username, password, firstName, lastname, email, status) VALUES ('iivanovic','password','Igor','Ivanović','iivanovic.pu@gmail.com','ADMIN');
 INSERT INTO user (username, password, firstName, lastname, email, status) VALUES ('jzufic','password','Janko','Žufić','janko.zufic@gmail.com','TEACHER');
 INSERT INTO user (username, password, firstName, lastname, email, status) VALUES ('mmarkovic','password','Marko','Marković','janko.zufic@gmail.com','STUDENT');
+INSERT INTO user (username, password, firstName, lastname, email, status) VALUES ('iivic','password','Ivo','Ivić','janko.zufic@gmail.com','STUDENT');
+INSERT INTO user (username, password, firstName, lastname, email, status) VALUES ('vnovak','password','Vjenceslav','Novak','janko.zufic@gmail.com','STUDENT');
 
 
 

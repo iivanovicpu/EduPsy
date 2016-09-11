@@ -74,6 +74,8 @@ public class Application {
         get(Path.Web.VIEW_SUBJECT,   LearningController.fetchOneSubject);
         get(Path.Web.EDIT_SUBJECT,   LearningController.fetchOneSubjectEdit);
         post(Path.Web.SUBMIT_EDITED_SUBJECT,   LearningController.submitEditedSubject);
+        get(Path.Web.ADD_SUBJECT,    LearningController.addNewSubject);
+        post(Path.Web.ADD_SUBJECT,    LearningController.submitAddedSubject);
 
         get(Path.Web.ONE_BOOK,       BookController.fetchOneBook);
         get(Path.Web.LOGIN,          LoginController.serveLoginPage);

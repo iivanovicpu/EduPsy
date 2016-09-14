@@ -7,9 +7,9 @@ import java.util.ResourceBundle;
  * Date: 08.02.13.
  * Time: 12:44
  */
-public class Configuration {
+public class AppConfiguration {
 
-    private static Configuration instance = null;
+    private static AppConfiguration instance = null;
 
     public static final String RESOURCE_BUNDLE_BASENAME = "configuration";
 
@@ -17,16 +17,18 @@ public class Configuration {
 
     private static final String H2_DB_FILE_LOCATION = "h2.db.file.location";
 
+    private static final String DEVELOPMENT_MODE = "development.mode";
+
     private ResourceBundle config;
 
-    public static synchronized Configuration getInstance() {
+    public static synchronized AppConfiguration getInstance() {
         if (instance == null) {
-            instance = new Configuration();
+            instance = new AppConfiguration();
         }
         return instance;
     }
 
-    private Configuration() {
+    private AppConfiguration() {
         config = ResourceBundle.getBundle(RESOURCE_BUNDLE_BASENAME);
     }
 
@@ -38,4 +40,7 @@ public class Configuration {
         return config.getString(H2_DB_FILE_LOCATION);
     }
 
+    public boolean isDevelopmentMode() {
+        return "true".equals(config.getString(DEVELOPMENT_MODE));
+    }
 }

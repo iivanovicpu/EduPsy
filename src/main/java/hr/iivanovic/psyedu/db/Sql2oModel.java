@@ -30,6 +30,16 @@ public class Sql2oModel implements Model {
         uuidGenerator = new RandomUuidGenerator();
     }
 
+    public void clearRecordsForReinit(){
+        try (Connection conn = sql2o.open()){
+            conn.createQuery("delete from subject").executeUpdate();
+            conn.createQuery("delete from user").executeUpdate();
+            conn.commit();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void createSubject(String title, String keywords, String url) {
         try (Connection conn = sql2o.open()) {
@@ -47,19 +57,17 @@ public class Sql2oModel implements Model {
 
 
     @Override
-    public UUID createUser(long id, String username, String password, String firstName, String lastName, String email) {
+    public void createUser(String username, String password, String firstName, String lastName, String email, String status) {
         try (Connection conn = sql2o.beginTransaction()) {
-            UUID userUuid = uuidGenerator.generate();
-            conn.createQuery("insert into korisnik(korisnik_uuid, korisnicko_ime, lozinka, ime, prezime, email) VALUES (:korisnik_uuid, :korisnicko_ime, :lozinka, :ime, :prezime, :email)")
-                    .addParameter("korisnik_uuid", userUuid)
-                    .addParameter("korisnicko_ime", username)
-                    .addParameter("lozinka", password)
-                    .addParameter("ime", firstName)
-                    .addParameter("prezime", lastName)
+            conn.createQuery("insert into user(username, password, firstName, lastNAme, email, status) VALUES (:username, :password, :firstname, :lastname, :email, :status)")
+                    .addParameter("username", username)
+                    .addParameter("password", password)
+                    .addParameter("firstname", firstName)
+                    .addParameter("lastname", lastName)
                     .addParameter("email", email)
+                    .addParameter("status", status)
                     .executeUpdate();
             conn.commit();
-            return userUuid;
         }
 
     }

@@ -15,10 +15,12 @@ import hr.iivanovic.psyedu.index.IndexController;
 import hr.iivanovic.psyedu.learning.LearningController;
 import hr.iivanovic.psyedu.login.LoginController;
 import hr.iivanovic.psyedu.util.Filters;
+import hr.iivanovic.psyedu.util.InitDb;
 import hr.iivanovic.psyedu.util.Path;
 import hr.iivanovic.psyedu.util.ViewUtil;
 
 public class Application {
+    public static boolean developmentMode = AppConfiguration.getInstance().isDevelopmentMode();
 
     public static void main(String[] args) {
 
@@ -27,12 +29,17 @@ public class Application {
         // static files in classpath
         staticFiles.location("/public");
 
-        staticFiles.externalLocation(Configuration.getInstance().getExternalLocation());
+        staticFiles.externalLocation(AppConfiguration.getInstance().getExternalLocation());
         staticFiles.expireTime(600L);
         enableDebugScreen();
 
 //        Sql2o sql2o = DbUtil.getH2DataSource();
         Model model = Sql2oModel.getInstance();
+        if (developmentMode) {
+            InitDb initDb = new InitDb();
+            initDb.init();
+            developmentMode = false;
+        }
 
         /* rest api */
         get("/api/subjects/", (request, response) -> {

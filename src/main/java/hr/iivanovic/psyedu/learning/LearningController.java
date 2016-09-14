@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
-import hr.iivanovic.psyedu.Configuration;
+import hr.iivanovic.psyedu.AppConfiguration;
 import hr.iivanovic.psyedu.controllers.AbstractController;
 import hr.iivanovic.psyedu.db.Subject;
 import hr.iivanovic.psyedu.login.LoginController;
@@ -86,8 +86,8 @@ public class LearningController extends AbstractController {
         if (clientAcceptsHtml(request) && LoginController.isEditAllowed(request)) {
             Subject subject = dbProvider.getSubject(id);
 
-            File sourceFile = new File(Configuration.getInstance().getExternalLocation() + subject.getUrl());
-            File backupFile = new File(Configuration.getInstance().getExternalLocation() + subject.getUrl() + "-" + now() + ".backup");
+            File sourceFile = new File(AppConfiguration.getInstance().getExternalLocation() + subject.getUrl());
+            File backupFile = new File(AppConfiguration.getInstance().getExternalLocation() + subject.getUrl() + "-" + now() + ".backup");
 
             copyFileUsingStream(sourceFile, backupFile);
 
@@ -140,7 +140,7 @@ public class LearningController extends AbstractController {
         }
         String titleReplaced = title.replaceAll(" ", "");
         String filename = titleReplaced.substring(0,titleReplaced.length() > 10 ? 10 : titleReplaced.length()).toLowerCase().concat("html");
-        String filePath = Configuration.getInstance().getExternalLocation().concat("materijali/").concat(filename);
+        String filePath = AppConfiguration.getInstance().getExternalLocation().concat("materijali/").concat(filename);
         createFileIfNotExists(filePath, title);
 
         dbProvider.createSubject(title,keywords,"/materijali/".concat(filename));

@@ -4,7 +4,8 @@ import java.util.List;
 import java.util.UUID;
 
 public interface Model {
-    UUID createUser(long id, String username, String password, String firstName, String lastName, String email);
+
+    void createUser(String username, String password, String firstName, String lastName, String email, String status);
 
     void createSubject(String title, String keywords, String url);
 

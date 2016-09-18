@@ -7,12 +7,17 @@
     #else
         <h1>$msg.get("SUBJECTS_SUBJECT_NOT_FOUND")</h1>
     #end
-    #if($editAllowed)
-        <div>$successmsg</div>
-        <form method="get" action="/edit_subject/$subject.getId()/">
-            <button type="submit" class="btn btn-primary">$msg.get("SUBJECTS_ONE_BTN_EDIT")</button>
-        </form>
-    #end
+    #if($isStudent)
+        #foreach($title in $titles)
+        <div>$title</div>
+        #end
+    <div>prikaz za studenta</div>
+    #else
+    <div>$successmsg</div>
+    <form method="get" action="/edit_subject/$subject.getId()/">
+        <button type="submit" class="btn btn-primary">$msg.get("SUBJECTS_ONE_BTN_EDIT")</button>
+    </form>
+
     <div id="cnt"></div>
     <script src="/js/jquery.js"></script>
     <script type="application/javascript">
@@ -20,5 +25,5 @@
             $("#cnt").append(data);
         });
     </script>
-
+    #end
 #end

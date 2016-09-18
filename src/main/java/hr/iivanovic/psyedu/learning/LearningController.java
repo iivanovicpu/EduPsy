@@ -14,11 +14,14 @@ import java.io.OutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import hr.iivanovic.psyedu.AppConfiguration;
 import hr.iivanovic.psyedu.controllers.AbstractController;
 import hr.iivanovic.psyedu.db.Subject;
 import hr.iivanovic.psyedu.login.LoginController;
+import hr.iivanovic.psyedu.util.HtmlUtil;
 import hr.iivanovic.psyedu.util.Path;
 import hr.iivanovic.psyedu.util.ViewUtil;
 import spark.Request;
@@ -37,6 +40,7 @@ public class LearningController extends AbstractController {
         if (clientAcceptsHtml(request)) {
             HashMap<String, Object> model = new HashMap<>();
             model.put("subjects", dbProvider.getAllSubjects());
+            model.put("editAllowed", LoginController.isEditAllowed(request));
             return ViewUtil.render(request, model, Path.Template.SUBJECTS_ALL);
         }
         if (clientAcceptsJson(request)) {
@@ -52,8 +56,16 @@ public class LearningController extends AbstractController {
             HashMap<String, Object> model = new HashMap<>();
             Subject subject = dbProvider.getSubject(id);
             model.put("subject", subject);
-            model.put("editAllowed", LoginController.isEditAllowed(request));
             model.put("successmsg", "");
+            boolean isStudent = !LoginController.isEditAllowed(request);
+            model.put("isStudent", isStudent);
+            if(isStudent){
+                File file = new File(AppConfiguration.getInstance().getExternalLocation() + subject.getUrl());
+                List<String> titles = HtmlUtil.getAllSubjectsLinks(file, subject.getUrl());
+                model.put("titles", titles);
+            } else {
+                model.put("titles", new LinkedList<String>());
+            }
             return ViewUtil.render(request, model, Path.Template.SUBJECTS_ONE);
         }
         if (clientAcceptsJson(request)) {
@@ -82,6 +94,8 @@ public class LearningController extends AbstractController {
         LoginController.ensureUserIsLoggedIn(request, response);
         long id = Long.parseLong(request.queryParams("id"));
         String document = request.queryParams("doc");
+        String finalizedDoc = HtmlUtil.anchorSubtitles(document);
+
         HashMap<String, Object> model = new HashMap<>();
         if (clientAcceptsHtml(request) && LoginController.isEditAllowed(request)) {
             Subject subject = dbProvider.getSubject(id);
@@ -93,7 +107,7 @@ public class LearningController extends AbstractController {
 
             try {
                 FileWriter fileWriter = new FileWriter(sourceFile);
-                fileWriter.write(document);
+                fileWriter.write(finalizedDoc);
                 fileWriter.flush();
                 fileWriter.close();
             } catch (IOException e) {

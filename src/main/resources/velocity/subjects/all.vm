@@ -4,13 +4,16 @@
 <div class="row row-3">
     #foreach($subject in $subjects)
         <div class="col">
-            <a class="book" href="$WebPath.getSUBJECTS()$subject.getId()" title="$subject.getKeywords()">$subject.getTitle()</a>
+            <a class="book" href="$WebPath.getSUBJECTS()$subject.getId()"
+               title="$subject.getKeywords()">$subject.getTitle()</a>
         </div>
     #end
 </div>
-<div class="row">
-    <form method="get" action="/addsubject/">
-        <button type="submit" class="btn btn-primary">$msg.get("SUBJECT_BTN_ADD")</button>
-    </form>
-</div>
+    #if($editAllowed)
+    <div class="row">
+        <form method="get" action="/addsubject/">
+            <button type="submit" class="btn btn-primary">$msg.get("SUBJECT_BTN_ADD")</button>
+        </form>
+    </div>
+    #end
 #end

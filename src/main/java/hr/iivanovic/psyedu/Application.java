@@ -68,6 +68,7 @@ public class Application {
         post(Path.Web.SUBMIT_EDITED_SUBJECT, LearningController.submitEditedSubject);
         get(Path.Web.ADD_SUBJECT, LearningController.addNewSubject);
         post(Path.Web.ADD_SUBJECT, LearningController.submitAddedSubject);
+        get(Path.Web.ONE_TITLE, LearningController.fetchOneTitle);
 
         get(Path.Web.LOGIN, LoginController.serveLoginPage);
         post(Path.Web.LOGIN, LoginController.handleLoginPost);

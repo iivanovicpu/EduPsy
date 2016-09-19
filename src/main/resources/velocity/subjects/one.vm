@@ -9,7 +9,7 @@
     #end
     #if($isStudent)
         #foreach($title in $titles)
-        <div>$title</div>
+        <div><a href="/onetitle/$title.title/$title.subjectId/">$title.title</a></div>
         #end
     <div>prikaz za studenta</div>
     #else

@@ -69,11 +69,17 @@ public class HtmlUtilTest {
         for (String subtitle : allSubjectsLinks) {
             System.out.println(subtitle);
         }
+    }
 
-//        Document doc = Jsoup.parse(html);
-//        Elements headings = doc.getElementsByTag("a");
-//        for (Element heading : headings) {
-//            System.out.println(heading.parent());
-//        }
+    @Test
+    public void testGetOneTitle(){
+        String oneTitleContent = HtmlUtil.getOneTitleContent("/home/iivanovic/edupsy/materijali/edupsy.html", "Sloj podataka");
+        System.out.println(oneTitleContent);
+    }
+
+    @Test
+    public void testGetTagByTitle(){
+        String oneTitleContent = HtmlUtil.getHeadingTagByTitle(html, "Sloj podataka");
+        System.out.println(oneTitleContent);
     }
 }

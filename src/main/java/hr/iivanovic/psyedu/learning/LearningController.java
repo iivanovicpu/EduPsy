@@ -61,7 +61,7 @@ public class LearningController extends AbstractController {
             model.put("isStudent", isStudent);
             if(isStudent){
                 File file = new File(AppConfiguration.getInstance().getExternalLocation() + subject.getUrl());
-                List<String> titles = HtmlUtil.getAllSubjectsLinks(file, subject.getUrl());
+                List<Title> titles = HtmlUtil.getAllSubjectsLinks(file, subject.getUrl(), subject.getId());
                 model.put("titles", titles);
             } else {
                 model.put("titles", new LinkedList<String>());
@@ -70,6 +70,25 @@ public class LearningController extends AbstractController {
         }
         if (clientAcceptsJson(request)) {
             return dataToJson(dbProvider.getSubject(id));
+        }
+        return ViewUtil.notAcceptable.handle(request, response);
+    };
+
+    public static Route fetchOneTitle = (Request request, Response response) -> {
+        LoginController.ensureUserIsLoggedIn(request, response);
+        String title = request.params("title");
+        long id = Long.parseLong(request.params("id"));
+        System.out.println(title + " " + id);
+        if (clientAcceptsHtml(request)) {
+            HashMap<String, Object> model = new HashMap<>();
+            Subject subject = dbProvider.getSubject(id);
+//            File file = new File(AppConfiguration.getInstance().getExternalLocation() + subject.getUrl());
+            String content = HtmlUtil.getOneTitleContent(AppConfiguration.getInstance().getExternalLocation() + subject.getUrl(), title);
+            // todo: parse title
+            model.put("content",content);
+//            List<String> titles = HtmlUtil.getAllSubjectsLinks(file, subject.getUrl());
+//            model.put("titles", titles);
+            return ViewUtil.render(request, model, Path.Template.SUBJECT_ONE_TITLE);
         }
         return ViewUtil.notAcceptable.handle(request, response);
     };
@@ -224,4 +243,6 @@ public class LearningController extends AbstractController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(validPatterns5);
         return LocalDateTime.now().format(formatter);
     }
+
+
 }

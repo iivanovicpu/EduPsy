@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -9,7 +10,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import hr.iivanovic.psyedu.util.HtmlUtil;
+import hr.iivanovic.psyedu.AppConfiguration;
+import hr.iivanovic.psyedu.learning.HtmlParser;
+import hr.iivanovic.psyedu.learning.TitleLink;
 
 /**
  * @author iivanovic
@@ -17,7 +20,9 @@ import hr.iivanovic.psyedu.util.HtmlUtil;
  */
 public class HtmlUtilTest {
 
-    private String         html = "<p>&nbsp;</p>\n" +
+    private static HtmlParser htmlParser = HtmlParser.getInstance();
+
+    private String html = "<p>&nbsp;</p>\n" +
             "<p>EduPsy - projekt</p>\n" +
             "<h1>LCMS sustav za učenje EduPsy</h1>\n" +
             "<p>Sustav treba imati dva (ili tri) nivoa korisnika: Teacher, Student (i eventualno Admin). Teacher-a po predmetu je do 3, studenata do 200 (i administratora: 1)</p>\n" +
@@ -55,31 +60,51 @@ public class HtmlUtilTest {
     }
 
     @Test
-    public void testAnchoring() throws IOException {
-;
+    public void improve_document_test() throws IOException {
+        File file = new File("/home/iivanovic/private/psy-edu/etc/materijali/notImproved-example.html");
 
-        String doc = HtmlUtil.anchorSubtitles(html);
-        Assert.assertTrue(doc.contains("<h4><a id=\"TEST\"></a>TEST</h4>"));
+        String doc = htmlParser.improveDocument(file);
         System.out.println(doc);
+        // check output: all h2, h3, h4, h5 elements should contain id attributes
+    }
+
+    @Test
+    public void improve_alreadyImproved_document_test() throws IOException {
+        File file = new File("/home/iivanovic/private/psy-edu/etc/materijali/alreadyImproved-example.html");
+
+        String doc = htmlParser.improveDocument(file);
+        System.out.println(doc);
+        // check output: all h2, h3, h4, h5 elements should contain only once id attribute
+    }
+
+    @Test
+    public void get_subject_links_test() throws IOException {
+        File file = new File("/home/iivanovic/private/psy-edu/etc/materijali/alreadyImproved-example.html");
+
+        List<TitleLink> allSubjectsLinks = htmlParser.getAllSubjectsLinks(file, file.getName(), 56L);
+        for (TitleLink titleLink : allSubjectsLinks) {
+            System.out.println(titleLink);
+        }
     }
 
     @Test
     public void jsoupParsingTest(){
-        List<String> allSubjectsLinks = HtmlUtil.getAllSubjectsLinks(html);
+        List<String> allSubjectsLinks = HtmlParser.getAllSubjectsLinks(html);
         for (String subtitle : allSubjectsLinks) {
             System.out.println(subtitle);
         }
     }
 
     @Test
-    public void testGetOneTitle(){
-        String oneTitleContent = HtmlUtil.getOneTitleContent("/home/iivanovic/edupsy/materijali/edupsy.html", "Sloj podataka");
+    public void testGetOneTitleH2_with_moreH2_after(){
+        String oneTitleContent = htmlParser.getOneTitleContent("/home/iivanovic/private/psy-edu/etc/materijali/alreadyImproved-example.html", "h21");
         System.out.println(oneTitleContent);
     }
 
     @Test
-    public void testGetTagByTitle(){
-        String oneTitleContent = HtmlUtil.getHeadingTagByTitle(html, "Sloj podataka");
+    public void testGetOneTitle(){
+        String oneTitleContent = htmlParser.getOneTitleContent("/home/iivanovic/edupsy/materijali/edupsy.html", "Pogled na sustav EduPsy od strane studenta");
         System.out.println(oneTitleContent);
     }
+
 }

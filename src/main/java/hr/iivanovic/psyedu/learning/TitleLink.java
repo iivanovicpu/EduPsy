@@ -5,7 +5,9 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Title {
+public class TitleLink {
     private String title;
+    private String id;
     private long subjectId;
+    private String classAttribute;
 }

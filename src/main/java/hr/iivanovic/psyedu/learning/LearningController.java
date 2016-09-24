@@ -21,7 +21,6 @@ import hr.iivanovic.psyedu.AppConfiguration;
 import hr.iivanovic.psyedu.controllers.AbstractController;
 import hr.iivanovic.psyedu.db.Subject;
 import hr.iivanovic.psyedu.login.LoginController;
-import hr.iivanovic.psyedu.util.HtmlUtil;
 import hr.iivanovic.psyedu.util.Path;
 import hr.iivanovic.psyedu.util.ViewUtil;
 import spark.Request;
@@ -34,6 +33,8 @@ import spark.utils.StringUtils;
  * @date 29.08.16.
  */
 public class LearningController extends AbstractController {
+
+    private static HtmlParser htmlParser = HtmlParser.getInstance();
 
     public static Route fetchAllSubjects = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
@@ -61,8 +62,8 @@ public class LearningController extends AbstractController {
             model.put("isStudent", isStudent);
             if(isStudent){
                 File file = new File(AppConfiguration.getInstance().getExternalLocation() + subject.getUrl());
-                List<Title> titles = HtmlUtil.getAllSubjectsLinks(file, subject.getUrl(), subject.getId());
-                model.put("titles", titles);
+                List<TitleLink> titleLinks = htmlParser.getAllSubjectsLinks(file, subject.getUrl(), subject.getId());
+                model.put("titles", titleLinks);
             } else {
                 model.put("titles", new LinkedList<String>());
             }
@@ -76,18 +77,13 @@ public class LearningController extends AbstractController {
 
     public static Route fetchOneTitle = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
-        String title = request.params("title");
-        long id = Long.parseLong(request.params("id"));
-        System.out.println(title + " " + id);
+        String id = request.params("id");
+        long subjectIdid = Long.parseLong(request.params("subjectid"));
         if (clientAcceptsHtml(request)) {
             HashMap<String, Object> model = new HashMap<>();
-            Subject subject = dbProvider.getSubject(id);
-//            File file = new File(AppConfiguration.getInstance().getExternalLocation() + subject.getUrl());
-            String content = HtmlUtil.getOneTitleContent(AppConfiguration.getInstance().getExternalLocation() + subject.getUrl(), title);
-            // todo: parse title
+            Subject subject = dbProvider.getSubject(subjectIdid);
+            String content = htmlParser.getOneTitleContent(AppConfiguration.getInstance().getExternalLocation() + subject.getUrl().substring(1,subject.getUrl().length()), id);
             model.put("content",content);
-//            List<String> titles = HtmlUtil.getAllSubjectsLinks(file, subject.getUrl());
-//            model.put("titles", titles);
             return ViewUtil.render(request, model, Path.Template.SUBJECT_ONE_TITLE);
         }
         return ViewUtil.notAcceptable.handle(request, response);
@@ -113,7 +109,7 @@ public class LearningController extends AbstractController {
         LoginController.ensureUserIsLoggedIn(request, response);
         long id = Long.parseLong(request.queryParams("id"));
         String document = request.queryParams("doc");
-        String finalizedDoc = HtmlUtil.anchorSubtitles(document);
+        String finalizedDoc = htmlParser.improveDocument(document);
 
         HashMap<String, Object> model = new HashMap<>();
         if (clientAcceptsHtml(request) && LoginController.isEditAllowed(request)) {
@@ -172,7 +168,7 @@ public class LearningController extends AbstractController {
             return ViewUtil.render(request,model, Path.Template.SUBJECT_ADD);
         }
         String titleReplaced = title.replaceAll(" ", "");
-        String filename = titleReplaced.substring(0,titleReplaced.length() > 10 ? 10 : titleReplaced.length()).toLowerCase().concat("html");
+        String filename = titleReplaced.substring(0,titleReplaced.length() > 10 ? 10 : titleReplaced.length()).toLowerCase().concat(".html");
         String filePath = AppConfiguration.getInstance().getExternalLocation().concat("materijali/").concat(filename);
         createFileIfNotExists(filePath, title);
 

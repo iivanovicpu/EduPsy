@@ -24,6 +24,8 @@
                 </div>
             </div>
             <button type="submit" class="btn btn-primary">$msg.get("SUBJECT_BTN_ADD")</button>
+            <button type="submit" formmethod="get" formaction="/subjects/" class="btn btn-warning">$msg.get("SUBJECT_EDIT_CANCEL")</button>
+
         </form>
     #end
 <script src="/js/jquery.js"></script>

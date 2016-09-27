@@ -9,6 +9,7 @@ import static spark.Spark.post;
 import static spark.Spark.staticFiles;
 import static spark.debug.DebugScreen.enableDebugScreen;
 
+import hr.iivanovic.psyedu.controllers.AdminSubjectController;
 import hr.iivanovic.psyedu.db.Model;
 import hr.iivanovic.psyedu.db.Sql2oModel;
 import hr.iivanovic.psyedu.index.IndexController;
@@ -65,6 +66,9 @@ public class Application {
         get(Path.Web.SUBJECTS, LearningController.fetchAllSubjects);
         get(Path.Web.VIEW_SUBJECT, LearningController.fetchOneSubject);
         get(Path.Web.EDIT_SUBJECT, LearningController.fetchOneSubjectEdit);
+        get(Path.Web.ONE_SUBJECT_QUESTIONS, AdminSubjectController.fetchtitlesForAddQuestions);
+        get(Path.Web.ONE_TITLE_QUESTIONS, AdminSubjectController.fetchOneTitleForAddQuestions);
+        post(Path.Web.ONE_TITLE_QUESTIONS, AdminSubjectController.submitQuestion);
         post(Path.Web.SUBMIT_EDITED_SUBJECT, LearningController.submitEditedSubject);
         get(Path.Web.ADD_SUBJECT, LearningController.addNewSubject);
         post(Path.Web.ADD_SUBJECT, LearningController.submitAddedSubject);

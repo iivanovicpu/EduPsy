@@ -26,6 +26,26 @@ small {
     color: #555;
 }
 
+.h2 {
+    padding-left: 20px;
+}
+
+.h3 {
+    padding-left: 40px;
+}
+
+.h4 {
+    padding-left: 60px;
+}
+
+.h5 {
+    padding-left: 80px;
+}
+
+.h6 {
+    padding-left: 100px;
+}
+
 /*
 header {
     background: #274555;

@@ -9,23 +9,22 @@
     #end
     #if($isStudent)
         #foreach($title in $titles)
-##            ovdje link napraviti prema id atributu iz title-a
         <div class="$title.classAttribute"><a href="/onetitle/$title.id/$title.subjectId">$title.title</a>
         </div>
         #end
-    <div>prikaz za studenta</div>
     #else
-    <div>$successmsg</div>
-    <form method="get" action="/edit_subject/$subject.getId()/">
-        <button type="submit" class="btn btn-primary">$msg.get("SUBJECTS_ONE_BTN_EDIT")</button>
-    </form>
+        <div>$successmsg</div>
+        <form method="get" action="/edit_subject/$subject.getId()/">
+            <button type="submit" class="btn btn-primary">$msg.get("SUBJECTS_ONE_BTN_EDIT")</button>
+            <button type="submit" formaction="/admin_subject/$subject.id/" formmethod="get" class="btn btn-primary">$msg.get("SUBJECTS_ONE_BTN_ADD_QUESTIONS")</button>
+        </form>
 
-    <div id="cnt"></div>
-    <script src="/js/jquery.js"></script>
-    <script type="application/javascript">
-        $.get($("#url").html(), function (data) {
-            $("#cnt").append(data);
-        });
-    </script>
+        <div id="cnt"></div>
+        <script src="/js/jquery.js"></script>
+        <script type="application/javascript">
+            $.get($("#url").html(), function (data) {
+                $("#cnt").append(data);
+            });
+        </script>
     #end
 #end

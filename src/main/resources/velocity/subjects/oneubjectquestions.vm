@@ -1,0 +1,18 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+    #if($subject)
+        <h1>$subject.getTitle()</h1>
+        <h2>$subject.getKeywords()</h2>
+        <div id="url">$subject.getUrl()</div>
+    #else
+        <h1>$msg.get("SUBJECTS_SUBJECT_NOT_FOUND")</h1>
+    #end
+    <div>$successmsg</div>
+    #foreach($title in $titles)
+        <div>
+            <div class="$title.classAttribute" style="display: inline">
+                <a href="/onetitlequestions/$title.id/$title.subjectId">$title.title</a>
+            </div>
+        </div>
+    #end
+#end

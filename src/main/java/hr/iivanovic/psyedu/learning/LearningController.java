@@ -149,7 +149,7 @@ public class LearningController extends AbstractController {
             HashMap<String, Object> model = new HashMap<>();
             Subject subject = new Subject();
             model.put("subject", subject);
-            model.put("validation", "");
+            model.put("validation", false);
             model.put("editAllowed", LoginController.isEditAllowed(request));
             return ViewUtil.render(request, model, Path.Template.SUBJECT_ADD);
         }

@@ -54,7 +54,7 @@ public class HtmlParser {
             Elements elementsByTag = document.getElementsByTag(tag);
             int idx = 1;
             for (Element element : elementsByTag) {
-                element.removeAttr("id");
+                // todo: preindexirati pitanja ...
                 element.attr("id",tag + idx++);
             }
         }

@@ -1,5 +1,6 @@
 package hr.iivanovic.psyedu.util;
 
+import hr.iivanovic.psyedu.db.Question;
 import hr.iivanovic.psyedu.db.Sql2oModel;
 
 /**
@@ -31,6 +32,12 @@ public class InitDb {
         sql2oModel.createSubject("Edu Psy - html system","edupsy,html,system","/materijali/edupsy.html");
         sql2oModel.createSubject("Relacijske baze podataka","baze podataka,ralacije,sql","/materijali/relacijskebazepodataka.html");
         sql2oModel.createSubject("Matematika","matematika, linearna algebra, funkcije, jednadžbe, limes","/materijali/matematika.html");
+    }
+
+    public void createQuestions(){
+        sql2oModel.createQuestion(new Question(1,"h22","test","test",2));
+        sql2oModel.createQuestion(new Question(1,"h22","test","test",2));
+        sql2oModel.createQuestion(new Question(1,"h22","test","test",2));
     }
 
 }

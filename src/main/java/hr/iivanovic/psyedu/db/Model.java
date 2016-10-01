@@ -17,5 +17,7 @@ public interface Model {
 
     Subject getSubject(long id);
 
-    void test();
+    void createQuestion(Question question);
+
+    List<Question> getAllQuestionsForSubjectAndTitle(int subjectId, String titleId);
 }

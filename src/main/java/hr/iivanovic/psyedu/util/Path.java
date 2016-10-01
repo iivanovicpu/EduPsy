@@ -30,7 +30,7 @@ public class Path {
 
         public final static String SUBJECTS_ALL = "/velocity/subjects/all.vm";
         public final static String SUBJECTS_ONE = "/velocity/subjects/one.vm";
-        public final static String SUBJECTS_ONE_QUESTIONS = "/velocity/subjects/oneubjectquestions.vm";
+        public final static String SUBJECTS_ONE_QUESTIONS = "/velocity/subjects/onesubjectquestions.vm";
         public final static String SUBJECTS_ONE_EDIT = "/velocity/subjects/edit.vm";
         public final static String SUBJECT_ADD = "/velocity/subjects/add.vm";
         public final static String SUBJECT_ONE_TITLE = "/velocity/subjects/title.vm";

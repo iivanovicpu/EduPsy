@@ -9,11 +9,13 @@ import java.util.HashMap;
 import java.util.List;
 
 import hr.iivanovic.psyedu.AppConfiguration;
+import hr.iivanovic.psyedu.db.Question;
 import hr.iivanovic.psyedu.db.Subject;
 import hr.iivanovic.psyedu.html.HtmlParser;
 import hr.iivanovic.psyedu.html.TitleLink;
 import hr.iivanovic.psyedu.util.Path;
 import hr.iivanovic.psyedu.util.ViewUtil;
+import lombok.Data;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -50,15 +52,18 @@ public class SubjectQuestionsController extends AbstractController {
     public static Route fetchOneTitleForAddQuestions = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
         String id = request.params("id");
-        long subjectIdid = Long.parseLong(request.params("subjectid"));
-        System.out.println(id + " " + subjectIdid);
+        int subjectId = Integer.parseInt(request.params("subjectid"));
+        System.out.println(id + " " + subjectId);
         // todo: kreirati listu posotojećih pitanja i staviti u model (na stranici prikazati tablicu pitanja)
         if (clientAcceptsHtml(request)) {
             HashMap<String, Object> model = new HashMap<>();
             model.put("validation",false);
-            model.put("subjectId",subjectIdid);
+            model.put("subjectId",subjectId);
             model.put("titleId",id);
-            Subject subject = dbProvider.getSubject(subjectIdid);
+            List<Question> questions = dbProvider.getAllQuestionsForSubjectAndTitle(subjectId, id);
+            model.put("questions", questions);
+
+            Subject subject = dbProvider.getSubject(subjectId);
             String content = htmlParser.getOneTitleContent(AppConfiguration.getInstance().getExternalLocation() + subject.getUrl().substring(1,subject.getUrl().length()), id);
             model.put("content",content);
             return ViewUtil.render(request, model, Path.Template.SUBJECT_ONE_TITLE_QUESTIONS);
@@ -68,23 +73,84 @@ public class SubjectQuestionsController extends AbstractController {
 
     public static Route submitQuestion = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
-        String titleId = request.queryParams("titleId");
-        String subjectId = request.queryParams("subjectId");
-        long subjectIdid = Long.parseLong(request.params("subjectid"));
-        // todo: uzeti sve query parametre iz forme, validirati, ako je ok spremiti u bazu ako nije staviti poruku u validation
-        // todo: parser pitanja i odgovora (odgovori se splitaju znakom |)
-        System.out.println("posted: " + titleId + " " + subjectIdid);
         if (clientAcceptsHtml(request)) {
+            int subjectId = Integer.parseInt(request.queryParams("subjectid"));
+            String titleId = request.queryParams("titleid");
             HashMap<String, Object> model = new HashMap<>();
-            model.put("validation",false);
-            Subject subject = dbProvider.getSubject(subjectIdid);
+            ValidationResult validationResult = validatedQuestion(request);
+            Question question = validationResult.getQuestion();
+            Subject subject = dbProvider.getSubject(subjectId);
             String content = htmlParser.getOneTitleContent(AppConfiguration.getInstance().getExternalLocation() + subject.getUrl().substring(1,subject.getUrl().length()), titleId);
             model.put("content",content);
-            model.put("subjectId", subjectId);
+            model.put("validation",validationResult.getValidationMessage());
+            model.put("subjectId", question.getSubjectId());
             model.put("titleId", titleId);
+            if(validationResult.isValid()){
+                model.put("validation", false);
+                System.out.println(validationResult);
+                dbProvider.createQuestion(validationResult.question);
+            }
+            List<Question> questions = dbProvider.getAllQuestionsForSubjectAndTitle(subjectId, titleId);
+            model.put("questions", questions);
+            model.put("validation", validationResult.getValidationMessage());
+            System.out.println("posted: " + question.getTitleId() + " " + question.getSubjectId());
             return ViewUtil.render(request, model, Path.Template.SUBJECT_ONE_TITLE_QUESTIONS);
         }
         return ViewUtil.notAcceptable.handle(request, response);
     };
 
+    private static ValidationResult validatedQuestion(Request request) {
+        ValidationResult result = new ValidationResult();
+        StringBuilder sb = new StringBuilder();
+        String titleId = request.queryParams("titleid");
+        int subjectid;
+        int points;
+        if(null == titleId || titleId.isEmpty()){
+            sb.append("\nheader data corrupt - titleId (0)");
+            result.setValid(false);
+        }
+        try {
+            subjectid = Integer.parseInt(request.queryParams("subjectid"));
+            if(subjectid == 0){
+                sb.append("\nheader data corrupt - SubjectId (0)");
+                result.setValid(false);
+            }
+        } catch (NumberFormatException e){
+            sb.append("\nheader data corrupt - subjectId +(" ).append(request.queryParams("subjectId")).append(")");
+            result.setValid(false);
+            throw e;
+        }
+        String question = request.queryParams("question");
+        if(null == question || question.isEmpty()){
+            sb.append("\nPitanje - obavezan unos");
+            result.setValid(false);
+        }
+        String answers = request.queryParams("answers");
+        if(null == answers || answers.isEmpty()){
+            sb.append("\nOdgovori - obavezan podatak");
+            result.setValid(false);
+        }
+        try {
+            points = Integer.parseInt(request.queryParams("points"));
+        } catch (NumberFormatException e){
+            sb.append("\nBodovi - mora biti brojčana vrijednost");
+            result.setValid(false);
+            throw e;
+        }
+        if(result.isValid()){
+            result.setQuestion(new Question(subjectid, titleId, question, answers, points));
+            return result;
+        } else {
+            result.setQuestion(new Question(subjectid, titleId, question, answers, points));
+            result.setValidationMessage(sb.toString());
+            return result;
+        }
+    }
+
+    @Data
+    private static class ValidationResult {
+        Question question;
+        boolean valid = true;
+        String validationMessage;
+    }
 }

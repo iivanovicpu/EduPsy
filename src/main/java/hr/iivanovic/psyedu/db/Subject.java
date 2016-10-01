@@ -1,7 +1,5 @@
 package hr.iivanovic.psyedu.db;
 
-import java.util.UUID;
-
 import lombok.Data;
 
 /**

@@ -1,6 +1,6 @@
 
 CREATE TABLE IF NOT EXISTS USER(
-  id int PRIMARY KEY auto_increment,
+  id int PRIMARY KEY AUTO_INCREMENT,
   username TEXT NOT NULL,
   password TEXT NOT NULL,
   firstName TEXT NOT NULL,
@@ -16,10 +16,10 @@ CREATE TABLE IF NOT EXISTS SUBJECT(
   url TEXT
 );
 
-CREATE TABLE IF NOT EXISTS QUESTIONS(
-  id  int PRIMARY KEY auto_increment,
-  subject_id INT NOT NULL,
-  title_id TEXT NOT NULL,
+CREATE TABLE IF NOT EXISTS QUESTION(
+  id  int PRIMARY KEY AUTO_INCREMENT,
+  subjectId INT NOT NULL,
+  titleId TEXT NOT NULL,
   question TEXT NOT NULL,
   answers TEXT NOT NULL,
   points INT NOT NULL

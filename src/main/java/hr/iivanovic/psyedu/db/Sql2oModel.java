@@ -29,6 +29,7 @@ public class Sql2oModel implements Model {
         try (Connection conn = sql2o.open()) {
             conn.createQuery("delete from subject").executeUpdate();
             conn.createQuery("delete from user").executeUpdate();
+            conn.createQuery("delete from question").executeUpdate();
             conn.commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -108,14 +109,30 @@ public class Sql2oModel implements Model {
     }
 
     @Override
-    public void test() {
+    public void createQuestion(Question question) {
         try (Connection conn = sql2o.open()) {
-            conn.createQuery("INSERT INTO subject (title, keywords, url) VALUES ('TEST', 'test','materijali/test.html');")
+            conn.createQuery("INSERT INTO question (subjectId, titleId, question, answers, points) VALUES (:subjectId, :titleId, :question, :answers, :points);")
+                    .addParameter("subjectId", question.getSubjectId())
+                    .addParameter("titleId", question.getTitleId())
+                    .addParameter("question", question.getQuestion())
+                    .addParameter("answers", question.getAnswers())
+                    .addParameter("points", question.getPoints())
                     .executeUpdate();
             conn.commit();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
+
+    @Override
+    public List<Question> getAllQuestionsForSubjectAndTitle(int subjectId, String titleId) {
+        try (Connection conn = sql2o.open()) {
+            return conn.createQuery("select * from question where subjectId=:subjectId and titleId=:titleId")
+                    .addParameter("subjectId", subjectId)
+                    .addParameter("titleId", titleId)
+                    .executeAndFetch(Question.class);
+        }
+    }
+
+
 }

@@ -10,9 +10,8 @@ import java.util.List;
 
 import hr.iivanovic.psyedu.AppConfiguration;
 import hr.iivanovic.psyedu.db.Subject;
-import hr.iivanovic.psyedu.learning.HtmlParser;
-import hr.iivanovic.psyedu.learning.TitleLink;
-import hr.iivanovic.psyedu.login.LoginController;
+import hr.iivanovic.psyedu.html.HtmlParser;
+import hr.iivanovic.psyedu.html.TitleLink;
 import hr.iivanovic.psyedu.util.Path;
 import hr.iivanovic.psyedu.util.ViewUtil;
 import spark.Request;
@@ -23,7 +22,7 @@ import spark.Route;
  * @author iivanovic
  * @date 26.09.16.
  */
-public class AdminSubjectController extends AbstractController {
+public class SubjectQuestionsController extends AbstractController {
     private static HtmlParser htmlParser = HtmlParser.getInstance();
 
     public static Route fetchtitlesForAddQuestions = (Request request, Response response) -> {

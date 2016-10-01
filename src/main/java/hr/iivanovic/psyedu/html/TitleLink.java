@@ -1,4 +1,4 @@
-package hr.iivanovic.psyedu.learning;
+package hr.iivanovic.psyedu.html;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

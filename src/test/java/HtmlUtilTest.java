@@ -2,17 +2,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import hr.iivanovic.psyedu.AppConfiguration;
-import hr.iivanovic.psyedu.learning.HtmlParser;
-import hr.iivanovic.psyedu.learning.TitleLink;
+import hr.iivanovic.psyedu.html.HtmlParser;
+import hr.iivanovic.psyedu.html.TitleLink;
 
 /**
  * @author iivanovic

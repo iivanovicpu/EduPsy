@@ -1,4 +1,4 @@
-package hr.iivanovic.psyedu.learning;
+package hr.iivanovic.psyedu.controllers;
 
 import static hr.iivanovic.psyedu.util.JsonUtil.dataToJson;
 import static hr.iivanovic.psyedu.util.RequestUtil.clientAcceptsHtml;
@@ -18,9 +18,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import hr.iivanovic.psyedu.AppConfiguration;
-import hr.iivanovic.psyedu.controllers.AbstractController;
 import hr.iivanovic.psyedu.db.Subject;
-import hr.iivanovic.psyedu.login.LoginController;
+import hr.iivanovic.psyedu.html.HtmlParser;
+import hr.iivanovic.psyedu.html.TitleLink;
 import hr.iivanovic.psyedu.util.Path;
 import hr.iivanovic.psyedu.util.ViewUtil;
 import spark.Request;
@@ -32,7 +32,7 @@ import spark.utils.StringUtils;
  * @author iivanovic
  * @date 29.08.16.
  */
-public class LearningController extends AbstractController {
+public class SubjectsController extends AbstractController {
 
     private static HtmlParser htmlParser = HtmlParser.getInstance();
 

@@ -1,4 +1,4 @@
-package hr.iivanovic.psyedu.login;
+package hr.iivanovic.psyedu.controllers;
 
 import static hr.iivanovic.psyedu.util.RequestUtil.getQueryLoginRedirect;
 import static hr.iivanovic.psyedu.util.RequestUtil.getQueryPassword;
@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import hr.iivanovic.psyedu.db.User;
-import hr.iivanovic.psyedu.user.UserController;
 import hr.iivanovic.psyedu.util.Path;
 import hr.iivanovic.psyedu.util.ViewUtil;
 import spark.Request;

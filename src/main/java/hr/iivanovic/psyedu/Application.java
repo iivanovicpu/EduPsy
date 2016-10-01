@@ -9,12 +9,12 @@ import static spark.Spark.post;
 import static spark.Spark.staticFiles;
 import static spark.debug.DebugScreen.enableDebugScreen;
 
-import hr.iivanovic.psyedu.controllers.AdminSubjectController;
+import hr.iivanovic.psyedu.controllers.SubjectQuestionsController;
 import hr.iivanovic.psyedu.db.Model;
 import hr.iivanovic.psyedu.db.Sql2oModel;
-import hr.iivanovic.psyedu.index.IndexController;
-import hr.iivanovic.psyedu.learning.LearningController;
-import hr.iivanovic.psyedu.login.LoginController;
+import hr.iivanovic.psyedu.controllers.IndexController;
+import hr.iivanovic.psyedu.controllers.SubjectsController;
+import hr.iivanovic.psyedu.controllers.LoginController;
 import hr.iivanovic.psyedu.util.Filters;
 import hr.iivanovic.psyedu.util.InitDb;
 import hr.iivanovic.psyedu.util.Path;
@@ -63,16 +63,16 @@ public class Application {
         // Set up routes
         get(Path.Web.INDEX, IndexController.serveIndexPage);
 
-        get(Path.Web.SUBJECTS, LearningController.fetchAllSubjects);
-        get(Path.Web.VIEW_SUBJECT, LearningController.fetchOneSubject);
-        get(Path.Web.EDIT_SUBJECT, LearningController.fetchOneSubjectEdit);
-        get(Path.Web.ONE_SUBJECT_QUESTIONS, AdminSubjectController.fetchtitlesForAddQuestions);
-        get(Path.Web.ONE_TITLE_QUESTIONS, AdminSubjectController.fetchOneTitleForAddQuestions);
-        post(Path.Web.ONE_TITLE_QUESTIONS, AdminSubjectController.submitQuestion);
-        post(Path.Web.SUBMIT_EDITED_SUBJECT, LearningController.submitEditedSubject);
-        get(Path.Web.ADD_SUBJECT, LearningController.addNewSubject);
-        post(Path.Web.ADD_SUBJECT, LearningController.submitAddedSubject);
-        get(Path.Web.ONE_TITLE, LearningController.fetchOneTitle);
+        get(Path.Web.SUBJECTS, SubjectsController.fetchAllSubjects);
+        get(Path.Web.VIEW_SUBJECT, SubjectsController.fetchOneSubject);
+        get(Path.Web.EDIT_SUBJECT, SubjectsController.fetchOneSubjectEdit);
+        get(Path.Web.ONE_SUBJECT_QUESTIONS, SubjectQuestionsController.fetchtitlesForAddQuestions);
+        get(Path.Web.ONE_TITLE_QUESTIONS, SubjectQuestionsController.fetchOneTitleForAddQuestions);
+        post(Path.Web.ONE_TITLE_QUESTIONS, SubjectQuestionsController.submitQuestion);
+        post(Path.Web.SUBMIT_EDITED_SUBJECT, SubjectsController.submitEditedSubject);
+        get(Path.Web.ADD_SUBJECT, SubjectsController.addNewSubject);
+        post(Path.Web.ADD_SUBJECT, SubjectsController.submitAddedSubject);
+        get(Path.Web.ONE_TITLE, SubjectsController.fetchOneTitle);
 
         get(Path.Web.LOGIN, LoginController.serveLoginPage);
         post(Path.Web.LOGIN, LoginController.handleLoginPost);

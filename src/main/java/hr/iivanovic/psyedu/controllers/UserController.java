@@ -1,4 +1,4 @@
-package hr.iivanovic.psyedu.user;
+package hr.iivanovic.psyedu.controllers;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.sql2o.Sql2o;

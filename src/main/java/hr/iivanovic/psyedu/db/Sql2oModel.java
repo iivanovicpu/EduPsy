@@ -1,14 +1,11 @@
 package hr.iivanovic.psyedu.db;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 
 import hr.iivanovic.psyedu.util.DbUtil;
-import hr.iivanovic.psyedu.util.RandomUuidGenerator;
-import hr.iivanovic.psyedu.util.UuidGenerator;
 
 public class Sql2oModel implements Model {
 
@@ -16,10 +13,9 @@ public class Sql2oModel implements Model {
 
 
     private Sql2o sql2o;
-    private UuidGenerator uuidGenerator;
 
-    public static synchronized Sql2oModel getInstance(){
-        if(null == instance){
+    public static synchronized Sql2oModel getInstance() {
+        if (null == instance) {
             instance = new Sql2oModel();
         }
         return instance;
@@ -27,15 +23,14 @@ public class Sql2oModel implements Model {
 
     private Sql2oModel() {
         this.sql2o = DbUtil.getH2DataSource();
-        uuidGenerator = new RandomUuidGenerator();
     }
 
-    public void clearRecordsForReinit(){
-        try (Connection conn = sql2o.open()){
+    public void clearRecordsForReinit() {
+        try (Connection conn = sql2o.open()) {
             conn.createQuery("delete from subject").executeUpdate();
             conn.createQuery("delete from user").executeUpdate();
             conn.commit();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -50,7 +45,7 @@ public class Sql2oModel implements Model {
                     .executeUpdate().getKey();
             System.out.println("id: " + id);
             conn.commit();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -118,7 +113,7 @@ public class Sql2oModel implements Model {
             conn.createQuery("INSERT INTO subject (title, keywords, url) VALUES ('TEST', 'test','materijali/test.html');")
                     .executeUpdate();
             conn.commit();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

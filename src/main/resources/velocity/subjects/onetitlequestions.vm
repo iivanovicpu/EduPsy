@@ -20,7 +20,7 @@
             <div class="form-group">
                 <label class="control-label col-sm-2" for="answers">$msg.get("ONE_TITLE_QUESTIONS_POSSIBLE_ANSWERS")</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="answers" name="answers" id="possible answers">
+                    <input type="text" class="form-control" id="answers" name="answers">
                 </div>
             </div>
 
@@ -34,13 +34,12 @@
             <button type="submit" class="btn btn-primary">Unesi</button>
             <button type="submit" formmethod="get" formaction="/subjects/" class="btn btn-warning">$msg.get("SUBJECT_EDIT_CANCEL")</button>
     </form>
-##    #if($questions)
-        #foreach($question in $questions)
+##        #foreach($question in $questions)
             <div>
-                $question.question - $question.answers - $question.points
+##                $question.question - $question.answers - $question.points
+                $questions
             </div>
-        #end
-##    #end
+##        #end
     <h2>Preview:</h2>
     <div>$content</div>
 #end

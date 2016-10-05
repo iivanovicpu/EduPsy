@@ -159,7 +159,7 @@ nav ul, nav li {
     position: relative;
 }
 
-#menu li a::after, #logout:after {
+/*#menu li a::after, #logout:after {
     position: absolute;
     top: 40px;
     left: 0;
@@ -173,7 +173,7 @@ nav ul, nav li {
     transition: opacity 0.3s, transform 0.3s;
     -webkit-transform: translateY(10px);
     transform: translateY(10px);
-}
+}*/
 
 #logout:hover::after,
 #logout:focus::after,

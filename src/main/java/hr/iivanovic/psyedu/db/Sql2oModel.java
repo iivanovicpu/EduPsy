@@ -30,6 +30,7 @@ public class Sql2oModel implements Model {
             conn.createQuery("delete from subject").executeUpdate();
             conn.createQuery("delete from user").executeUpdate();
             conn.createQuery("delete from question").executeUpdate();
+            conn.createQuery("delete from IDX").executeUpdate();
             conn.commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -134,5 +135,13 @@ public class Sql2oModel implements Model {
         }
     }
 
+    @Override
+    public int nextIdx(String tag){
+        try (Connection conn = sql2o.open()){
+            return conn.createQuery("insert into INDEX (dummy) values ( :tag )")
+                    .addParameter("tag",tag)
+                    .executeUpdate().getKey(Integer.class);
+        }
+    }
 
 }

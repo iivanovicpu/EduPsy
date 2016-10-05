@@ -29,84 +29,82 @@
 <body>
 ##<header>
 
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse"
-                        data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">&nbsp;</span></a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">&nbsp;</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
 
-                    <li><a href="/index">
-                        $msg.get("COMMON_TITLE")
-                    </a></li>
-                    <li><a href="/users">
-                        Korisnici
-                    </a></li>
+                <li><a href="/index">
+                    $msg.get("COMMON_TITLE")
+                </a>
+                </li>
+                #if($currentUser)
                     <li><a href="/subjects">
                         Nastavni materijali
                     </a></li>
-                    <li><a href="/students">
-                        Studenti
+                    <li><a href="/profile">
+                        $msg.get("COMMON_NAV_PROFILE")
                     </a></li>
-                    <li><a href="/teachers">
-                        $msg.get("COMMON_NAV_TEACHERS")
-                    </a></li>
-
-                </ul>
-                #*<ul id="chooseLanguage">
-                    <form>
-                        <li>
-                            <button name="locale" value="hr" style="background-image: url(/img/german.png);"></button>
-                        </li>
-                        <li>
-                            <button name="locale" value="en" style="background-image: url(/img/english.png);"></button>
-                        </li>
-                    </form>
-                </ul>*#
-                <div class="userinfo" style="float: right; color: white; padding-top: 10px; text-align: right;">
-                    #if($currentUser)
-                        <li>
-                            <form method="post" action="$WebPath.getLOGOUT()">
-                                <div>$currentUser.firstName $currentUser.lastName $currentUser.status</div>
-                                <button id="logout">$msg.get("COMMON_NAV_LOGOUT")</button>
-                            </form>
-                        </li>
-                    #else
-                        <li><a href="$WebPath.getLOGIN()"">$msg.get("COMMON_NAV_LOGIN")</a></li>
+                    #if($currentUser && $currentUser.status == 'ADMIN')
+                        <li><a href="/users">
+                            Korisnici
+                        </a></li>
                     #end
-                </div>
+
+                    #if($currentUser && $currentUser.status == 'TEACHER')
+                        <li><a href="/students">
+                            Studenti
+                        </a></li>
+                    #end
+
+                #end
+
+            </ul>
+            <div class="userinfo" style="float: right; color: white; padding-top: 10px; text-align: right;">
+                #if($currentUser)
+                    <li>
+                        <form method="post" action="$WebPath.getLOGOUT()">
+                            <div>$currentUser.firstName $currentUser.lastName $currentUser.status</div>
+                            <button id="logout">$msg.get("COMMON_NAV_LOGOUT")</button>
+                        </form>
+                    </li>
+                #else
+                    <li><a href="$WebPath.getLOGIN()" style="color: white;">$msg.get("COMMON_NAV_LOGIN")</a></li>
+                #end
             </div>
-            <!-- /.navbar-collapse -->
         </div>
-    </nav>
+        <!-- /.navbar-collapse -->
+    </div>
+</nav>
 
 
 ##</header>
 ##<main>
 
-    <div class="container">
-        <header id="myCarousel" class="carousel" style="padding: 30px;">
-            &nbsp;
-        </header>
+<div class="container">
+    <header id="myCarousel" class="carousel" style="padding: 30px;">
+        &nbsp;
+    </header>
 
 
-        <div class="row">
-            <div class="col-lg-12">
-                $bodyContent
-            </div>
+    <div class="row">
+        <div class="col-lg-12">
+            $bodyContent
         </div>
-        <hr>
     </div>
+    <hr>
+</div>
 ##</main>
 ##<footer style="align-content: center">
 ##    $msg.get("COMMON_FOOTER_TEXT")

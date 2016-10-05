@@ -1,7 +1,6 @@
 package hr.iivanovic.psyedu.db;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface Model {
 
@@ -20,4 +19,7 @@ public interface Model {
     void createQuestion(Question question);
 
     List<Question> getAllQuestionsForSubjectAndTitle(int subjectId, String titleId);
+
+    int nextIdx(String tag);
+
 }

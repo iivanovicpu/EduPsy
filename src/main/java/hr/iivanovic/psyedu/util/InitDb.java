@@ -33,12 +33,5 @@ public class InitDb {
         sql2oModel.createSubject("Relacijske baze podataka","baze podataka,ralacije,sql","/materijali/relacijskebazepodataka.html");
         sql2oModel.createSubject("Matematika","matematika, linearna algebra, funkcije, jednadžbe, limes","/materijali/matematika.html");
     }
-
-    public void createQuestions(){
-        sql2oModel.createQuestion(new Question(1,"h22","test","test",2));
-        sql2oModel.createQuestion(new Question(1,"h22","test","test",2));
-        sql2oModel.createQuestion(new Question(1,"h22","test","test",2));
-    }
-
 }
 

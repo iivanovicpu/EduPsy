@@ -7,11 +7,14 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import hr.iivanovic.psyedu.db.Sql2oModel;
 
 /**
  * @author iivanovic
@@ -19,20 +22,21 @@ import org.jsoup.select.Elements;
  */
 public class HtmlParser {
 
+    private Sql2oModel dbProvider = Sql2oModel.getInstance();
     private static HtmlParser instance = null;
 
     private HtmlParser() {
     }
 
     public static synchronized HtmlParser getInstance() {
-        if(null == instance){
+        if (null == instance) {
             instance = new HtmlParser();
         }
         return instance;
     }
 
 
-    public String improveDocument(File doc){
+    public String improveDocument(File doc) {
         try {
             Document document = Jsoup.parse(doc, "UTF8", doc.getName());
             return improveDocument(document.html());
@@ -43,44 +47,37 @@ public class HtmlParser {
     }
 
 
-    public String improveDocument(String doc){
+    public String improveDocument(String doc) {
         Document document = Jsoup.parse(doc, "UTF8");
-        String content = addUniqueIdAttribute(document, "h1", "h2", "h3", "h4", "h5");
-        return content;
+        return addUniqueIdAttribute(document, "h1", "h2", "h3", "h4", "h5");
     }
 
-    private String addUniqueIdAttribute(Document document, String... tags){
+    private String addUniqueIdAttribute(Document document, String... tags) {
         for (String tag : tags) {
             Elements elementsByTag = document.getElementsByTag(tag);
-            int idx = 1;
-            for (Element element : elementsByTag) {
-                // todo: preindexirati pitanja ...
-                element.attr("id",tag + idx++);
-            }
+            elementsByTag.stream().filter(element -> element.attr("id").isEmpty()).forEach(element -> element.attr("id", tag + "_" + dbProvider.nextIdx(tag)));
         }
         return document.html();
     }
 
-    public static List<String> getAllSubjectsLinks(String htmlDoc){
+    public static List<String> getAllSubjectsLinks(String htmlDoc) {
         List<String> titles = new LinkedList<>();
         Document doc = Jsoup.parse(htmlDoc);
         Elements anchors = doc.getElementsByTag("a");
-        for (Element anchor : anchors) {
-            titles.add(String.valueOf(anchor.parent()));
-        }
+        titles.addAll(anchors.stream().map(anchor -> String.valueOf(anchor.parent())).collect(Collectors.toList()));
         return titles;
     }
 
-    public List<TitleLink> getAllSubjectsLinks(File htmlDoc, String uri, long subjectId){
+    public List<TitleLink> getAllSubjectsLinks(File htmlDoc, String uri, long subjectId) {
         List<TitleLink> titleLinks = new LinkedList<>();
         Document doc;
         try {
             doc = Jsoup.parse(htmlDoc, "UTF8", uri);
-            Elements headingElements = getElements(doc,"h1","h2","h3","h4","h5");
+            Elements headingElements = getElements(doc, "h1", "h2", "h3", "h4", "h5");
             for (Element element : headingElements) {
                 String title = String.valueOf(element.text());
                 String id = element.attr("id");
-                TitleLink titleLinkElement = new TitleLink(title, id, subjectId, id.substring(0,2));
+                TitleLink titleLinkElement = new TitleLink(title, id, subjectId, id.substring(0, 2));
                 titleLinks.add(titleLinkElement);
             }
         } catch (IOException e) {
@@ -89,7 +86,7 @@ public class HtmlParser {
         return titleLinks;
     }
 
-    private Elements getElements(Document document, String... tags){
+    private Elements getElements(Document document, String... tags) {
         Elements elements = new Elements();
         Elements documentAllElements = document.getAllElements();
         for (Element documentAllElement : documentAllElements) {
@@ -104,23 +101,23 @@ public class HtmlParser {
         return elements;
     }
 
-    public String getOneTitleContent(String filePath, String id){
+    public String getOneTitleContent(String filePath, String id) {
         StringBuilder content = new StringBuilder();
         try {
             byte[] encoded;
             encoded = Files.readAllBytes(Paths.get(filePath));
             String html = new String(encoded, Charset.defaultCharset());
 
-            Document document = Jsoup.parse(html,"UTF8");
+            Document document = Jsoup.parse(html, "UTF8");
             Elements elements = document.getElementsByAttributeValue("id", id);
-            if(elements.size() == 0){
+            if (elements.size() == 0) {
                 return "document not contains any content by given id: " + id;
             }
             Element headingelement = elements.get(0);
             content.append(headingelement);
             String tag = headingelement.tag().getName();
             Element el = headingelement.nextElementSibling();
-            if(null != el) {
+            if (null != el) {
                 while (tagValue(tag) < tagValue(el.tag().getName())) {
                     content.append(el);
                     el = el.nextElementSibling();

@@ -9,6 +9,7 @@ import static spark.Spark.post;
 import static spark.Spark.staticFiles;
 import static spark.debug.DebugScreen.enableDebugScreen;
 
+import hr.iivanovic.psyedu.controllers.ProfileController;
 import hr.iivanovic.psyedu.controllers.SubjectQuestionsController;
 import hr.iivanovic.psyedu.db.Model;
 import hr.iivanovic.psyedu.db.Sql2oModel;
@@ -73,6 +74,7 @@ public class Application {
         get(Path.Web.ADD_SUBJECT, SubjectsController.addNewSubject);
         post(Path.Web.ADD_SUBJECT, SubjectsController.submitAddedSubject);
         get(Path.Web.ONE_TITLE, SubjectsController.fetchOneTitle);
+        get(Path.Web.PERSONAL_PROFILE, ProfileController.fetchPersonalProfile);
 
         get(Path.Web.LOGIN, LoginController.serveLoginPage);
         post(Path.Web.LOGIN, LoginController.handleLoginPost);

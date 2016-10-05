@@ -46,7 +46,7 @@
             <ul class="nav navbar-nav">
 
                 <li><a href="/index">
-                    $msg.get("COMMON_TITLE")
+                    <span style="font-size: xx-large" title="$msg.get("COMMON_TITLE")">&#x3A8;</span>
                 </a>
                 </li>
                 #if($currentUser)

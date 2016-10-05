@@ -17,6 +17,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import hr.iivanovic.psyedu.AppConfiguration;
 import hr.iivanovic.psyedu.db.Subject;
 import hr.iivanovic.psyedu.html.HtmlParser;
@@ -129,7 +132,6 @@ public class SubjectsController extends AbstractController {
                 e.printStackTrace();
             }
 
-            System.out.println(document);
             model.put("successmsg", "update success");
 
             response.redirect(Path.Web.getVIEW_SUBJECT().replaceFirst(":id", String.valueOf(subject.getId())));
@@ -160,7 +162,6 @@ public class SubjectsController extends AbstractController {
         String title = request.queryParams("title");
         String keywords = request.queryParams("keywords");
         HashMap<String, Object> model = new HashMap<>();
-        System.out.println(title + " " + keywords);
         String validationMsg = validateSubject(title);
         if (!StringUtils.isEmpty(validationMsg)) {
             model.put("validation", validationMsg);
@@ -174,29 +175,23 @@ public class SubjectsController extends AbstractController {
 
         dbProvider.createSubject(title,keywords,"/materijali/".concat(filename));
 
-        // todo: napuni model s tim subjectom i renderiraj stranicu za edit subject-a
-        response.redirect(Path.Web.getSUBJECTS());
-
         if (clientAcceptsHtml(request)) {
-//            HashMap<String, Object> model = new HashMap<>();
-//            Subject subject = new Subject();
-//            model.put("subject", subject);
-//            model.put("editAllowed", LoginController.isEditAllowed(request));
+            response.redirect(Path.Web.getSUBJECTS());
         }
         return ViewUtil.notAcceptable.handle(request,response);
     };
+    public static final Logger LOGGER = LoggerFactory.getLogger(SubjectsController.class);
 
     private static void createFileIfNotExists(String filePath, String title){
         try {
             File file = new File(filePath);
             if (file.createNewFile()) {
-                System.out.println("File is created!");
                 FileWriter fileWriter = new FileWriter(file);
                 fileWriter.write("<h1>" + title + "</h1>");
                 fileWriter.flush();
                 fileWriter.close();
             } else {
-                System.out.println("File already exists.");
+                LOGGER.info("File already exists.");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -208,11 +203,8 @@ public class SubjectsController extends AbstractController {
         if(StringUtils.isEmpty(title)){
             sb.append("naslov je obavezan podatak\n");
         } else {
-            for (Subject subject : dbProvider.getAllSubjects()) {
-                if (subject.getTitle().equals(title)) {
-                    sb.append("naslov:\" ").append(title).append("\" već postoji u bazi!");
-                }
-            }
+            dbProvider.getAllSubjects().stream().filter(subject -> subject.getTitle().equals(title))
+                    .forEach(subject -> sb.append("naslov:\" ").append(title).append("\" već postoji u bazi!"));
         }
         return sb.toString();
     }
@@ -229,7 +221,9 @@ public class SubjectsController extends AbstractController {
                 os.write(buffer, 0, length);
             }
         } finally {
+            assert is != null;
             is.close();
+            assert os != null;
             os.close();
         }
     }

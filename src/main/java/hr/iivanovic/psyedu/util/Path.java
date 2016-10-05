@@ -21,6 +21,7 @@ public class Path {
         @Getter public static final String ONE_TITLE = "/onetitle/:id/:subjectid/";
         @Getter public static final String ONE_SUBJECT_QUESTIONS = "/admin_subject/:id/";
         @Getter public static final String ONE_TITLE_QUESTIONS = "/onetitlequestions/:id/:subjectid/";
+        @Getter public static final String PERSONAL_PROFILE = "/profile/";
     }
 
     public static class Template {
@@ -35,6 +36,7 @@ public class Path {
         public final static String SUBJECT_ADD = "/velocity/subjects/add.vm";
         public final static String SUBJECT_ONE_TITLE = "/velocity/subjects/title.vm";
         public final static String SUBJECT_ONE_TITLE_QUESTIONS = "/velocity/subjects/onetitlequestions.vm";
+        public final static String PERSONAL_PROFILE = "/velocity/profile.vm";
     }
 
 }

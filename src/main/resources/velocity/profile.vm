@@ -1,0 +1,57 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+    <h2>$msg.get("PROFILE_HEADING")</h2>
+    #if($validation)
+    <div class="alert alert-danger fade in" id="validation">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        $validation
+    </div>
+    #end
+    <form method="post" class="form-horizontal" id="profileForm">
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="username">$msg.get("PROFILE_USERNAME")</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="username" value="$currentUser.username" readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="firstName">$msg.get("PROFILE_FIRST_NAME")</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="firstName" value="$currentUser.firstName" readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="lastName">$msg.get("PROFILE_LAST_NAME")</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="lastName" value="$currentUser.lastName" readonly>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="emal">$msg.get("PROFILE_EMAIL")</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="email" value="$currentUser.email" readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="emal">$msg.get("PROFILE_COLOR")</label>
+            <div class="col-sm-10">
+                <input type="radio" class="form-control" name="color" id="color01">
+                <label for="color01"><span STYLE="color: black; background-color: yellow">crno na svjetložutoj</span></label>
+                <input type="radio" class="form-control" name="color" id="color02">
+                <label for="color02"><span STYLE="color: #f0ad4e; background-color: #122b40">žuto na morsko plavoj</span></label>
+                <input type="radio" class="form-control" name="color" id="color03">
+                <label for="color03"><span STYLE="color: #f0ad4e; background-color: blue">žuto na plavoj</span></label>
+                <input type="radio" class="form-control" name="color" id="color04">
+                <label for="color04"><span STYLE="color: black; background-color: violet">crno na ljubičastoj</span></label>
+                <input type="radio" class="form-control" name="color" id="color05">
+                <label for="color04"><span STYLE="color: red; background-color: white">crno na ljubičastoj</span></label>
+                <input type="radio" class="form-control" name="color" id="color05" checked>
+                <label for="color04"><span STYLE="color: black; background-color: white">crno na bijelom</span></label>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Spremi izmjenu</button>
+        <button type="submit" formmethod="get" formaction="/index/" class="btn btn-warning">$msg.get("SUBJECT_EDIT_CANCEL")</button>
+    </form>
+#end

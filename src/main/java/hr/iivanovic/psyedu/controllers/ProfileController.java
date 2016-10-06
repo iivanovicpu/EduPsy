@@ -5,6 +5,7 @@ import static hr.iivanovic.psyedu.util.RequestUtil.clientAcceptsHtml;
 import static hr.iivanovic.psyedu.util.RequestUtil.clientAcceptsJson;
 
 import java.util.HashMap;
+
 import hr.iivanovic.psyedu.db.User;
 import hr.iivanovic.psyedu.util.Path;
 import hr.iivanovic.psyedu.util.ViewUtil;
@@ -30,6 +31,22 @@ public class ProfileController extends AbstractController {
             return dataToJson(user);
         }
         return ViewUtil.notAcceptable.handle(request, response);
+    };
 
+    public static Route submitPersonalProfile = (Request request, Response response)-> {
+        LoginController.ensureUserIsLoggedIn(request, response);
+        User user = LoginController.getCurrentUser(request);
+        String color = request.queryParams("color");
+        user.setColor("main_" + color + ".css");
+        dbProvider.save(user);
+        if (clientAcceptsHtml(request)) {
+            HashMap<String, Object> model = new HashMap<>();
+            model.put("validation", false);
+            return ViewUtil.render(request, model, Path.Template.PERSONAL_PROFILE);
+        }
+        if (clientAcceptsJson(request)) {
+            return dataToJson(user);
+        }
+        return ViewUtil.notAcceptable.handle(request, response);
     };
 }

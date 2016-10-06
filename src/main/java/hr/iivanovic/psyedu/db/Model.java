@@ -22,4 +22,5 @@ public interface Model {
 
     int nextIdx(String tag);
 
+    void save(User user);
 }

@@ -36,18 +36,30 @@
         <div class="form-group">
             <label class="control-label col-sm-2" for="emal">$msg.get("PROFILE_COLOR")</label>
             <div class="col-sm-10">
-                <input type="radio" class="form-control" name="color" id="color01">
-                <label for="color01"><span STYLE="color: black; background-color: yellow">crno na svjetložutoj</span></label>
-                <input type="radio" class="form-control" name="color" id="color02">
-                <label for="color02"><span STYLE="color: #f0ad4e; background-color: #122b40">žuto na morsko plavoj</span></label>
-                <input type="radio" class="form-control" name="color" id="color03">
-                <label for="color03"><span STYLE="color: #f0ad4e; background-color: blue">žuto na plavoj</span></label>
-                <input type="radio" class="form-control" name="color" id="color04">
-                <label for="color04"><span STYLE="color: black; background-color: violet">crno na ljubičastoj</span></label>
-                <input type="radio" class="form-control" name="color" id="color05">
-                <label for="color04"><span STYLE="color: red; background-color: white">crno na ljubičastoj</span></label>
-                <input type="radio" class="form-control" name="color" id="color05" checked>
-                <label for="color04"><span STYLE="color: black; background-color: white">crno na bijelom</span></label>
+                <label for="color01">
+                    <input type="radio" class="form-control" name="color" id="color01"  #if ($currentUser.color == 'main_1.css') checked #end value="1">
+                    <span STYLE="color: black; background-color: yellow; padding: 7px; border-radius: 5px;">Text</span>
+                </label>
+                <label for="color02">
+                    <input type="radio" class="form-control" name="color" id="color02" #if ($currentUser.color == 'main_2.css') checked #end  value="2">
+                    <span STYLE="color: #f0ad4e; background-color: #122b40; padding: 7px; border-radius: 5px;">Text</span>
+                </label>
+                <label for="color03">
+                    <input type="radio" class="form-control" name="color" id="color03" #if ($currentUser.color == 'main_3.css') checked #end  value="3">
+                    <span STYLE="color: #f0ad4e; background-color: blue; padding: 7px; border-radius: 5px;">Text</span>
+                </label>
+                <label for="color04">
+                    <input type="radio" class="form-control" name="color" id="color04"  #if ($currentUser.color == 'main_4.css') checked #end value="4">
+                    <span STYLE="color: black; background-color: violet; padding: 7px; border-radius: 5px;">Text</span>
+                </label>
+                <label for="color05">
+                    <input type="radio" class="form-control" name="color" id="color05"  #if ($currentUser.color == 'main_5.css') checked #end value="5">
+                    <span STYLE="color: red; background-color: white; padding: 7px; border-radius: 5px;">Text</span>
+                </label>
+                <label for="color06">
+                    <input type="radio" class="form-control" name="color" id="color05" #if ($currentUser.color == 'main_6.css') checked #end value="6">
+                    <span STYLE="color: black; background-color: white; padding: 7px; border-radius: 5px;">Text</span>
+                </label>
             </div>
         </div>
 

@@ -13,7 +13,8 @@ CREATE TABLE IF NOT EXISTS USER (
   firstName TEXT NOT NULL,
   lastname  TEXT,
   email     TEXT,
-  status    TEXT CHECK (status IN ('ADMIN', 'TEACHER', 'STUDENT'))
+  status    TEXT CHECK (status IN ('ADMIN', 'TEACHER', 'STUDENT')),
+  color     TEXT
 );
 
 CREATE TABLE IF NOT EXISTS SUBJECT (

@@ -144,4 +144,15 @@ public class Sql2oModel implements Model {
         }
     }
 
+    @Override
+    public void save(User user){
+        try (Connection conn = sql2o.open()){
+            conn.createQuery("update user set color = :color where id = :id")
+                    .addParameter("color",user.getColor())
+                    .addParameter("id",user.getId())
+                    .executeUpdate();
+            conn.commit();
+        }
+    }
+
 }

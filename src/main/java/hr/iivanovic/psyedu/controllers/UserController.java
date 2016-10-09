@@ -1,14 +1,12 @@
 package hr.iivanovic.psyedu.controllers;
 
 import org.mindrot.jbcrypt.BCrypt;
-import org.sql2o.Sql2o;
 
-import hr.iivanovic.psyedu.db.*;
+import hr.iivanovic.psyedu.db.Model;
+import hr.iivanovic.psyedu.db.Sql2oModel;
 import hr.iivanovic.psyedu.db.User;
-import hr.iivanovic.psyedu.util.DbUtil;
 
 public class UserController {
-    static Sql2o sql2o = DbUtil.getH2DataSource();
     static Model dbProvider = Sql2oModel.getInstance();
 
     // Authenticate the user by hashing the inputted password using the stored salt,

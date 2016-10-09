@@ -74,6 +74,7 @@ public class Application {
         get(Path.Web.ADD_SUBJECT, SubjectsController.addNewSubject);
         post(Path.Web.ADD_SUBJECT, SubjectsController.submitAddedSubject);
         get(Path.Web.ONE_TITLE, SubjectsController.fetchOneTitle);
+        post(Path.Web.ONE_TITLE, SubjectsController.submitOneTitleStatus);
         get(Path.Web.PERSONAL_PROFILE, ProfileController.fetchPersonalProfile);
         post(Path.Web.PERSONAL_PROFILE, ProfileController.submitPersonalProfile);
 

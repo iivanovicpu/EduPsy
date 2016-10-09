@@ -19,6 +19,16 @@ public class AppConfiguration {
 
     private static final String DEVELOPMENT_MODE = "development.mode";
 
+    private static final String DATABASE_URL = "database.url";
+
+    private static final String DATABASE_PORT = "database.port";
+
+    private static final String DATABASE_NAME = "database.name";
+
+    private static final String DATABASE_USERNAME = "database.username";
+
+    private static final String DATABASE_PASSWORD = "database.password";
+
     private ResourceBundle config;
 
     public static synchronized AppConfiguration getInstance() {
@@ -38,6 +48,26 @@ public class AppConfiguration {
 
     public String getH2DbFileLocation() {
         return config.getString(H2_DB_FILE_LOCATION);
+    }
+
+    public String getDatabaseName() {
+        return config.getString(DATABASE_NAME);
+    }
+
+    public String getDatabaseUrl() {
+        return config.getString(DATABASE_URL);
+    }
+
+    public String getDatabasePort(){
+        return config.getString(DATABASE_PORT);
+    }
+
+    public String getDatabaseUsername(){
+        return config.getString(DATABASE_USERNAME);
+    }
+
+    public String getDatabasePassword(){
+        return config.getString(DATABASE_PASSWORD);
     }
 
     public boolean isDevelopmentMode() {

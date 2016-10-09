@@ -21,7 +21,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import hr.iivanovic.psyedu.AppConfiguration;
+import hr.iivanovic.psyedu.db.LearningLog;
 import hr.iivanovic.psyedu.db.Subject;
+import hr.iivanovic.psyedu.db.TitleLearningStatus;
+import hr.iivanovic.psyedu.db.User;
 import hr.iivanovic.psyedu.html.HtmlParser;
 import hr.iivanovic.psyedu.html.TitleLink;
 import hr.iivanovic.psyedu.util.Path;
@@ -63,7 +66,8 @@ public class SubjectsController extends AbstractController {
             model.put("successmsg", "");
             boolean isStudent = !LoginController.isEditAllowed(request);
             model.put("isStudent", isStudent);
-            if(isStudent){
+            if (isStudent) {
+                // todo: inspect learning log
                 File file = new File(AppConfiguration.getInstance().getExternalLocation() + subject.getUrl());
                 List<TitleLink> titleLinks = htmlParser.getAllSubjectsLinks(file, subject.getUrl(), subject.getId());
                 model.put("titles", titleLinks);
@@ -80,14 +84,47 @@ public class SubjectsController extends AbstractController {
 
     public static Route fetchOneTitle = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
-        String id = request.params("id");
-        long subjectIdid = Long.parseLong(request.params("subjectid"));
+        String titleId = request.params("id");
+        int subjectId = Integer.parseInt(request.params("subjectid"));
         if (clientAcceptsHtml(request)) {
             HashMap<String, Object> model = new HashMap<>();
-            Subject subject = dbProvider.getSubject(subjectIdid);
-            String content = htmlParser.getOneTitleContent(AppConfiguration.getInstance().getExternalLocation() + subject.getUrl().substring(1,subject.getUrl().length()), id);
-            model.put("content",content);
-            return ViewUtil.render(request, model, Path.Template.SUBJECT_ONE_TITLE);
+            if (LoginController.isStudent(request)) {
+                User student = LoginController.getCurrentUser(request);
+                LearningLog learningLog = dbProvider.getLearningLogStatus(student.getId(), subjectId, titleId);
+                if(null == learningLog) {
+                    dbProvider.logLearningStatus(student.getId(), subjectId, titleId, TitleLearningStatus.OPENED.getId());
+
+                }
+                model.put("subjectId", subjectId);
+                model.put("titleId", titleId);
+                model.put("status", null != learningLog ? learningLog.getStatusId() : TitleLearningStatus.OPENED.getId()); // ako je status neobrađeno - prikazati gumb za "označi kao završeno"
+
+                Subject subject = dbProvider.getSubject(subjectId);
+                String content = htmlParser.getOneTitleContent(AppConfiguration.getInstance().getExternalLocation() + subject.getUrl().substring(1, subject.getUrl().length()), titleId);
+                model.put("content", content);
+                return ViewUtil.render(request, model, Path.Template.SUBJECT_ONE_TITLE);
+            }
+        }
+        return ViewUtil.notAcceptable.handle(request, response);
+    };
+
+    public static Route submitOneTitleStatus = (Request request, Response response) -> {
+        LoginController.ensureUserIsLoggedIn(request, response);
+        String titleId = request.params("id");
+        int subjectId = Integer.parseInt(request.params("subjectid"));
+        if (clientAcceptsHtml(request)) {
+            HashMap<String, Object> model = new HashMap<>();
+            if (LoginController.isStudent(request)) {
+                User student = LoginController.getCurrentUser(request);
+                dbProvider.logLearningStatus(student.getId(), subjectId, titleId, TitleLearningStatus.LEARNED.getId());
+                model.put("status", TitleLearningStatus.LEARNED.getId());
+                model.put("subjectId", subjectId);
+                model.put("titleId", titleId);
+                Subject subject = dbProvider.getSubject(subjectId);
+                String content = htmlParser.getOneTitleContent(AppConfiguration.getInstance().getExternalLocation() + subject.getUrl().substring(1, subject.getUrl().length()), titleId);
+                model.put("content", content);
+                return ViewUtil.render(request, model, Path.Template.SUBJECT_ONE_TITLE);
+            }
         }
         return ViewUtil.notAcceptable.handle(request, response);
     };
@@ -166,23 +203,23 @@ public class SubjectsController extends AbstractController {
         if (!StringUtils.isEmpty(validationMsg)) {
             model.put("validation", validationMsg);
             model.put("editAllowed", LoginController.isEditAllowed(request));
-            return ViewUtil.render(request,model, Path.Template.SUBJECT_ADD);
+            return ViewUtil.render(request, model, Path.Template.SUBJECT_ADD);
         }
         String titleReplaced = title.replaceAll(" ", "");
-        String filename = titleReplaced.substring(0,titleReplaced.length() > 10 ? 10 : titleReplaced.length()).toLowerCase().concat(".html");
+        String filename = titleReplaced.substring(0, titleReplaced.length() > 10 ? 10 : titleReplaced.length()).toLowerCase().concat(".html");
         String filePath = AppConfiguration.getInstance().getExternalLocation().concat("materijali/").concat(filename);
         createFileIfNotExists(filePath, title);
 
-        dbProvider.createSubject(title,keywords,"/materijali/".concat(filename));
+        dbProvider.createSubject(title, keywords, "/materijali/".concat(filename));
 
         if (clientAcceptsHtml(request)) {
             response.redirect(Path.Web.getSUBJECTS());
         }
-        return ViewUtil.notAcceptable.handle(request,response);
+        return ViewUtil.notAcceptable.handle(request, response);
     };
     public static final Logger LOGGER = LoggerFactory.getLogger(SubjectsController.class);
 
-    private static void createFileIfNotExists(String filePath, String title){
+    private static void createFileIfNotExists(String filePath, String title) {
         try {
             File file = new File(filePath);
             if (file.createNewFile()) {
@@ -200,7 +237,7 @@ public class SubjectsController extends AbstractController {
 
     private static String validateSubject(String title) {
         StringBuilder sb = new StringBuilder();
-        if(StringUtils.isEmpty(title)){
+        if (StringUtils.isEmpty(title)) {
             sb.append("naslov je obavezan podatak\n");
         } else {
             dbProvider.getAllSubjects().stream().filter(subject -> subject.getTitle().equals(title))

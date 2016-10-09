@@ -1,5 +1,6 @@
 package hr.iivanovic.psyedu.db;
 
+import java.util.Date;
 import java.util.List;
 
 import org.sql2o.Connection;
@@ -22,16 +23,16 @@ public class Sql2oModel implements Model {
     }
 
     private Sql2oModel() {
-        this.sql2o = DbUtil.getH2DataSource();
+//        this.sql2o = DbUtil.getH2DataSource();
+        this.sql2o = DbUtil.getPostgreSQLDataSource();
     }
 
     public void clearRecordsForReinit() {
         try (Connection conn = sql2o.open()) {
-            conn.createQuery("delete from subject").executeUpdate();
-            conn.createQuery("delete from user").executeUpdate();
-            conn.createQuery("delete from question").executeUpdate();
-            conn.createQuery("delete from IDX").executeUpdate();
-            conn.commit();
+            conn.createQuery("delete from subjects").executeUpdate();
+            conn.createQuery("delete from users").executeUpdate();
+            conn.createQuery("delete from questions").executeUpdate();
+            conn.createQuery("delete from learning_log").executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -40,13 +41,11 @@ public class Sql2oModel implements Model {
     @Override
     public void createSubject(String title, String keywords, String url) {
         try (Connection conn = sql2o.open()) {
-            Integer id = (Integer) conn.createQuery("insert into subject(title, keywords, url) VALUES ( :title, :keywords, :url)")
+            conn.createQuery("insert into subjects(title, keywords, url) VALUES ( :title, :keywords, :url)")
                     .addParameter("title", title)
                     .addParameter("keywords", keywords)
                     .addParameter("url", url)
-                    .executeUpdate().getKey();
-            System.out.println("id: " + id);
-            conn.commit();
+                    .executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -55,8 +54,8 @@ public class Sql2oModel implements Model {
 
     @Override
     public void createUser(String username, String password, String firstName, String lastName, String email, String status) {
-        try (Connection conn = sql2o.beginTransaction()) {
-            conn.createQuery("insert into user(username, password, firstName, lastNAme, email, status) VALUES (:username, :password, :firstname, :lastname, :email, :status)")
+        try (Connection conn = sql2o.open()) {
+            conn.createQuery("insert into users(username, password, firstName, lastNAme, email, status) VALUES (:username, :password, :firstname, :lastname, :email, :status)")
                     .addParameter("username", username)
                     .addParameter("password", password)
                     .addParameter("firstname", firstName)
@@ -64,7 +63,6 @@ public class Sql2oModel implements Model {
                     .addParameter("email", email)
                     .addParameter("status", status)
                     .executeUpdate();
-            conn.commit();
         }
 
     }
@@ -72,7 +70,7 @@ public class Sql2oModel implements Model {
     @Override
     public List<User> getAllUsers() {
         try (Connection conn = sql2o.open()) {
-            List<User> users = conn.createQuery("select * from user")
+            List<User> users = conn.createQuery("select * from users")
                     .executeAndFetch(User.class);
             return users;
         }
@@ -81,7 +79,7 @@ public class Sql2oModel implements Model {
     @Override
     public User getUserByUsername(String username) {
         try (Connection conn = sql2o.open()) {
-            User user = conn.createQuery("select * from user where username=:username")
+            User user = conn.createQuery("select * from users where username=:username")
                     .addParameter("username", username)
                     .executeAndFetchFirst(User.class);
 
@@ -92,7 +90,7 @@ public class Sql2oModel implements Model {
     @Override
     public List<Subject> getAllSubjects() {
         try (Connection conn = sql2o.open()) {
-            List<Subject> subjects = conn.createQuery("select * from subject")
+            List<Subject> subjects = conn.createQuery("select * from subjects")
                     .executeAndFetch(Subject.class);
             return subjects;
         }
@@ -101,7 +99,7 @@ public class Sql2oModel implements Model {
     @Override
     public Subject getSubject(long id) {
         try (Connection conn = sql2o.open()) {
-            Subject subject = conn.createQuery("select * from subject where id=:id")
+            Subject subject = conn.createQuery("select * from subjects where id=:id")
                     .addParameter("id", id)
                     .executeAndFetchFirst(Subject.class);
 
@@ -112,14 +110,13 @@ public class Sql2oModel implements Model {
     @Override
     public void createQuestion(Question question) {
         try (Connection conn = sql2o.open()) {
-            conn.createQuery("INSERT INTO question (subjectId, titleId, question, answers, points) VALUES (:subjectId, :titleId, :question, :answers, :points);")
+            conn.createQuery("INSERT INTO questions (subjectId, titleId, question, answers, points) VALUES (:subjectId, :titleId, :question, :answers, :points);")
                     .addParameter("subjectId", question.getSubjectId())
                     .addParameter("titleId", question.getTitleId())
                     .addParameter("question", question.getQuestion())
                     .addParameter("answers", question.getAnswers())
                     .addParameter("points", question.getPoints())
                     .executeUpdate();
-            conn.commit();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -128,7 +125,7 @@ public class Sql2oModel implements Model {
     @Override
     public List<Question> getAllQuestionsForSubjectAndTitle(int subjectId, String titleId) {
         try (Connection conn = sql2o.open()) {
-            return conn.createQuery("select * from question where subjectId=:subjectId and titleId=:titleId")
+            return conn.createQuery("select * from questions where subjectId=:subjectId and titleId=:titleId")
                     .addParameter("subjectId", subjectId)
                     .addParameter("titleId", titleId)
                     .executeAndFetch(Question.class);
@@ -136,23 +133,46 @@ public class Sql2oModel implements Model {
     }
 
     @Override
-    public int nextIdx(String tag){
-        try (Connection conn = sql2o.open()){
-            return conn.createQuery("insert into INDEX (dummy) values ( :tag )")
-                    .addParameter("tag",tag)
-                    .executeUpdate().getKey(Integer.class);
+    public int nextIdx(String tag) {
+        try (Connection conn = sql2o.open()) {
+            return conn.createQuery("select nextval('all_id_seq')")
+                    .executeAndFetchFirst(Integer.class);
         }
     }
 
     @Override
-    public void save(User user){
-        try (Connection conn = sql2o.open()){
-            conn.createQuery("update user set color = :color where id = :id")
-                    .addParameter("color",user.getColor())
-                    .addParameter("id",user.getId())
+    public void save(User user) {
+        try (Connection conn = sql2o.open()) {
+            conn.createQuery("update users set color = :color where id = :id")
+                    .addParameter("color", user.getColor())
+                    .addParameter("id", user.getId())
                     .executeUpdate();
-            conn.commit();
         }
     }
 
+
+    @Override
+    public void logLearningStatus(int studentId, int subjectId, String titleId, int statusId) {
+        try (Connection conn = sql2o.open()) {
+            conn.createQuery("insert into LEARNING_LOG (studentId, subjectId, titleId, date, statusId ) values (:studentId, :subjectId, :titleId, :date, :statusId);")
+                    .addParameter("studentId", studentId)
+                    .addParameter("subjectId", subjectId)
+                    .addParameter("titleId", titleId)
+                    .addParameter("date", new Date())
+                    .addParameter("statusId", statusId)
+                    .executeUpdate();
+        }
+    }
+
+    @Override
+    public LearningLog getLearningLogStatus(int studentId, int subjectId, String titleId) {
+        try (Connection conn = sql2o.open()) {
+            LearningLog learning = conn.createQuery("select * from LEARNING_LOG where studentId = :studentId and subjectId = :subjectId and titleId = :titleId order by statusId desc;")
+                    .addParameter("studentId", studentId)
+                    .addParameter("subjectId", subjectId)
+                    .addParameter("titleId", titleId)
+                    .executeAndFetchFirst(LearningLog.class);
+            return learning;
+        }
+    }
 }

@@ -63,6 +63,12 @@ public class LoginController {
         return currentUser != null && ("TEACHER".equals(currentUser.getStatus()) || "ADMIN".equals(currentUser.getStatus()));
     }
 
+    public static boolean isStudent(Request request){
+        User currentUser = request.session().attribute(CURRENT_USER);
+        return currentUser != null && ("STUDENT".equals(currentUser.getStatus()));
+    }
+
+
     public static User getCurrentUser(Request request){
         return request.session().attribute(CURRENT_USER);
     }

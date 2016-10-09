@@ -9,8 +9,21 @@
     #end
     #if($isStudent)
         #foreach($title in $titles)
-        <div class="$title.classAttribute"><a href="/onetitle/$title.id/$title.subjectId">$title.title</a>
-        </div>
+            <div class="$title.classAttribute"><a href="/onetitle/$title.id/$title.subjectId">$title.title</a>
+                #if($title.learningLogStatus == 1)
+                    <span class="glyphicon glyphicon-eye-open" title="otvarano"></span>
+                #end
+                #if($title.learningLogStatus == 2)
+                    <span class="glyphicon glyphicon-ok-circle"title="naučeno"></span>
+                    <a href="/exam/$title.subjectId/$title.id" title="ispitna pitanja"><span class="glyphicon glyphicon-edit" title="ispitna pitanja"></span></a>
+                #end
+                #if($title.learningLogStatus == 3)
+                    <span class="glyphicon glyphicon-info-sign" title="otvorena ispitna pitanja"></span>
+                #end
+                #if($title.learningLogStatus == 4)
+                    <span class="glyphicon glyphicon-ok" title="završeno"></span>
+                #end
+            </div>
         #end
     #else
         <div>$successmsg</div>

@@ -14,7 +14,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import hr.iivanovic.psyedu.db.LearningLog;
 import hr.iivanovic.psyedu.db.Sql2oModel;
+import hr.iivanovic.psyedu.db.User;
 
 /**
  * @author iivanovic
@@ -68,7 +70,7 @@ public class HtmlParser {
         return titles;
     }
 
-    public List<TitleLink> getAllSubjectsLinks(File htmlDoc, String uri, long subjectId) {
+    public List<TitleLink> getAllSubjectsLinks(File htmlDoc, String uri, int subjectId, User student) {
         List<TitleLink> titleLinks = new LinkedList<>();
         Document doc;
         try {
@@ -77,7 +79,12 @@ public class HtmlParser {
             for (Element element : headingElements) {
                 String title = String.valueOf(element.text());
                 String id = element.attr("id");
-                TitleLink titleLinkElement = new TitleLink(title, id, subjectId, id.substring(0, 2));
+                int statusId = 0;
+                if(null != student) {
+                    LearningLog learningLogStatus = dbProvider.getLearningLogStatus(student.getId(), subjectId, id);
+                    statusId = null == learningLogStatus ? 0 : learningLogStatus.getStatusId();
+                }
+                TitleLink titleLinkElement = new TitleLink(title, id, subjectId, id.substring(0, 2), statusId);
                 titleLinks.add(titleLinkElement);
             }
         } catch (IOException e) {

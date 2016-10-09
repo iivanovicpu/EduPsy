@@ -10,4 +10,5 @@ public class TitleLink {
     private String id;
     private long subjectId;
     private String classAttribute;
+    private int learningLogStatus;
 }

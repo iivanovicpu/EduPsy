@@ -58,18 +58,18 @@ public class SubjectsController extends AbstractController {
 
     public static Route fetchOneSubject = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
-        long id = Long.parseLong(request.params("id"));
+        long subjectId = Integer.parseInt(request.params("id"));
         if (clientAcceptsHtml(request)) {
             HashMap<String, Object> model = new HashMap<>();
-            Subject subject = dbProvider.getSubject(id);
+            Subject subject = dbProvider.getSubject(subjectId);
             model.put("subject", subject);
             model.put("successmsg", "");
             boolean isStudent = !LoginController.isEditAllowed(request);
             model.put("isStudent", isStudent);
             if (isStudent) {
-                // todo: inspect learning log
+                User student = LoginController.getCurrentUser(request);
                 File file = new File(AppConfiguration.getInstance().getExternalLocation() + subject.getUrl());
-                List<TitleLink> titleLinks = htmlParser.getAllSubjectsLinks(file, subject.getUrl(), subject.getId());
+                List<TitleLink> titleLinks = htmlParser.getAllSubjectsLinks(file, subject.getUrl(), subject.getId(), student);
                 model.put("titles", titleLinks);
             } else {
                 model.put("titles", new LinkedList<String>());
@@ -77,7 +77,7 @@ public class SubjectsController extends AbstractController {
             return ViewUtil.render(request, model, Path.Template.SUBJECTS_ONE);
         }
         if (clientAcceptsJson(request)) {
-            return dataToJson(dbProvider.getSubject(id));
+            return dataToJson(dbProvider.getSubject(subjectId));
         }
         return ViewUtil.notAcceptable.handle(request, response);
     };

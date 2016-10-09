@@ -9,6 +9,7 @@ Application EduPsy is based on idea to provide customized learning system to stu
 * [sql2o](http://www.sql2o.org/) - working with stored data
 * [H2 Database engine](http://h2database.com) - H2 in memory database (in development mode)
 * [PostgreSQL Database](https://www.postgresql.org/) - production database
+* [Jsoup](http://jsoup.org/) - parsing HTML
 * [jQuery](https://jquery.com/) - javascript library for easy dynamic content managing on pages
 * [bootstrap](http://getbootstrap.com/) for responsive Web UI design
 
@@ -19,12 +20,15 @@ Application EduPsy is based on idea to provide customized learning system to stu
 * three type of user context (admin, teacher, student)
 * users and learning subjects persisting in database (h2 in memory database)
 * managing learning materials
+* learning log system
+* different presentations of learning materials
 
 #### Running application:
 ##### requirements:
 - java jdk 1.8
 - git
 - maven (ver. 3.x.x)
+- postgreSQL database
 
 ##### Manual:
 1. clone repository

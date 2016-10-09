@@ -1,12 +1,26 @@
 #parse("/velocity/layout.vm")
 #@mainLayout()
-    #if($status == 1)
         <form method="post" class="form-group">
             <input type="hidden" name="subjectId" value="$subjectId">
             <input type="hidden" name="titleId" value="$titleId">
-            <input type="submit" class="btn btn-primary" name="submit" value="$msg.get("TITLE_LEARNED_SUBMIT")">
-        </form>
+            <button type="submit" formmethod="get" formaction="/subjects/$subjectId/" class="btn btn-warning">Natrag</button>
+            #if($status == 1)
+                <input type="submit" class="btn btn-primary" name="submit" value="$msg.get("TITLE_LEARNED_SUBMIT")">
+            #end
+            </form>
+    <br>
+    #if($status == 1)
+    <span class="glyphicon glyphicon-eye-open" title="otvarano"></span>
     #end
-    <div>$status</div>
+    #if($status == 2)
+    <span class="glyphicon glyphicon-ok-circle" title="naučeno"></span>
+    #end
+    #if($status == 3)
+    <span class="glyphicon glyphicon-info-sign" title="otvorena ispitna pitanja"></span>
+    #end
+    #if($status == 4)
+    <span class="glyphicon glyphicon-ok" title="završeno"></span>
+    #end
+
     <div>$content</div>
 #end

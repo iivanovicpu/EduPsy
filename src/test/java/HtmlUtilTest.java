@@ -75,7 +75,7 @@ public class HtmlUtilTest {
     public void get_subject_links_test() throws IOException {
         File file = new File("/home/iivanovic/private/psy-edu/etc/materijali/alreadyImproved-example.html");
 
-        List<TitleLink> allSubjectsLinks = htmlParser.getAllSubjectsLinks(file, file.getName(), 56L);
+        List<TitleLink> allSubjectsLinks = htmlParser.getAllSubjectsLinks(file, file.getName(), 56, null);
         for (TitleLink titleLink : allSubjectsLinks) {
             System.out.println(titleLink);
         }

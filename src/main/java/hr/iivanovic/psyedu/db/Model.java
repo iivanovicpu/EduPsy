@@ -27,4 +27,6 @@ public interface Model {
     void logLearningStatus(int studentId, int subjectId, String titleId, int statusId);
 
     LearningLog getLearningLogStatus(int studentId, int subjectId, String titleId);
+
+    List<User> getAllStudents();
 }

@@ -1,6 +1,14 @@
 #parse("/velocity/layout.vm")
 #@mainLayout()
 <h2>$msg.get("EXAM_HEADING")</h2>
+
+    #if($validation)
+    <div class="alert alert-danger fade in" id="validation">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        $validation
+    </div>
+    #end
+
 <div>
     <form method="post" class="form-horizontal" id="questionForm">
         <input type="hidden" name="subjectid" value="$subjectId"/>
@@ -14,12 +22,4 @@
         <button type="submit" formmethod="get" formaction="/subjects/$subjectId" class="btn btn-warning">Odustani</button>
     </form>
 </div>
-#*
-    #if($validation)
-    <div class="alert alert-danger fade in" id="validation">
-        <a href="#" class="close" data-dismiss="alert">&times;</a>
-        $validation
-    </div>
-    #end
-*#
 #end

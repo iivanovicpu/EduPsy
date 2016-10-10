@@ -1,7 +1,9 @@
 package hr.iivanovic.psyedu.db;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
@@ -174,5 +176,10 @@ public class Sql2oModel implements Model {
                     .executeAndFetchFirst(LearningLog.class);
             return learning;
         }
+    }
+
+    @Override
+    public List<User> getAllStudents() {
+        return getAllUsers().stream().filter(user -> user.getStatus().equals("STUDENT")).collect(Collectors.toCollection(LinkedList::new));
     }
 }

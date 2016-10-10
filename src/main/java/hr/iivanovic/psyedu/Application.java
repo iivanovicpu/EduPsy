@@ -11,6 +11,7 @@ import static spark.debug.DebugScreen.enableDebugScreen;
 
 import hr.iivanovic.psyedu.controllers.ExamController;
 import hr.iivanovic.psyedu.controllers.ProfileController;
+import hr.iivanovic.psyedu.controllers.StudentsController;
 import hr.iivanovic.psyedu.controllers.SubjectQuestionsController;
 import hr.iivanovic.psyedu.db.Model;
 import hr.iivanovic.psyedu.db.Sql2oModel;
@@ -78,6 +79,11 @@ public class Application {
         post(Path.Web.ONE_TITLE, SubjectsController.submitOneTitleStatus);
 
         get(Path.Web.EXAM, ExamController.fetchQuestionsForTitle);
+        post(Path.Web.EXAM, ExamController.submitExamQuestions);
+
+        get(Path.Web.STUDENTS, StudentsController.fetchAllStudents);
+        get(Path.Web.ADDSTUDENT, StudentsController.addStudent);
+        post(Path.Web.ADDSTUDENT, StudentsController.submitStudent);
 
         get(Path.Web.PERSONAL_PROFILE, ProfileController.fetchPersonalProfile);
         post(Path.Web.PERSONAL_PROFILE, ProfileController.submitPersonalProfile);

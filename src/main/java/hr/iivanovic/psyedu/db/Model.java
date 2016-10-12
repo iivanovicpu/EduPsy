@@ -31,4 +31,6 @@ public interface Model {
     LearningLog getLearningLogStatus(int studentId, int subjectId, String titleId);
 
     List<User> getAllStudents();
+
+    void createAdaptiveRule(int learningStyleId, int intelligenceTypeId, int ruleId, String mark);
 }

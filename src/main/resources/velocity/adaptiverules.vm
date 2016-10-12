@@ -42,7 +42,7 @@
         <div class="form-group">
             <label class="control-label col-sm-2" for="mark">$msg.get("ADAPTIVE_RULES_MARK")</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="email">
+                <input type="text" class="form-control" id="mark" name="mark">
             </div>
         </div>
 
@@ -68,7 +68,10 @@
                 <td>$adaptiverule.intelligenceDescription</td>
                 <td>$adaptiverule.styleDescription</td>
                 <td>$adaptiverule.ruleDescription</td>
-                <td>$adaptiverule.mark</td>
+                <td>#if($adaptiverule.mark)
+                        $adaptiverule.mark
+                    #end
+                </td>
             </tr>
             #end
         </tbody>

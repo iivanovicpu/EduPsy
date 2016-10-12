@@ -190,4 +190,17 @@ public class Sql2oModel implements Model {
     public List<User> getAllStudents() {
         return getAllUsers().stream().filter(user -> user.getStatus().equals("STUDENT")).collect(Collectors.toCollection(LinkedList::new));
     }
+
+    @Override
+    public void createAdaptiveRule(int learningStyleId, int intelligenceTypeId, int ruleId, String mark) {
+        try (Connection conn = sql2o.open()) {
+            conn.createQuery("insert into adaptive_rules (learningStyleId, intelligenceTypeId, ruleId, mark ) values (:learningStyleId, :intelligenceTypeId, :ruleId, :mark);")
+                    .addParameter("learningStyleId", learningStyleId)
+                    .addParameter("intelligenceTypeId", intelligenceTypeId)
+                    .addParameter("ruleId", ruleId)
+                    .addParameter("mark", mark)
+                    .executeUpdate();
+        }
+
+    }
 }

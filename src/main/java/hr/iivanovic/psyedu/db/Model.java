@@ -20,6 +20,8 @@ public interface Model {
 
     List<Question> getAllQuestionsForSubjectAndTitle(int subjectId, String titleId);
 
+    List<AdaptiveRule> getAllAdaptiveRules();
+
     int nextIdx(String tag);
 
     void save(User user);

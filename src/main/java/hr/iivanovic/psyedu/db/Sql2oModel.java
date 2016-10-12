@@ -135,6 +135,14 @@ public class Sql2oModel implements Model {
     }
 
     @Override
+    public List<AdaptiveRule> getAllAdaptiveRules() {
+        try (Connection conn = sql2o.open()) {
+            return conn.createQuery("select * from adaptive_rules")
+                    .executeAndFetch(AdaptiveRule.class);
+        }
+    }
+
+    @Override
     public int nextIdx(String tag) {
         try (Connection conn = sql2o.open()) {
             return conn.createQuery("select nextval('all_id_seq')")

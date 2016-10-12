@@ -9,6 +9,7 @@ import static spark.Spark.post;
 import static spark.Spark.staticFiles;
 import static spark.debug.DebugScreen.enableDebugScreen;
 
+import hr.iivanovic.psyedu.controllers.AdaptiveRulesController;
 import hr.iivanovic.psyedu.controllers.ExamController;
 import hr.iivanovic.psyedu.controllers.ProfileController;
 import hr.iivanovic.psyedu.controllers.StudentsController;
@@ -87,6 +88,8 @@ public class Application {
 
         get(Path.Web.PERSONAL_PROFILE, ProfileController.fetchPersonalProfile);
         post(Path.Web.PERSONAL_PROFILE, ProfileController.submitPersonalProfile);
+
+        get(Path.Web.ADMIN_RULES, AdaptiveRulesController.fetchAllRulesForAdmin);
 
         get(Path.Web.LOGIN, LoginController.serveLoginPage);
         post(Path.Web.LOGIN, LoginController.handleLoginPost);

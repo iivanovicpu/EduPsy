@@ -25,6 +25,7 @@ public class Path {
         @Getter public static final String EXAM = "/exam/:subjectid/:titleid/";
         @Getter public static final String STUDENTS = "/students/";
         @Getter public static final String ADDSTUDENT = "/addstudent/";
+        @Getter public static final String ADMIN_RULES = "/adminrules/";
     }
 
     public static class Template {
@@ -43,6 +44,7 @@ public class Path {
         public final static String EXAM = "/velocity/exam.vm";
         public final static String STUDENTS = "/velocity/students.vm";
         public final static String STUDENTS_ADD = "/velocity/addstudent.vm";
+        public final static String ADAPTIVE_RULES_ADMIN = "/velocity/adaptiverules.vm";
     }
 
 }

@@ -68,6 +68,9 @@
                         <li><a href="/students">
                             Studenti
                         </a></li>
+                        <li><a href="/adminrules">
+                            Adaptivna pravila
+                        </a></li>
                     #end
 
                 #end

@@ -16,4 +16,8 @@ public class User {
     private String email;
     private String status;
     private String color;
+    private int intelligenceTypeId;
+    private int learningStyleId;
+    private boolean completedLearningStylePoll;
+    private boolean completedIntelligencePoll;
 }

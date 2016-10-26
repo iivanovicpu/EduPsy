@@ -11,6 +11,7 @@ import static spark.debug.DebugScreen.enableDebugScreen;
 
 import hr.iivanovic.psyedu.controllers.AdaptiveRulesController;
 import hr.iivanovic.psyedu.controllers.ExamController;
+import hr.iivanovic.psyedu.controllers.PollController;
 import hr.iivanovic.psyedu.controllers.ProfileController;
 import hr.iivanovic.psyedu.controllers.StudentsController;
 import hr.iivanovic.psyedu.controllers.SubjectQuestionsController;
@@ -91,6 +92,9 @@ public class Application {
 
         get(Path.Web.ADMIN_RULES, AdaptiveRulesController.fetchAllRulesForAdmin);
         post(Path.Web.ADMIN_RULES, AdaptiveRulesController.submitRule);
+
+        get(Path.Web.INTELLIGENCE_POLL, PollController.showPollIntelligenceType);
+        post(Path.Web.INTELLIGENCE_POLL, PollController.submitPollIntelligenceType);
 
         get(Path.Web.LOGIN, LoginController.serveLoginPage);
         post(Path.Web.LOGIN, LoginController.handleLoginPost);

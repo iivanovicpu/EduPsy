@@ -1,17 +1,20 @@
 package hr.iivanovic.psyedu;
 
-import java.util.ResourceBundle;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * User: Administrator
  * Date: 08.02.13.
  * Time: 12:44
  */
+@Slf4j
 public class AppConfiguration {
 
     private static AppConfiguration instance = null;
-
-    public static final String RESOURCE_BUNDLE_BASENAME = "configuration";
 
     private static final String EXTERNAL_LOCATION = "external.location";
 
@@ -29,48 +32,57 @@ public class AppConfiguration {
 
     private static final String DATABASE_PASSWORD = "database.password";
 
-    private ResourceBundle config;
+    private Properties config;
 
     public static synchronized AppConfiguration getInstance() {
         if (instance == null) {
-            instance = new AppConfiguration();
+            String resourceFilePath = System.getProperty("config.file");
+            try {
+                instance = new AppConfiguration(resourceFilePath);
+                log.info("config file loaded successfully: " + resourceFilePath);
+            } catch (IOException e) {
+                log.error("error loading app properties file", e);
+                e.printStackTrace();
+            }
         }
         return instance;
     }
 
-    private AppConfiguration() {
-        config = ResourceBundle.getBundle(RESOURCE_BUNDLE_BASENAME);
+    private AppConfiguration(String resourceFilePath) throws IOException {
+        config = new Properties();
+        FileInputStream fis = new FileInputStream(resourceFilePath);
+        config.load(fis);
     }
 
     public String getExternalLocation() {
-        return config.getString(EXTERNAL_LOCATION);
+        return config.getProperty(EXTERNAL_LOCATION);
     }
 
     public String getH2DbFileLocation() {
-        return config.getString(H2_DB_FILE_LOCATION);
+        return config.getProperty(H2_DB_FILE_LOCATION);
     }
 
     public String getDatabaseName() {
-        return config.getString(DATABASE_NAME);
+        return config.getProperty(DATABASE_NAME);
     }
 
     public String getDatabaseUrl() {
-        return config.getString(DATABASE_URL);
+        return config.getProperty(DATABASE_URL);
     }
 
-    public String getDatabasePort(){
-        return config.getString(DATABASE_PORT);
+    public String getDatabasePort() {
+        return config.getProperty(DATABASE_PORT);
     }
 
-    public String getDatabaseUsername(){
-        return config.getString(DATABASE_USERNAME);
+    public String getDatabaseUsername() {
+        return config.getProperty(DATABASE_USERNAME);
     }
 
-    public String getDatabasePassword(){
-        return config.getString(DATABASE_PASSWORD);
+    public String getDatabasePassword() {
+        return config.getProperty(DATABASE_PASSWORD);
     }
 
     public boolean isDevelopmentMode() {
-        return "true".equals(config.getString(DEVELOPMENT_MODE));
+        return "true".equals(config.getProperty(DEVELOPMENT_MODE));
     }
 }

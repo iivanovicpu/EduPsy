@@ -203,4 +203,14 @@ public class Sql2oModel implements Model {
         }
 
     }
+
+    @Override
+    public void updateStudentIntelligenceType(int userId, int intelligenceTypeId) {
+        try (Connection conn = sql2o.open()) {
+            conn.createQuery("update users set intelligenceTypeId = :intelligenceTypeId, completedIntelligencePoll = TRUE where id = :id")
+                    .addParameter("intelligenceTypeId", intelligenceTypeId)
+                    .addParameter("id", userId)
+                    .executeUpdate();
+        }
+    }
 }

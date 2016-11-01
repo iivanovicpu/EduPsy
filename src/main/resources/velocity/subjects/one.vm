@@ -19,6 +19,8 @@
                 #end
                 #if($title.learningLogStatus == 3)
                     <span class="glyphicon glyphicon-info-sign" title="otvorena ispitna pitanja"></span>
+                    <span class="glyphicon glyphicon-ok-circle"title="naučeno"></span>
+                    <a href="/exam/$title.subjectId/$title.id" title="ispitna pitanja"><span class="glyphicon glyphicon-edit" title="ispitna pitanja"></span></a>
                 #end
                 #if($title.learningLogStatus == 4)
                     <span class="glyphicon glyphicon-ok" title="završeno"></span>

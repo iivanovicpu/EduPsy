@@ -33,4 +33,7 @@ public interface Model {
     List<User> getAllStudents();
 
     void createAdaptiveRule(int learningStyleId, int intelligenceTypeId, int ruleId, String mark);
+
+    void updateStudentIntelligenceType(int id, int intelligenceTypeId);
+
 }

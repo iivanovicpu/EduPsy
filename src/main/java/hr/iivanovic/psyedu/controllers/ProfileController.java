@@ -25,6 +25,7 @@ public class ProfileController extends AbstractController {
         if (clientAcceptsHtml(request)) {
             HashMap<String, Object> model = new HashMap<>();
             model.put("validation", false);
+            model.put("intelligenceType", IntelligenceTypes.getById(user.getIntelligenceTypeId()).getDescription());
             return ViewUtil.render(request, model, Path.Template.PERSONAL_PROFILE);
         }
         if (clientAcceptsJson(request)) {
@@ -42,6 +43,7 @@ public class ProfileController extends AbstractController {
         if (clientAcceptsHtml(request)) {
             HashMap<String, Object> model = new HashMap<>();
             model.put("validation", false);
+            model.put("intelligenceType", IntelligenceTypes.getById(user.getIntelligenceTypeId()).getDescription());
             return ViewUtil.render(request, model, Path.Template.PERSONAL_PROFILE);
         }
         if (clientAcceptsJson(request)) {

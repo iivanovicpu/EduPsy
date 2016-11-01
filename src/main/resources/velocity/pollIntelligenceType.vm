@@ -10,11 +10,11 @@
     #end
 
 <div>
-    <form method="post" class="form-horizontal" id="intelligencePollForm">
+    <form method="post" class="form-horizontal" id="intelligencePollForm" onsubmit="return validateSubmit(this);">
         $msg.get("POLL_INTELLIGENCE_TYPE_TUTORIAL")
         <br>
         <div class="table-responsive">
-            <table class="table">
+            <table class="table" id="table">
                 <thead>
                 <tr>
                     <th>1</th>
@@ -26,210 +26,210 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input type="radio" name="odgovor1" id="odgovor1" value="1"></td>
+                        <td><input type="radio" name="odgovor1" id="odgovor1" value="1" checked="checked"></td>
                         <td><input type="radio" name="odgovor1" id="odgovor1" value="2"></td>
                         <td><input type="radio" name="odgovor1" id="odgovor1" value="3"></td>
                         <td><input type="radio" name="odgovor1" id="odgovor1" value="4"></td>
                         <td>Lako mi je upravljati mojim novcem i financijama</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="odgovor2" id="odgovor2" value="1"></td>
+                        <td><input type="radio" name="odgovor2" id="odgovor2" value="1" checked="checked"></td>
                         <td><input type="radio" name="odgovor2" id="odgovor2" value="2"></td>
                         <td><input type="radio" name="odgovor2" id="odgovor2" value="3"></td>
                         <td><input type="radio" name="odgovor2" id="odgovor2" value="4"></td>
                         <td>Lako mi je izmisliti priču</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="odgovor3" id="odgovor3" value="1"></td>
+                        <td><input type="radio" name="odgovor3" id="odgovor3" value="1" checked="checked"></td>
                         <td><input type="radio" name="odgovor3" id="odgovor3" value="2"></td>
                         <td><input type="radio" name="odgovor3" id="odgovor3" value="3"></td>
                         <td><input type="radio" name="odgovor3" id="odgovor3" value="4"></td>
                         <td>Dok s nekim razgovaram, obraćam pažnju i na riječi a ne samo na smisao</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="odgovor4" id="odgovor4" value="1"></td>
+                        <td><input type="radio" name="odgovor4" id="odgovor4" value="1" checked="checked"></td>
                         <td><input type="radio" name="odgovor4" id="odgovor4" value="2"></td>
                         <td><input type="radio" name="odgovor4" id="odgovor4" value="3"></td>
                         <td><input type="radio" name="odgovor4" id="odgovor4" value="4"></td>
                         <td>Volim križaljke, traženje skrivenih riječi i druge slagalice s riječima</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="odgovor5" id="odgovor5" value="1"></td>
+                        <td><input type="radio" name="odgovor5" id="odgovor5" value="1" checked="checked"></td>
                         <td><input type="radio" name="odgovor5" id="odgovor5" value="2"></td>
                         <td><input type="radio" name="odgovor5" id="odgovor5" value="3"></td>
                         <td><input type="radio" name="odgovor5" id="odgovor5" value="4"></td>
                         <td>Volim da su stvari jasne, ne volim neodređenost</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="odgovor6" id="odgovor6" value="1"></td>
+                        <td><input type="radio" name="odgovor6" id="odgovor6" value="1" checked="checked"></td>
                         <td><input type="radio" name="odgovor6" id="odgovor6" value="2"></td>
                         <td><input type="radio" name="odgovor6" id="odgovor6" value="3"></td>
                         <td><input type="radio" name="odgovor6" id="odgovor6" value="4"></td>
                         <td>Volim logièke zagonetke i igre kao 'sudoku'</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="odgovor7" id="odgovor7" value="1"></td>
+                        <td><input type="radio" name="odgovor7" id="odgovor7" value="1" checked="checked"></td>
                         <td><input type="radio" name="odgovor7" id="odgovor7" value="2"></td>
                         <td><input type="radio" name="odgovor7" id="odgovor7" value="3"></td>
                         <td><input type="radio" name="odgovor7" id="odgovor7" value="4"></td>
                         <td>Mogu uvjerljivo lagati (ako bih to htio)</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="odgovor8" id="odgovor8" value="1"></td>
+                        <td><input type="radio" name="odgovor8" id="odgovor8" value="1" checked="checked"></td>
                         <td><input type="radio" name="odgovor8" id="odgovor8" value="2"></td>
                         <td><input type="radio" name="odgovor8" id="odgovor8" value="3"></td>
                         <td><input type="radio" name="odgovor8" id="odgovor8" value="4"></td>
                         <td>Živciraju me ljudi koji se ponašaju iracionalno</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="odgovor9" id="odgovor9" value="1"></td>
+                        <td><input type="radio" name="odgovor9" id="odgovor9" value="1" checked="checked"></td>
                         <td><input type="radio" name="odgovor9" id="odgovor9" value="2"></td>
                         <td><input type="radio" name="odgovor9" id="odgovor9" value="3"></td>
                         <td><input type="radio" name="odgovor9" id="odgovor9" value="4"></td>
                         <td>Volim biti sistematičan, precizan i temeljit</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="odgovor10" id="odgovor10" value="1"></td>
+                        <td><input type="radio" name="odgovor10" id="odgovor10" value="1" checked="checked"></td>
                         <td><input type="radio" name="odgovor10" id="odgovor10" value="2"></td>
                         <td><input type="radio" name="odgovor10" id="odgovor10" value="3"></td>
                         <td><input type="radio" name="odgovor10" id="odgovor10" value="4"></td>
                         <td>Lako razumijem grafikone i slikovne prikaze</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="odgovor11" id="odgovor11" value="1"></td>
+                        <td><input type="radio" name="odgovor11" id="odgovor11" value="1" checked="checked"></td>
                         <td><input type="radio" name="odgovor11" id="odgovor11" value="2"></td>
                         <td><input type="radio" name="odgovor11" id="odgovor11" value="3"></td>
                         <td><input type="radio" name="odgovor11" id="odgovor11" value="4"></td>
                         <td>Lako zapamtim citat ili neku frazu</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="odgovor12" id="odgovor12" value="1"></td>
+                        <td><input type="radio" name="odgovor12" id="odgovor12" value="1" checked="checked"></td>
                         <td><input type="radio" name="odgovor12" id="odgovor12" value="2"></td>
                         <td><input type="radio" name="odgovor12" id="odgovor12" value="3"></td>
                         <td><input type="radio" name="odgovor12" id="odgovor12" value="4"></td>
                         <td>Uvijek mogu prepoznati mjesto gdje sam prije bio, čak i kao jako mlad</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="odgovor13" id="odgovor13" value="1"></td>
+                        <td><input type="radio" name="odgovor13" id="odgovor13" value="1" checked="checked"></td>
                         <td><input type="radio" name="odgovor13" id="odgovor13" value="2"></td>
                         <td><input type="radio" name="odgovor13" id="odgovor13" value="3"></td>
                         <td><input type="radio" name="odgovor13" id="odgovor13" value="4"></td>
                         <td>Kada se koncentriram, obično črčkam (šaram)</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="odgovor14" id="odgovor14" value="1"></td>
+                        <td><input type="radio" name="odgovor14" id="odgovor14" value="1" checked="checked"></td>
                         <td><input type="radio" name="odgovor14" id="odgovor14" value="2"></td>
                         <td><input type="radio" name="odgovor14" id="odgovor14" value="3"></td>
                         <td><input type="radio" name="odgovor14" id="odgovor14" value="4"></td>
                         <td>Lako mi je računati napamet</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="odgovor15" id="odgovor15" value="1"></td>
+                        <td><input type="radio" name="odgovor15" id="odgovor15" value="1" checked="checked"></td>
                         <td><input type="radio" name="odgovor15" id="odgovor15" value="2"></td>
                         <td><input type="radio" name="odgovor15" id="odgovor15" value="3"></td>
                         <td><input type="radio" name="odgovor15" id="odgovor15" value="4"></td>
                         <td>Jedan od mojih omiljenih predmeta u školi bio je hrvatski jezik</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="odgovor16" id="odgovor16" value="1"></td>
+                        <td><input type="radio" name="odgovor16" id="odgovor16" value="1" checked="checked"></td>
                         <td><input type="radio" name="odgovor16" id="odgovor16" value="2"></td>
                         <td><input type="radio" name="odgovor16" id="odgovor16" value="3"></td>
                         <td><input type="radio" name="odgovor16" id="odgovor16" value="4"></td>
                         <td>Volim o problemu detaljno razmisliti, razmatrajući sve posljedice</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="odgovor17" id="odgovor17" value="1"></td>
+                        <td><input type="radio" name="odgovor17" id="odgovor17" value="1" checked="checked"></td>
                         <td><input type="radio" name="odgovor17" id="odgovor17" value="2"></td>
                         <td><input type="radio" name="odgovor17" id="odgovor17" value="3"></td>
                         <td><input type="radio" name="odgovor17" id="odgovor17" value="4"></td>
                         <td>Uživam u debatama i diskusijama</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="odgovor18" id="odgovor18" value="1"></td>
+                        <td><input type="radio" name="odgovor18" id="odgovor18" value="1" checked="checked"></td>
                         <td><input type="radio" name="odgovor18" id="odgovor18" value="2"></td>
                         <td><input type="radio" name="odgovor18" id="odgovor18" value="3"></td>
                         <td><input type="radio" name="odgovor18" id="odgovor18" value="4"></td>
                         <td>Moja kuća/stan/soba puna je slika i fotografija</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="odgovor19" id="odgovor19" value="1"></td>
+                        <td><input type="radio" name="odgovor19" id="odgovor19" value="1" checked="checked"></td>
                         <td><input type="radio" name="odgovor19" id="odgovor19" value="2"></td>
                         <td><input type="radio" name="odgovor19" id="odgovor19" value="3"></td>
                         <td><input type="radio" name="odgovor19" id="odgovor19" value="4"></td>
                         <td>Lako pamtim telefonske brojeve</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="odgovor20" id="odgovor20" value="1"></td>
+                        <td><input type="radio" name="odgovor20" id="odgovor20" value="1" checked="checked"></td>
                         <td><input type="radio" name="odgovor20" id="odgovor20" value="2"></td>
                         <td><input type="radio" name="odgovor20" id="odgovor20" value="3"></td>
                         <td><input type="radio" name="odgovor20" id="odgovor20" value="4"></td>
                         <td>Mogu lako zamisliti kako bi neka stvar izgledala iz druge perspektive</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="odgovor21" id="odgovor21" value="1"></td>
+                        <td><input type="radio" name="odgovor21" id="odgovor21" value="1" checked="checked"></td>
                         <td><input type="radio" name="odgovor21" id="odgovor21" value="2"></td>
                         <td><input type="radio" name="odgovor21" id="odgovor21" value="3"></td>
                         <td><input type="radio" name="odgovor21" id="odgovor21" value="4"></td>
                         <td>Kada zatvorim oči, često vidim jasne slike</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="odgovor22" id="odgovor22" value="1"></td>
+                        <td><input type="radio" name="odgovor22" id="odgovor22" value="1" checked="checked"></td>
                         <td><input type="radio" name="odgovor22" id="odgovor22" value="2"></td>
                         <td><input type="radio" name="odgovor22" id="odgovor22" value="3"></td>
                         <td><input type="radio" name="odgovor22" id="odgovor22" value="4"></td>
                         <td>Kad računam ne koristim se prstima</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="odgovor23" id="odgovor23" value="1"></td>
+                        <td><input type="radio" name="odgovor23" id="odgovor23" value="1" checked="checked"></td>
                         <td><input type="radio" name="odgovor23" id="odgovor23" value="2"></td>
                         <td><input type="radio" name="odgovor23" id="odgovor23" value="3"></td>
                         <td><input type="radio" name="odgovor23" id="odgovor23" value="4"></td>
                         <td>Često govorim sam sa sobom - na glas ili u sebi</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="odgovor24" id="odgovor24" value="1"></td>
+                        <td><input type="radio" name="odgovor24" id="odgovor24" value="1" checked="checked"></td>
                         <td><input type="radio" name="odgovor24" id="odgovor24" value="2"></td>
                         <td><input type="radio" name="odgovor24" id="odgovor24" value="3"></td>
                         <td><input type="radio" name="odgovor24" id="odgovor24" value="4"></td>
                         <td>Kad sam u inozemstvu, lako pokupim osnove tog stranog jezika</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="odgovor25" id="odgovor25" value="1"></td>
+                        <td><input type="radio" name="odgovor25" id="odgovor25" value="1" checked="checked"></td>
                         <td><input type="radio" name="odgovor25" id="odgovor25" value="2"></td>
                         <td><input type="radio" name="odgovor25" id="odgovor25" value="3"></td>
                         <td><input type="radio" name="odgovor25" id="odgovor25" value="4"></td>
                         <td>Moj najdraži predmet u školi bila je matematika</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="odgovor26" id="odgovor26" value="1"></td>
+                        <td><input type="radio" name="odgovor26" id="odgovor26" value="1" checked="checked"></td>
                         <td><input type="radio" name="odgovor26" id="odgovor26" value="2"></td>
                         <td><input type="radio" name="odgovor26" id="odgovor26" value="3"></td>
                         <td><input type="radio" name="odgovor26" id="odgovor26" value="4"></td>
                         <td>Moj najdraži predmet u školi bio je u vezi s umjetnosšću (npr. likovni)</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="odgovor27" id="odgovor27" value="1"></td>
+                        <td><input type="radio" name="odgovor27" id="odgovor27" value="1" checked="checked"></td>
                         <td><input type="radio" name="odgovor27" id="odgovor27" value="2"></td>
                         <td><input type="radio" name="odgovor27" id="odgovor27" value="3"></td>
                         <td><input type="radio" name="odgovor27" id="odgovor27" value="4"></td>
                         <td>Volim čitati</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="odgovor28" id="odgovor28" value="1"></td>
+                        <td><input type="radio" name="odgovor28" id="odgovor28" value="1" checked="checked"></td>
                         <td><input type="radio" name="odgovor28" id="odgovor28" value="2"></td>
                         <td><input type="radio" name="odgovor28" id="odgovor28" value="3"></td>
                         <td><input type="radio" name="odgovor28" id="odgovor28" value="4"></td>
                         <td>Lako se snalazim na karti</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="odgovor29" id="odgovor29" value="1"></td>
+                        <td><input type="radio" name="odgovor29" id="odgovor29" value="1" checked="checked"></td>
                         <td><input type="radio" name="odgovor29" id="odgovor29" value="2"></td>
                         <td><input type="radio" name="odgovor29" id="odgovor29" value="3"></td>
                         <td><input type="radio" name="odgovor29" id="odgovor29" value="4"></td>
                         <td>Nikada se ne izgubim kada se nađem na nekom novom mjestu</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="odgovor30" id="odgovor30" value="1"></td>
+                        <td><input type="radio" name="odgovor30" id="odgovor30" value="1" checked="checked"></td>
                         <td><input type="radio" name="odgovor30" id="odgovor30" value="2"></td>
                         <td><input type="radio" name="odgovor30" id="odgovor30" value="3"></td>
                         <td><input type="radio" name="odgovor30" id="odgovor30" value="4"></td>

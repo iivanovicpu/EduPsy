@@ -27,6 +27,7 @@ public class Path {
         @Getter public static final String ADDSTUDENT = "/addstudent/";
         @Getter public static final String ADMIN_RULES = "/adminrules/";
         @Getter public static final String INTELLIGENCE_POLL = "/intelligencepoll/";
+        @Getter public static final String LEARNING_STYLE_POLL = "/learningstylepoll/";
     }
 
     public static class Template {
@@ -47,6 +48,7 @@ public class Path {
         public final static String STUDENTS_ADD = "/velocity/addstudent.vm";
         public final static String ADAPTIVE_RULES_ADMIN = "/velocity/adaptiverules.vm";
         public final static String POLL_INTELLIGENCE_TYPE = "/velocity/pollIntelligenceType.vm";
+        public final static String POLL_LEARNING_STYLE = "/velocity/pollLearningType.vm";
     }
 
 }

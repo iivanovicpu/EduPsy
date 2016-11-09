@@ -1,0 +1,887 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+<h2>$msg.get("POLL_LEARNING_TYPE_HEADING")</h2>
+
+    #if($validation)
+    <div class="alert alert-danger fade in" id="validation">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        $validation
+    </div>
+    #end
+
+<div>
+    <form method="post" class="form-horizontal" id="intelligencePollForm" onsubmit="return validateSubmit(this);">
+        $msg.get("POLL_LEARNING_TYPE_TUTORIAL")
+        <hr>
+        <div class='row'>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>1. Bolje razumijem nešto nakon što</h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor1" value="1" checked="checked">
+                            &nbsp;To isprobam
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor1" value="0">
+                            &nbsp;promislim o tome.
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>2. Više bih voljela/volio da me smatraju</h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor2" value="1" checked="checked">
+                            &nbsp;realističnom/realističnim.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor2" value="0">
+                            &nbsp;inovativnom/inovativnim.
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>3. Kada razmišljam o onome što sam radila/radio jučer, to uglavnom činim pomoću</h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor3" value="1" checked="checked">
+                            &nbsp;slika.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor3" value="0">
+                            &nbsp;riječi.
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>4. Nastojim</h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor4" value="1" checked="checked">
+                            &nbsp;razumjeti detalje nekog sadržaja premda mi opća struktura može biti nejasna.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor4" value="0">
+                            &nbsp;razumjeti opću strukturu premda mi detalji mogu biti nejasni.
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>5. Kada učim nešto novo, pomaže mi kada o tome</h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor5" value="1" checked="checked">
+                            &nbsp;razgovaram.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor5" value="0">
+                            &nbsp;razmišljam.
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>6. Kao učitelj/stručni suradnik, radije predajem one sadržaje koji se bave</h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor6" value="1" checked="checked">
+                            &nbsp;činjenicama i stvarnim životnim situacijama.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor6" value="0">
+                            &nbsp;idejama i teorijama.
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>7. Više volim dobiti nove informacije u obliku</h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor7" value="1" checked="checked">
+                            &nbsp;slika, dijagrama, grafikona ili karti.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor7" value="0">
+                            &nbsp;pisanih uputa ili verbalnih informacija.
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>8. Jednom kad shvatim</h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor8" value="1" checked="checked">
+                            &nbsp;sve dijelove, razumijem cjelinu.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor8" value="0">
+                            &nbsp;cjelinu, razumijem kako se dijelovi uklapaju.
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        9. Prilikom svladavanja težeg zadatka (gradiva) u grupnom obliku rada, više volim
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor9" value="1" checked="checked">&nbsp;
+                            uskočiti i doprinijeti svojim idejama.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor9" value="0">&nbsp;
+                            držati se po strani i slušati.
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        10. Lakše mi je učiti
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor10" value="1" checked="checked">&nbsp;
+                            činjenice.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor10" value="0">&nbsp;
+                            ideje (principe).
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        11. U knjizi s puno slika i grafikona, više volim
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor11" value="1" checked="checked">&nbsp;
+                            pažljivo pregledati slike i grafikone.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor11" value="0">&nbsp;
+                            usredotočiti se na pisani tekst.
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        12. Kada rješavam matematički problem
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor12" value="1" checked="checked">&nbsp;
+                            do rješenja obično dolazim korak po korak.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor12" value="0">&nbsp;
+                            obično vidim rješenje, ali se moram potruditi kako bih pronašla/pronašao korake koji će me dovesti do njega.
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        13. U školskim ustanovama koje sam do sada pohađala/pohađao kao učenica/učenik
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor13" value="1" checked="checked">&nbsp;
+                            obično sam poznavala/poznavao mnogo učenika.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor13" value="0">&nbsp;
+                            rijetko sam poznavala/poznavao mnogo učenika.
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        14. Prilikom čitanja literature s realnom tematikom, preferiram
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor14" value="1" checked="checked">&nbsp;
+                            onu koja me upoznaje s novim činjenicama ili mi govori kako nešto mogu učiniti.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor14" value="0">&nbsp;
+                            onu koja mi daje nove ideje o kojima mogu razmišljati.
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        15. Kao učenik sam voljela/volio učitelje koji su
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor15" value="1" checked="checked">&nbsp;
+                            crtali mnogo dijagrama na ploči.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor15" value="0">&nbsp;
+                            puno vremena posvećivali objašnjavanju.
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        16. Kada analiziram priče ili novele
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor16" value="1" checked="checked">&nbsp;
+                            crtali mnogo dijagrama na ploči.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor16" value="0">&nbsp;
+                            puno vremena posvećivali objašnjavanju.
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        17. Kada sam započinjala/započinjao s domaćom zadaćom, obično sam
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor17" value="1" checked="checked">&nbsp;
+                            odmah počela/počeo tražiti rješenja.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor17" value="0">&nbsp;
+                            nastojala/nastojao prvo razumjeti problem u cjelini.
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        18. Više volim
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor18" value="1" checked="checked">&nbsp;
+                            realnost.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor18" value="0">&nbsp;
+                            teoriju.
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        19. Najbolje pamtim ono što
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor19" value="1" checked="checked">&nbsp;
+                            vidim.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor19" value="0">&nbsp;
+                            čujem.
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        20. Važnije mi je da predavač
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor20" value="1" checked="checked">&nbsp;
+                            izloži gradivo u jasnim uzastopnim koracima.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor20" value="0">&nbsp;
+                            da opću sliku i poveže gradivo s drugim predmetima.
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        21. Više volim učiti
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor21" value="1" checked="checked">&nbsp;
+                            u skupini.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor21" value="0">&nbsp;
+                            samostalno.
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        22. S obzirom na svoj rad više volim da me smatraju
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor22" value="1" checked="checked">&nbsp;
+                            preciznom/preciznim.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor22" value="0">&nbsp;
+                            kreativnom/kreativnim.
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        23. Za pronalaženje puta do nepoznatog odredišta, više volim
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor23" value="1" checked="checked">&nbsp;
+                            koristiti kartu.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor23" value="0">&nbsp;
+                            dobiti pisane upute.
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        24. Ja učim
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor24" value="1" checked="checked">&nbsp;
+                            ravnomjernim koracima. Ako dovoljno učim, uspjet ću.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor24" value="0">&nbsp;
+                            s prekidima. Prvo sam potpuno zbunjena/zbunje, a zatim mi sve «sjedne».
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        25. Više volim prvo
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor25" value="1" checked="checked">&nbsp;
+                            isprobati kako stvari funkcioniraju.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor25" value="0">&nbsp;
+                            razmišljati kako ću nešto učiniti.
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        26. Kada čitam iz osobnog zadovoljstva, više volim kada pisci
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor26" value="1" checked="checked">&nbsp;
+                            jasno kažu što misle.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor26" value="0">&nbsp;
+                            izražavaju se na kreativan, interesantan način.
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        27. Kada bih, kao učenica/učenik, u učionici vidjela/vidio dijagram ili skicu, to bi me obično podsjetilo na
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor27" value="1" checked="checked">&nbsp;
+                            sliku.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor27" value="0">&nbsp;
+                            ono što je o tome rekla/rekao učiteljica/učitelj.
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        28. Kada sam suočena/suočen s mnoštvom informacija, vjerojatno ću se
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor28" value="1" checked="checked">&nbsp;
+                            usredotočiti na detalje, a zanemariti cijelu sliku.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor28" value="0">&nbsp;
+                            nastojati razumjeti cjelinu prije nego dođem do detalja.
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        29. Lakše pamtim
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor29" value="1" checked="checked">&nbsp;
+                            ono što sam učinila/učinio.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor29" value="0">&nbsp;
+                            ono o čemu sam dugo razmišljala/razmišljao.
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        30. Kada rješavam neki zadatak, radije
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor30" value="1" checked="checked">&nbsp;
+                            primjenjujem jedan način na koji to inače činim.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor30" value="0">&nbsp;
+                            pronalazim nove načine na koje to mogu učiniti.
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        31. Kada mi netko pokaže podatke, volim da to bude u obliku
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor31" value="1" checked="checked">&nbsp;
+                            dijagrama ili grafikona.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor31" value="0">&nbsp;
+                            tekstualnog sažetka rezultata.
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        32. Kada pišem tekst, obično
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor32" value="1" checked="checked">&nbsp;
+                            započinjem (razmišljati ili pisati) od početka teksta, a zatim krećem prema kraju.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor32" value="0">&nbsp;
+                            započinjem (razmišljati ili pisati) različite dijelove teksta, koje kasnije posložim.
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        33. Kada moram sudjelovati u timskom projektu, želim započeti sa
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor33" value="1" checked="checked">&nbsp;
+                            zajedničkom «olujom ideja» gdje svi doprinose njihovom stvaranju.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor33" value="0">&nbsp;
+                            samostalnom olujom ideja, a zatim se sastati kao skupina kako bi usporedili ideje.
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        34. Smatram većom pohvalom kada nekome kažemo da sam
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor34" value="1" checked="checked">&nbsp;
+                            senzibilna/senzibilan.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor34" value="0">&nbsp;
+                            inovativna/inovativan.
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        35. Kada sretnem ljude na zabavi, vjerojatno ću zapamtiti
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor35" value="1" checked="checked">&nbsp;
+                            kako su izgledali.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor35" value="0">&nbsp;
+                            što su rekli o sebi.
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        36. Kada sam učila/učio novi predmet, radije sam
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor36" value="1" checked="checked">&nbsp;
+                            se zadržavala/zadržavao na tom predmetu, nastojeći naučiti što više mogu o njemu.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor36" value="0">&nbsp;
+                            nastojala/nastojao povezati taj predmet s drugim odgovarajućim predmetima.
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        37. Više volim da me smatraju
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor37" value="1" checked="checked">&nbsp;
+                            otvorenom/otvorenim.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor37" value="0">&nbsp;
+                            rezerviranom/rezerviranim.
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        38. Draži su mi tečajevi koji naglašavaju
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor38" value="1" checked="checked">&nbsp;
+                            konkretne sadržaje (činjenice, podatke).
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor38" value="0">&nbsp;
+                            apstraktne sadržaje (ideje, teorije).
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        39. Za zabavu ću radije
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor39" value="1" checked="checked">&nbsp;
+                            gledati televiziju.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor39" value="0">&nbsp;
+                            čitati knjigu.
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        40. Neki učitelji započinju svoje izlaganje s planom onoga o čemu će govoriti. Takvi planovi su za mene
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor40" value="1" checked="checked">&nbsp;
+                            donekle korisni.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor40" value="0">&nbsp;
+                            vrlo korisni.
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        41. Zamisao da svi članovi tima, prilikom pisanja domaće zadaće u grupi, dobiju istu ocjenu
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor41" value="1" checked="checked">&nbsp;
+                            meni se čini privlačnom.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor41" value="0">&nbsp;
+                            ne čini mi se privlačnom.
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        42. Kada rješavam složene matematičke zadatke
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor42" value="1" checked="checked">&nbsp;
+                            nastojim ponoviti sve korake i pažljivo provjeriti svoj postupak.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor42" value="0">&nbsp;
+                            smatram provjeru svog rada dosadnom i moram se prisiliti da to učinim.
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        43. Kada nastojim zamisliti sliku nekog mjesta na kojem sam bila/bio,
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor43" value="1" checked="checked">&nbsp;
+                            to uspijevam postići jednostavno i prilično vjerno.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor43" value="0">&nbsp;
+                            postižem to s naprezanjem i bez mnogo detalja.
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <h4>
+                        44. Kada rješavam probleme u skupini, više volim razmišljati o
+                    </h4>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor44" value="1" checked="checked">&nbsp;
+                            koracima u procesu njihova rješavanja.
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="odgovor44" value="0">&nbsp;
+                            o mogućim konzekvencama ili primjenama rješenja u različitim područjima.
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <hr>
+        </div>
+        <button type="submit" class="btn btn-primary">Pošalji odgovore</button>
+        <button type="submit" formmethod="get" formaction="/index/" class="btn btn-warning">$msg.get(
+            "POLL_BTN_SKIP")</button>
+    </form>
+</div>
+#end

@@ -72,4 +72,31 @@ public class PollController extends AbstractController {
         return ViewUtil.notAcceptable.handle(request, response);
     };
 
+    public static Route showPollLearningStyle = (Request request, Response response) -> {
+        LoginController.ensureUserIsLoggedIn(request, response);
+        User user = LoginController.getCurrentUser(request);
+        if (clientAcceptsHtml(request)) {
+            HashMap<String, Object> model = new HashMap<>();
+            model.put("validation", false);
+            return ViewUtil.render(request, model, Path.Template.POLL_LEARNING_STYLE);
+        }
+        return ViewUtil.notAcceptable.handle(request, response);
+    };
+
+    public static Route submitPollLearningStyle = (Request request, Response response) -> {
+        LoginController.ensureUserIsLoggedIn(request, response);
+        User user = LoginController.getCurrentUser(request);
+        if (clientAcceptsHtml(request)) {
+            HashMap<String, Object> model = new HashMap<>();
+            for (int i = 1; i < 45; i++) {
+                String odgovor = request.queryParams("odgovor" + i);
+                System.out.println("odgovor" + i + " = " + odgovor);
+                // todo: algoritam za zbranje
+            }
+            model.put("validation", false);
+            return ViewUtil.render(request, model, Path.Template.POLL_LEARNING_STYLE);
+        }
+        return ViewUtil.notAcceptable.handle(request, response);
+    };
+
 }

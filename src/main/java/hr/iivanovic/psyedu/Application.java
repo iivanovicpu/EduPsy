@@ -96,6 +96,9 @@ public class Application {
         get(Path.Web.INTELLIGENCE_POLL, PollController.showPollIntelligenceType);
         post(Path.Web.INTELLIGENCE_POLL, PollController.submitPollIntelligenceType);
 
+        get(Path.Web.LEARNING_STYLE_POLL, PollController.showPollLearningStyle);
+        post(Path.Web.LEARNING_STYLE_POLL, PollController.submitPollLearningStyle);
+
         get(Path.Web.LOGIN, LoginController.serveLoginPage);
         post(Path.Web.LOGIN, LoginController.handleLoginPost);
         post(Path.Web.LOGOUT, LoginController.handleLogoutPost);

@@ -40,6 +40,9 @@ public class LoginController {
         if(isStudent(request) && !user.isCompletedIntelligencePoll()){
             response.redirect(Path.Web.INTELLIGENCE_POLL);
         }
+        if(isStudent(request) && !user.isCompletedLearningStylePoll()){
+            response.redirect(Path.Web.LEARNING_STYLE_POLL);
+        }
         if (getQueryLoginRedirect(request) != null) {
             response.redirect(getQueryLoginRedirect(request));
         }

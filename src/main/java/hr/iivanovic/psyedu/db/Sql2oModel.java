@@ -213,4 +213,30 @@ public class Sql2oModel implements Model {
                     .executeUpdate();
         }
     }
+
+    @Override
+    public User getUserById(int studentId) {
+        return getAllUsers().stream().filter(user -> user.getId() == studentId).findFirst().orElse(null);
+    }
+
+    @Override
+    public void updateStudentLearningStylePollResult(int id, int aktivni, int reflektivni, int opazajni, int intuitivni, int vizualni, int verbalni, int sekvencijalni, int globalni) {
+        try (Connection conn = sql2o.open()) {
+            conn.createQuery("update users set lsPointsActive = :lsPointsActive, lsPointsReflective = :lsPointsReflective, " +
+                    "lsPointsVisual = :lsPointsVisual, lsPointsVerbal = :lsPointsVerbal, " +
+                    "lsPointsSequential = :lsPointsSequential, lsPointsGlobal = :lsPointsGlobal, " +
+                    "lsPointsIntuitive = :lsPointsIntuitive, lsPointsSensor = :lsPointsSensor, " +
+                    "completedLearningStylePoll = TRUE where id = :id")
+                    .addParameter("lsPointsActive", aktivni)
+                    .addParameter("lsPointsReflective", reflektivni)
+                    .addParameter("lsPointsVisual", vizualni)
+                    .addParameter("lsPointsVerbal", verbalni)
+                    .addParameter("lsPointsSequential", sekvencijalni)
+                    .addParameter("lsPointsGlobal", globalni)
+                    .addParameter("lsPointsIntuitive", intuitivni)
+                    .addParameter("lsPointsSensor", opazajni)
+                    .addParameter("id", id)
+                    .executeUpdate();
+        }
+    }
 }

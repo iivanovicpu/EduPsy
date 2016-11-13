@@ -31,6 +31,25 @@ public class StudentsController extends AbstractController {
         return ViewUtil.notAcceptable.handle(request, response);
     };
 
+    public static Route fetchStudentDetails = (Request request, Response response) -> {
+        LoginController.ensureUserIsLoggedIn(request, response);
+        if(LoginController.isEditAllowed(request)){
+            int studentId = Integer.parseInt(request.params("id"));
+            User student = dbProvider.getUserById(studentId);
+            if(null != student) {
+                Map<String, Object> model = new HashMap<>();
+                model.put("validation", false);
+                model.put("student", student);
+                model.put("styles", LearningStyles.values());
+                model.put("intelligenceType", IntelligenceTypes.getById(student.getIntelligenceTypeId()).getDescription());
+                return ViewUtil.render(request, model, Path.Template.STUDENT_DETAILS);
+            } else {
+                ViewUtil.notAcceptable.handle(request,response);
+            }
+        }
+        return ViewUtil.notAcceptable.handle(request, response);
+    };
+
     public static Route addStudent = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request,response);
         if(LoginController.isEditAllowed(request)){

@@ -86,6 +86,7 @@ public class Application {
         get(Path.Web.STUDENTS, StudentsController.fetchAllStudents);
         get(Path.Web.ADDSTUDENT, StudentsController.addStudent);
         post(Path.Web.ADDSTUDENT, StudentsController.submitStudent);
+        get(Path.Web.STUDENT_DETAILS, StudentsController.fetchStudentDetails);
 
         get(Path.Web.PERSONAL_PROFILE, ProfileController.fetchPersonalProfile);
         post(Path.Web.PERSONAL_PROFILE, ProfileController.submitPersonalProfile);

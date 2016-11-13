@@ -19,13 +19,13 @@
                     <h4>1. Bolje razumijem nešto nakon što</h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor1" value="1" checked="checked">
+                            <input type="radio" name="odgovor1" value="a" checked="checked">
                             &nbsp;To isprobam
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor1" value="0">
+                            <input type="radio" name="odgovor1" value="b">
                             &nbsp;promislim o tome.
                         </label>
                     </div>
@@ -36,13 +36,13 @@
                     <h4>2. Više bih voljela/volio da me smatraju</h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor2" value="1" checked="checked">
+                            <input type="radio" name="odgovor2" value="a" checked="checked">
                             &nbsp;realističnom/realističnim.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor2" value="0">
+                            <input type="radio" name="odgovor2" value="b">
                             &nbsp;inovativnom/inovativnim.
                         </label>
                     </div>
@@ -55,13 +55,13 @@
                     <h4>3. Kada razmišljam o onome što sam radila/radio jučer, to uglavnom činim pomoću</h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor3" value="1" checked="checked">
+                            <input type="radio" name="odgovor3" value="a" checked="checked">
                             &nbsp;slika.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor3" value="0">
+                            <input type="radio" name="odgovor3" value="b">
                             &nbsp;riječi.
                         </label>
                     </div>
@@ -72,13 +72,13 @@
                     <h4>4. Nastojim</h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor4" value="1" checked="checked">
+                            <input type="radio" name="odgovor4" value="a" checked="checked">
                             &nbsp;razumjeti detalje nekog sadržaja premda mi opća struktura može biti nejasna.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor4" value="0">
+                            <input type="radio" name="odgovor4" value="b">
                             &nbsp;razumjeti opću strukturu premda mi detalji mogu biti nejasni.
                         </label>
                     </div>
@@ -91,13 +91,13 @@
                     <h4>5. Kada učim nešto novo, pomaže mi kada o tome</h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor5" value="1" checked="checked">
+                            <input type="radio" name="odgovor5" value="a" checked="checked">
                             &nbsp;razgovaram.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor5" value="0">
+                            <input type="radio" name="odgovor5" value="b">
                             &nbsp;razmišljam.
                         </label>
                     </div>
@@ -108,13 +108,13 @@
                     <h4>6. Kao učitelj/stručni suradnik, radije predajem one sadržaje koji se bave</h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor6" value="1" checked="checked">
+                            <input type="radio" name="odgovor6" value="a" checked="checked">
                             &nbsp;činjenicama i stvarnim životnim situacijama.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor6" value="0">
+                            <input type="radio" name="odgovor6" value="b">
                             &nbsp;idejama i teorijama.
                         </label>
                     </div>
@@ -127,13 +127,13 @@
                     <h4>7. Više volim dobiti nove informacije u obliku</h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor7" value="1" checked="checked">
+                            <input type="radio" name="odgovor7" value="a" checked="checked">
                             &nbsp;slika, dijagrama, grafikona ili karti.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor7" value="0">
+                            <input type="radio" name="odgovor7" value="b">
                             &nbsp;pisanih uputa ili verbalnih informacija.
                         </label>
                     </div>
@@ -144,13 +144,13 @@
                     <h4>8. Jednom kad shvatim</h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor8" value="1" checked="checked">
+                            <input type="radio" name="odgovor8" value="a" checked="checked">
                             &nbsp;sve dijelove, razumijem cjelinu.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor8" value="0">
+                            <input type="radio" name="odgovor8" value="b">
                             &nbsp;cjelinu, razumijem kako se dijelovi uklapaju.
                         </label>
                     </div>
@@ -165,13 +165,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor9" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor9" value="a" checked="checked">&nbsp;
                             uskočiti i doprinijeti svojim idejama.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor9" value="0">&nbsp;
+                            <input type="radio" name="odgovor9" value="b">&nbsp;
                             držati se po strani i slušati.
                         </label>
                     </div>
@@ -184,13 +184,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor10" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor10" value="a" checked="checked">&nbsp;
                             činjenice.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor10" value="0">&nbsp;
+                            <input type="radio" name="odgovor10" value="b">&nbsp;
                             ideje (principe).
                         </label>
                     </div>
@@ -205,13 +205,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor11" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor11" value="a" checked="checked">&nbsp;
                             pažljivo pregledati slike i grafikone.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor11" value="0">&nbsp;
+                            <input type="radio" name="odgovor11" value="b">&nbsp;
                             usredotočiti se na pisani tekst.
                         </label>
                     </div>
@@ -224,13 +224,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor12" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor12" value="a" checked="checked">&nbsp;
                             do rješenja obično dolazim korak po korak.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor12" value="0">&nbsp;
+                            <input type="radio" name="odgovor12" value="b">&nbsp;
                             obično vidim rješenje, ali se moram potruditi kako bih pronašla/pronašao korake koji će me dovesti do njega.
                         </label>
                     </div>
@@ -245,13 +245,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor13" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor13" value="a" checked="checked">&nbsp;
                             obično sam poznavala/poznavao mnogo učenika.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor13" value="0">&nbsp;
+                            <input type="radio" name="odgovor13" value="b">&nbsp;
                             rijetko sam poznavala/poznavao mnogo učenika.
                         </label>
                     </div>
@@ -264,13 +264,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor14" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor14" value="a" checked="checked">&nbsp;
                             onu koja me upoznaje s novim činjenicama ili mi govori kako nešto mogu učiniti.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor14" value="0">&nbsp;
+                            <input type="radio" name="odgovor14" value="b">&nbsp;
                             onu koja mi daje nove ideje o kojima mogu razmišljati.
                         </label>
                     </div>
@@ -285,13 +285,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor15" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor15" value="a" checked="checked">&nbsp;
                             crtali mnogo dijagrama na ploči.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor15" value="0">&nbsp;
+                            <input type="radio" name="odgovor15" value="b">&nbsp;
                             puno vremena posvećivali objašnjavanju.
                         </label>
                     </div>
@@ -304,13 +304,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor16" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor16" value="a" checked="checked">&nbsp;
                             crtali mnogo dijagrama na ploči.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor16" value="0">&nbsp;
+                            <input type="radio" name="odgovor16" value="b">&nbsp;
                             puno vremena posvećivali objašnjavanju.
                         </label>
                     </div>
@@ -325,13 +325,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor17" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor17" value="a" checked="checked">&nbsp;
                             odmah počela/počeo tražiti rješenja.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor17" value="0">&nbsp;
+                            <input type="radio" name="odgovor17" value="b">&nbsp;
                             nastojala/nastojao prvo razumjeti problem u cjelini.
                         </label>
                     </div>
@@ -344,13 +344,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor18" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor18" value="a" checked="checked">&nbsp;
                             realnost.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor18" value="0">&nbsp;
+                            <input type="radio" name="odgovor18" value="b">&nbsp;
                             teoriju.
                         </label>
                     </div>
@@ -365,13 +365,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor19" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor19" value="a" checked="checked">&nbsp;
                             vidim.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor19" value="0">&nbsp;
+                            <input type="radio" name="odgovor19" value="b">&nbsp;
                             čujem.
                         </label>
                     </div>
@@ -384,13 +384,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor20" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor20" value="a" checked="checked">&nbsp;
                             izloži gradivo u jasnim uzastopnim koracima.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor20" value="0">&nbsp;
+                            <input type="radio" name="odgovor20" value="b">&nbsp;
                             da opću sliku i poveže gradivo s drugim predmetima.
                         </label>
                     </div>
@@ -405,13 +405,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor21" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor21" value="a" checked="checked">&nbsp;
                             u skupini.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor21" value="0">&nbsp;
+                            <input type="radio" name="odgovor21" value="b">&nbsp;
                             samostalno.
                         </label>
                     </div>
@@ -424,13 +424,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor22" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor22" value="a" checked="checked">&nbsp;
                             preciznom/preciznim.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor22" value="0">&nbsp;
+                            <input type="radio" name="odgovor22" value="b">&nbsp;
                             kreativnom/kreativnim.
                         </label>
                     </div>
@@ -445,13 +445,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor23" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor23" value="a" checked="checked">&nbsp;
                             koristiti kartu.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor23" value="0">&nbsp;
+                            <input type="radio" name="odgovor23" value="b">&nbsp;
                             dobiti pisane upute.
                         </label>
                     </div>
@@ -464,13 +464,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor24" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor24" value="a" checked="checked">&nbsp;
                             ravnomjernim koracima. Ako dovoljno učim, uspjet ću.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor24" value="0">&nbsp;
+                            <input type="radio" name="odgovor24" value="b">&nbsp;
                             s prekidima. Prvo sam potpuno zbunjena/zbunje, a zatim mi sve «sjedne».
                         </label>
                     </div>
@@ -485,13 +485,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor25" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor25" value="a" checked="checked">&nbsp;
                             isprobati kako stvari funkcioniraju.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor25" value="0">&nbsp;
+                            <input type="radio" name="odgovor25" value="b">&nbsp;
                             razmišljati kako ću nešto učiniti.
                         </label>
                     </div>
@@ -504,13 +504,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor26" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor26" value="a" checked="checked">&nbsp;
                             jasno kažu što misle.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor26" value="0">&nbsp;
+                            <input type="radio" name="odgovor26" value="b">&nbsp;
                             izražavaju se na kreativan, interesantan način.
                         </label>
                     </div>
@@ -525,13 +525,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor27" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor27" value="a" checked="checked">&nbsp;
                             sliku.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor27" value="0">&nbsp;
+                            <input type="radio" name="odgovor27" value="b">&nbsp;
                             ono što je o tome rekla/rekao učiteljica/učitelj.
                         </label>
                     </div>
@@ -544,13 +544,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor28" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor28" value="a" checked="checked">&nbsp;
                             usredotočiti na detalje, a zanemariti cijelu sliku.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor28" value="0">&nbsp;
+                            <input type="radio" name="odgovor28" value="b">&nbsp;
                             nastojati razumjeti cjelinu prije nego dođem do detalja.
                         </label>
                     </div>
@@ -565,13 +565,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor29" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor29" value="a" checked="checked">&nbsp;
                             ono što sam učinila/učinio.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor29" value="0">&nbsp;
+                            <input type="radio" name="odgovor29" value="b">&nbsp;
                             ono o čemu sam dugo razmišljala/razmišljao.
                         </label>
                     </div>
@@ -584,13 +584,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor30" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor30" value="a" checked="checked">&nbsp;
                             primjenjujem jedan način na koji to inače činim.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor30" value="0">&nbsp;
+                            <input type="radio" name="odgovor30" value="b">&nbsp;
                             pronalazim nove načine na koje to mogu učiniti.
                         </label>
                     </div>
@@ -605,13 +605,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor31" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor31" value="a" checked="checked">&nbsp;
                             dijagrama ili grafikona.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor31" value="0">&nbsp;
+                            <input type="radio" name="odgovor31" value="b">&nbsp;
                             tekstualnog sažetka rezultata.
                         </label>
                     </div>
@@ -624,13 +624,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor32" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor32" value="a" checked="checked">&nbsp;
                             započinjem (razmišljati ili pisati) od početka teksta, a zatim krećem prema kraju.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor32" value="0">&nbsp;
+                            <input type="radio" name="odgovor32" value="b">&nbsp;
                             započinjem (razmišljati ili pisati) različite dijelove teksta, koje kasnije posložim.
                         </label>
                     </div>
@@ -645,13 +645,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor33" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor33" value="a" checked="checked">&nbsp;
                             zajedničkom «olujom ideja» gdje svi doprinose njihovom stvaranju.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor33" value="0">&nbsp;
+                            <input type="radio" name="odgovor33" value="b">&nbsp;
                             samostalnom olujom ideja, a zatim se sastati kao skupina kako bi usporedili ideje.
                         </label>
                     </div>
@@ -664,13 +664,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor34" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor34" value="a" checked="checked">&nbsp;
                             senzibilna/senzibilan.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor34" value="0">&nbsp;
+                            <input type="radio" name="odgovor34" value="b">&nbsp;
                             inovativna/inovativan.
                         </label>
                     </div>
@@ -685,13 +685,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor35" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor35" value="a" checked="checked">&nbsp;
                             kako su izgledali.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor35" value="0">&nbsp;
+                            <input type="radio" name="odgovor35" value="b">&nbsp;
                             što su rekli o sebi.
                         </label>
                     </div>
@@ -704,13 +704,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor36" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor36" value="a" checked="checked">&nbsp;
                             se zadržavala/zadržavao na tom predmetu, nastojeći naučiti što više mogu o njemu.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor36" value="0">&nbsp;
+                            <input type="radio" name="odgovor36" value="b">&nbsp;
                             nastojala/nastojao povezati taj predmet s drugim odgovarajućim predmetima.
                         </label>
                     </div>
@@ -725,13 +725,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor37" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor37" value="a" checked="checked">&nbsp;
                             otvorenom/otvorenim.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor37" value="0">&nbsp;
+                            <input type="radio" name="odgovor37" value="b">&nbsp;
                             rezerviranom/rezerviranim.
                         </label>
                     </div>
@@ -744,13 +744,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor38" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor38" value="a" checked="checked">&nbsp;
                             konkretne sadržaje (činjenice, podatke).
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor38" value="0">&nbsp;
+                            <input type="radio" name="odgovor38" value="b">&nbsp;
                             apstraktne sadržaje (ideje, teorije).
                         </label>
                     </div>
@@ -765,13 +765,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor39" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor39" value="a" checked="checked">&nbsp;
                             gledati televiziju.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor39" value="0">&nbsp;
+                            <input type="radio" name="odgovor39" value="b">&nbsp;
                             čitati knjigu.
                         </label>
                     </div>
@@ -784,13 +784,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor40" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor40" value="a" checked="checked">&nbsp;
                             donekle korisni.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor40" value="0">&nbsp;
+                            <input type="radio" name="odgovor40" value="b">&nbsp;
                             vrlo korisni.
                         </label>
                     </div>
@@ -805,13 +805,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor41" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor41" value="a" checked="checked">&nbsp;
                             meni se čini privlačnom.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor41" value="0">&nbsp;
+                            <input type="radio" name="odgovor41" value="b">&nbsp;
                             ne čini mi se privlačnom.
                         </label>
                     </div>
@@ -824,13 +824,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor42" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor42" value="a" checked="checked">&nbsp;
                             nastojim ponoviti sve korake i pažljivo provjeriti svoj postupak.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor42" value="0">&nbsp;
+                            <input type="radio" name="odgovor42" value="b">&nbsp;
                             smatram provjeru svog rada dosadnom i moram se prisiliti da to učinim.
                         </label>
                     </div>
@@ -845,13 +845,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor43" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor43" value="a" checked="checked">&nbsp;
                             to uspijevam postići jednostavno i prilično vjerno.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor43" value="0">&nbsp;
+                            <input type="radio" name="odgovor43" value="b">&nbsp;
                             postižem to s naprezanjem i bez mnogo detalja.
                         </label>
                     </div>
@@ -864,13 +864,13 @@
                     </h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor44" value="1" checked="checked">&nbsp;
+                            <input type="radio" name="odgovor44" value="a" checked="checked">&nbsp;
                             koracima u procesu njihova rješavanja.
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="odgovor44" value="0">&nbsp;
+                            <input type="radio" name="odgovor44" value="b">&nbsp;
                             o mogućim konzekvencama ili primjenama rješenja u različitim područjima.
                         </label>
                     </div>

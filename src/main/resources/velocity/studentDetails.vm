@@ -1,0 +1,163 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+    <h2>Podaci o studentu</h2>
+    #if($validation)
+    <div class="alert alert-danger fade in" id="validation">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        $validation
+    </div>
+    #end
+    <form method="post" class="form-horizontal" id="profileForm">
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="username">$msg.get("PROFILE_USERNAME")</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="username" value="$student.username" readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="firstName">$msg.get("PROFILE_FIRST_NAME")</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="firstName" value="$student.firstName" readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="lastName">$msg.get("PROFILE_LAST_NAME")</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="lastName" value="$student.lastName" readonly>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="emal">$msg.get("PROFILE_EMAIL")</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="email" value="$student.email" readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="intelligenceType">$msg.get("PROFILE_INTELLIGENCE_TYPE")</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="intelligenceType" value="$intelligenceType" readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="style">$msg.get("ADAPTIVE_RULES_LEARNING_STYLE")</label>
+            <div class="col-sm-10">
+                <select class="form-control" id="style" name="style">
+                    #foreach($style in $styles)
+                        <option value="$style.id">$style.description</option>
+                    #end
+                </select>
+            </div>
+        </div>
+
+        <h3>Raspodjela bodova stilova učenja</h3>
+        <div class="table-responsive">
+            <table class="table" id="table">
+                <thead>
+                <tr>
+                    <th>Skupina</th>
+                    <th>Bodovi</th>
+                    <th>rezultat</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Aktivni - Reflektivni</td>
+                    <td>
+                        <div class='row'>
+                            <div class='col-sm-6'>
+                                <input type="text" class="form-control" id="aktivni" value="$student.lsPointsActive" readonly>
+                            </div>
+                            <div class='col-sm-6'>
+                                <input type="text" class="form-control" id="reflektivni" value="$student.lsPointsReflective" readonly>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" id="ar-rez" value="" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Vizualni - Verbalni</td>
+                    <td>
+                        <div class='row'>
+                            <div class='col-sm-6'>
+                                <input type="text" class="form-control" id="vizualni" value="$student.lsPointsVisual" readonly>
+                            </div>
+                            <div class='col-sm-6'>
+                                <input type="text" class="form-control" id="verbalni" value="$student.lsPointsVerbal" readonly>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" id="vv-rez" value="" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Sekvencijalni - Globalni</td>
+                    <td>
+                        <div class='row'>
+                            <div class='col-sm-6'>
+                                <input type="text" class="form-control" id="sekvencijalni" value="$student.lsPointsSequential" readonly>
+                            </div>
+                            <div class='col-sm-6'>
+                                <input type="text" class="form-control" id="globalni" value="$student.lsPointsGlobal" readonly>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" id="sg-rez" value="" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Intuitivni - Senzorni</td>
+                    <td>
+                        <div class='row'>
+                            <div class='col-sm-6'>
+                                <input type="text" class="form-control" id="intuitivni" value="$student.lsPointsIntuitive" readonly>
+                            </div>
+                            <div class='col-sm-6'>
+                                <input type="text" class="form-control" id="senzorni" value="$student.lsPointsSensor" readonly>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" id="is-rez" value="" readonly>
+                    </td>
+                </tr>
+                </tbody>
+                </table>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="emal">$msg.get("PROFILE_COLOR")</label>
+            <div class="col-sm-10">
+                <label for="color01">
+                    <input type="radio" class="form-control" name="color" id="color01"  #if ($student.color == 'main_1.css') checked #end value="1">
+                    <span STYLE="color: black; background-color: yellow; padding: 7px; border-radius: 5px;">Text</span>
+                </label>
+                <label for="color02">
+                    <input type="radio" class="form-control" name="color" id="color02" #if ($student.color == 'main_2.css') checked #end  value="2">
+                    <span STYLE="color: #f0ad4e; background-color: #122b40; padding: 7px; border-radius: 5px;">Text</span>
+                </label>
+                <label for="color03">
+                    <input type="radio" class="form-control" name="color" id="color03" #if ($student.color == 'main_3.css') checked #end  value="3">
+                    <span STYLE="color: #f0ad4e; background-color: blue; padding: 7px; border-radius: 5px;">Text</span>
+                </label>
+                <label for="color04">
+                    <input type="radio" class="form-control" name="color" id="color04"  #if ($student.color == 'main_4.css') checked #end value="4">
+                    <span STYLE="color: black; background-color: violet; padding: 7px; border-radius: 5px;">Text</span>
+                </label>
+                <label for="color05">
+                    <input type="radio" class="form-control" name="color" id="color05"  #if ($student.color == 'main_5.css') checked #end value="5">
+                    <span STYLE="color: red; background-color: white; padding: 7px; border-radius: 5px;">Text</span>
+                </label>
+                <label for="color06">
+                    <input type="radio" class="form-control" name="color" id="color05" #if ($student.color == 'main_6.css') checked #end value="6">
+                    <span STYLE="color: black; background-color: white; padding: 7px; border-radius: 5px;">Text</span>
+                </label>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Spremi izmjenu</button>
+        <button type="submit" formmethod="get" formaction="/index/" class="btn btn-warning">$msg.get("SUBJECT_EDIT_CANCEL")</button>
+    </form>
+#end

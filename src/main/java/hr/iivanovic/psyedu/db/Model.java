@@ -36,4 +36,7 @@ public interface Model {
 
     void updateStudentIntelligenceType(int id, int intelligenceTypeId);
 
+    User getUserById(int studentId);
+
+    void updateStudentLearningStylePollResult(int id, int aktivni, int reflektivni, int opazajni, int intuitivni, int vizualni, int verbalni, int sekvencijalni, int globalni);
 }

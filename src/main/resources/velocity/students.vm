@@ -10,6 +10,7 @@
                 <th>Prezime</th>
                 <th>Korisničko ime</th>
                 <th>Email</th>
+                <th>&nbsp;</th>
             </tr>
             </thead>
             <tbody>
@@ -20,6 +21,11 @@
                     <td>$student.firstName</td>
                     <td>$student.lastName</td>
                     <td>$student.email</td>
+                    <td>
+                        <form method="get" action="/studentdtl/$student.id/">
+                            <button type="submit" class="btn btn-warning">Detalji</button>
+                        </form>
+                    </td>
                 </tr>
             #end
             </tbody>

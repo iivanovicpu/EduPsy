@@ -20,4 +20,14 @@ public class User {
     private int learningStyleId;
     private boolean completedLearningStylePoll;
     private boolean completedIntelligencePoll;
+
+    private int lsPointsActive;
+    private int lsPointsReflective;
+    private int lsPointsVisual;
+    private int lsPointsVerbal;
+    private int lsPointsSequential;
+    private int lsPointsGlobal;
+    private int lsPointsIntuitive;
+    private int lsPointsSensor;
+
 }

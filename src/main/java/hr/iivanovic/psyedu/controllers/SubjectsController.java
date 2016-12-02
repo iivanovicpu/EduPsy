@@ -135,6 +135,14 @@ public class SubjectsController extends AbstractController {
         if (clientAcceptsHtml(request)) {
             HashMap<String, Object> model = new HashMap<>();
             Subject subject = dbProvider.getSubject(id);
+            String marks = "<script>var oznake = [";
+            for (AdaptiveRuleTypes ruleType : AdaptiveRuleTypes.values()) {
+                marks = marks.concat("'").concat(ruleType.getMark()).concat("',");
+            }
+            marks = marks.substring(0, marks.length()-1).concat("];</script>");
+            // todo: napuniti marks iz adaptive rules tablice
+//            model.put("marks","<script>var oznake = ['***','**','blabla'];</script>");
+            model.put("marks",marks);
             model.put("subject", subject);
             model.put("editAllowed", LoginController.isEditAllowed(request));
             return ViewUtil.render(request, model, Path.Template.SUBJECTS_ONE_EDIT);

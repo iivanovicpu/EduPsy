@@ -17,6 +17,9 @@
     </form>
 
     #end
+
+    $marks
+
     <script src="/js/jquery.js"></script>
     <script src='http://cdn.tinymce.com/4/tinymce.min.js'></script>
     <script>
@@ -30,7 +33,7 @@
                 'insertdatetime media nonbreaking save table contextmenu directionality',
                 'emoticons template paste textcolor colorpicker textpattern imagetools'
             ],
-            toolbar1: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | edupsy1 | edupsy2',
+            toolbar1: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | edupsy1 | edupsy2 | edupsy3',
             toolbar2: 'print preview media | forecolor backcolor emoticons',
 //            toolbar3: '',
             image_advtab: true,
@@ -51,6 +54,13 @@
                     icon: false,
                     onclick: function () {
                         editor.insertContent('&nbsp;***');
+                    }
+                });
+                editor.addButton('edupsy3', {
+                    text: 'Test',
+                    icon: false,
+                    onclick: function () {
+                        editor.insertContent(oznake[2]);
                     }
                 });
             },

@@ -14,7 +14,6 @@ public class Sql2oModel implements Model {
 
     private static Sql2oModel instance = null;
 
-
     private Sql2o sql2o;
 
     public static synchronized Sql2oModel getInstance() {
@@ -40,12 +39,13 @@ public class Sql2oModel implements Model {
     }
 
     @Override
-    public void createSubject(String title, String keywords, String url) {
+    public void createSubject(String title, String keywords, String url, SubjectLevel subjectLevel) {
         try (Connection conn = sql2o.open()) {
-            conn.createQuery("insert into subjects(title, keywords, url) VALUES ( :title, :keywords, :url)")
+            conn.createQuery("insert into subjects(title, keywords, url, subject_level_id) VALUES ( :title, :keywords, :url, :levelid)")
                     .addParameter("title", title)
                     .addParameter("keywords", keywords)
                     .addParameter("url", url)
+                    .addParameter("levelid", subjectLevel.getId())
                     .executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();

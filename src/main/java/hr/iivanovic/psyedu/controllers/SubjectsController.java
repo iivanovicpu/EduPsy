@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import hr.iivanovic.psyedu.AppConfiguration;
 import hr.iivanovic.psyedu.db.LearningLog;
 import hr.iivanovic.psyedu.db.Subject;
+import hr.iivanovic.psyedu.db.SubjectLevel;
 import hr.iivanovic.psyedu.db.TitleLearningStatus;
 import hr.iivanovic.psyedu.db.User;
 import hr.iivanovic.psyedu.html.HtmlParser;
@@ -213,12 +214,12 @@ public class SubjectsController extends AbstractController {
             model.put("editAllowed", LoginController.isEditAllowed(request));
             return ViewUtil.render(request, model, Path.Template.SUBJECT_ADD);
         }
-        String titleReplaced = title.replaceAll(" ", "");
-        String filename = titleReplaced.substring(0, titleReplaced.length() > 10 ? 10 : titleReplaced.length()).toLowerCase().concat(".html");
+        String titleReplaced = title.replaceAll(" ", "").replaceAll("[^\\x00-\\x7F]", "");
+        String filename = titleReplaced.substring(0, titleReplaced.length() > 10 ? 10 : titleReplaced.length()).toLowerCase();
         String filePath = AppConfiguration.getInstance().getExternalLocation().concat("materijali/").concat(filename);
-        createFileIfNotExists(filePath, title);
+        createDirIfNotExists(filePath, title);
 
-        dbProvider.createSubject(title, keywords, "/materijali/".concat(filename));
+        dbProvider.createSubject(title, keywords, "/materijali/".concat(filename), SubjectLevel.OSNOVNO);
 
         if (clientAcceptsHtml(request)) {
             response.redirect(Path.Web.getSUBJECTS());
@@ -227,20 +228,17 @@ public class SubjectsController extends AbstractController {
     };
     public static final Logger LOGGER = LoggerFactory.getLogger(SubjectsController.class);
 
-    private static void createFileIfNotExists(String filePath, String title) {
-        try {
-            File file = new File(filePath);
-            if (file.createNewFile()) {
-                FileWriter fileWriter = new FileWriter(file);
-                fileWriter.write("<h1>" + title + "</h1>");
-                fileWriter.flush();
-                fileWriter.close();
+    private static void createDirIfNotExists(String subjectDirectory, String title) {
+            File dir = new File(subjectDirectory);
+            if(!dir.exists()){
+                try {
+                    dir.mkdir();
+                } catch (SecurityException e){
+                    LOGGER.error("error creating dir: {} for title: {}", dir.getPath(), title, e);
+                }
             } else {
                 LOGGER.info("File already exists.");
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private static String validateSubject(String title) {

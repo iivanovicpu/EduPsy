@@ -6,7 +6,7 @@ public interface Model {
 
     void createUser(String username, String password, String firstName, String lastName, String email, String status);
 
-    void createSubject(String title, String keywords, String url);
+    void createSubject(String title, String keywords, String url, SubjectLevel subjectLevel);
 
     List<User> getAllUsers();
 

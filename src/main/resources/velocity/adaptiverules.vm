@@ -7,69 +7,48 @@
         $validation
     </div>
     #end
-    <form method="post" class="form-horizontal" id="rulesForm">
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="style">$msg.get("ADAPTIVE_RULES_LEARNING_STYLE")</label>
-            <div class="col-sm-10">
-                <select class="form-control" id="style" name="style">
-                    #foreach($style in $styles)
-                        <option value="$style.id">$style.description</option>
-                    #end
-                </select>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="intelligence">$msg.get("ADAPTIVE_RULES_INTELLIGENCE_TYPE")</label>
-            <div class="col-sm-10">
-                <select class="form-control" id="intelligence" name="intelligence">
-                    #foreach($intelligence in $intelligences)
-                        <option value="$intelligence.id">$intelligence.description</option>
-                    #end
-                </select>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="rule">$msg.get("ADAPTIVE_RULES_RULE")</label>
-            <div class="col-sm-10">
-                <select class="form-control" id="rule" name="rule">
-                    #foreach($rule in $rules)
-                        <option value="$rule.id">$rule.description</option>
-                    #end
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="mark">$msg.get("ADAPTIVE_RULES_MARK")</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="mark" name="mark">
-            </div>
-        </div>
-
-        <button type="submit" class="btn btn-primary">$msg.get("ADAPTIVE_RULES_SUBMIT")</button>
-        <button type="submit" formmethod="get" formaction="/index/" class="btn btn-warning">$msg.get("ADAPTIVE_RULES_CANCEL")</button>
-
-    </form>
 <div class="table-responsive">
+    <h3>Tipovi inteligencije</h3>
     <table class="table">
         <thead>
         <tr>
-            <th>#</th>
-            <th>Grupa inteligencije</th>
-            <th>Stil učenja</th>
-            <th>Pravilo za adaptivni prikaz</th>
-            <th>Oznaka</th>
+            <th>Šifra</th>
+            <th>Naziv</th>
+            <th>&nbsp;</th>
         </tr>
         </thead>
         <tbody>
-            #foreach($adaptiverule in $adaptiverules)
+            #foreach($intelligence in $intelligences)
             <tr>
-                <td>$adaptiverule.id</td>
-                <td>$adaptiverule.intelligenceDescription</td>
-                <td>$adaptiverule.styleDescription</td>
-                <td>$adaptiverule.ruleDescription</td>
-                <td>#if($adaptiverule.mark)
-                        $adaptiverule.mark
+                <td>$intelligence.code</td>
+                <td>$intelligence.name</td>
+                <td>
+                    #foreach($intrule in $intelligence.adaptiveRules)
+                        $intrule.title<br>
+                    #end
+                </td>
+            </tr>
+            #end
+        </tbody>
+    </table>
+
+    <h3>Stilovi učenja</h3>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Šifra</th>
+            <th>Naziv</th>
+            <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+            #foreach($style in $styles)
+            <tr>
+                <td>$style.code</td>
+                <td>$style.name</td>
+                <td>
+                    #foreach($stylerule in $style.adaptiveRules)
+                        $stylerule.title<br>
                     #end
                 </td>
             </tr>
@@ -77,6 +56,4 @@
         </tbody>
     </table>
 </div>
-
-
 #end

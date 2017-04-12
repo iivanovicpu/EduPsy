@@ -12,4 +12,8 @@ public class Subject {
     private String title;
     private String keywords;
     private String url;
+    private int subjectId;
+    private int subjectLevelId;
+    private int order;
+    private String content;
 }

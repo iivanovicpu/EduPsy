@@ -25,7 +25,6 @@ public class Sql2oModel implements Model {
     }
 
     private Sql2oModel() {
-//        this.sql2o = DbUtil.getH2DataSource();
         this.sql2o = DbUtil.getPostgreSQLDataSource();
     }
 
@@ -53,7 +52,6 @@ public class Sql2oModel implements Model {
         }
     }
 
-
     @Override
     public void createUser(String username, String password, String firstName, String lastName, String email, String status) {
         try (Connection conn = sql2o.open()) {
@@ -66,7 +64,6 @@ public class Sql2oModel implements Model {
                     .addParameter("status", status)
                     .executeUpdate();
         }
-
     }
 
     @Override
@@ -93,6 +90,9 @@ public class Sql2oModel implements Model {
     public List<Subject> getAllSubjects() {
         try (Connection conn = sql2o.open()) {
             List<Subject> subjects = conn.createQuery("select * from subjects")
+                    .addColumnMapping("subject_id", "subjectId")
+                    .addColumnMapping("subject_level_id", "subjectLevelId")
+                    .addColumnMapping("ordinal_number", "order")
                     .executeAndFetch(Subject.class);
             return subjects;
         }
@@ -103,6 +103,9 @@ public class Sql2oModel implements Model {
         try (Connection conn = sql2o.open()) {
             Subject subject = conn.createQuery("select * from subjects where id=:id")
                     .addParameter("id", id)
+                    .addColumnMapping("subject_id", "subjectId")
+                    .addColumnMapping("subject_level_id", "subjectLevelId")
+                    .addColumnMapping("ordinal_number", "order")
                     .executeAndFetchFirst(Subject.class);
 
             return subject;
@@ -160,7 +163,6 @@ public class Sql2oModel implements Model {
         }
     }
 
-
     @Override
     public void logLearningStatus(int studentId, int subjectId, String titleId, int statusId) {
         try (Connection conn = sql2o.open()) {
@@ -189,19 +191,6 @@ public class Sql2oModel implements Model {
     @Override
     public List<User> getAllStudents() {
         return getAllUsers().stream().filter(user -> user.getStatus().equals("STUDENT")).collect(Collectors.toCollection(LinkedList::new));
-    }
-
-    @Override
-    public void createAdaptiveRule(int learningStyleId, int intelligenceTypeId, int ruleId, String mark) {
-        try (Connection conn = sql2o.open()) {
-            conn.createQuery("insert into adaptive_rules (learningStyleId, intelligenceTypeId, ruleId, mark ) values (:learningStyleId, :intelligenceTypeId, :ruleId, :mark);")
-                    .addParameter("learningStyleId", learningStyleId)
-                    .addParameter("intelligenceTypeId", intelligenceTypeId)
-                    .addParameter("ruleId", ruleId)
-                    .addParameter("mark", mark)
-                    .executeUpdate();
-        }
-
     }
 
     @Override
@@ -239,4 +228,57 @@ public class Sql2oModel implements Model {
                     .executeUpdate();
         }
     }
+
+    @Override
+    public List<IntelligenceType> getAllIntelligenceTypes() {
+        try (Connection conn = sql2o.open()) {
+            List<IntelligenceType> intelligenceTypes = conn.createQuery("select * from intelligence_types")
+                    .executeAndFetch(IntelligenceType.class);
+            for (IntelligenceType intelligenceType : intelligenceTypes) {
+                intelligenceType.setAdaptiveRules(getIntelligenceTypeRules(intelligenceType.getId()));
+            }
+            return intelligenceTypes;
+        }
+    }
+
+    private List<AdaptiveRules> getIntelligenceTypeRules(int intelligenceTypeId) {
+        List<AdaptiveRules> rules = new LinkedList<>();
+        String sql = "SELECT adaptive_rule_id FROM intelligence_adaptive_rules where intelligence_type_id = :intelligenceTypeId";
+        try (Connection con = sql2o.open()) {
+            List<Integer> ruleIds = con.createQuery(sql)
+                    .addParameter("intelligenceTypeId", intelligenceTypeId)
+                    .executeScalarList(Integer.class);
+            for (Integer ruleId : ruleIds) {
+                rules.add(AdaptiveRules.getById(ruleId));
+            }
+            return rules;
+        }
+    }
+
+    @Override
+    public List<LearningStyle> getAllLearningStyles() {
+        try (Connection conn = sql2o.open()) {
+            List<LearningStyle> learningStyles = conn.createQuery("select * from learning_styles")
+                    .executeAndFetch(LearningStyle.class);
+            for (LearningStyle learningStyle : learningStyles) {
+                learningStyle.setAdaptiveRules(getLearningStyleRules(learningStyle.getId()));
+            }
+            return learningStyles;
+        }
+    }
+
+    private List<AdaptiveRules> getLearningStyleRules(int learningStyleId) {
+        List<AdaptiveRules> rules = new LinkedList<>();
+        String sql = "SELECT adaptive_rule_id FROM learning_styles_adaptive_rules where learning_style_id = :learningStyleId";
+        try (Connection con = sql2o.open()) {
+            List<Integer> ruleIds = con.createQuery(sql)
+                    .addParameter("learningStyleId", learningStyleId)
+                    .executeScalarList(Integer.class);
+            for (Integer ruleId : ruleIds) {
+                rules.add(AdaptiveRules.getById(ruleId));
+            }
+            return rules;
+        }
+    }
+
 }

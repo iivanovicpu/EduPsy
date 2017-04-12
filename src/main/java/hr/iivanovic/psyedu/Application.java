@@ -92,7 +92,6 @@ public class Application {
         post(Path.Web.PERSONAL_PROFILE, ProfileController.submitPersonalProfile);
 
         get(Path.Web.ADMIN_RULES, AdaptiveRulesController.fetchAllRulesForAdmin);
-        post(Path.Web.ADMIN_RULES, AdaptiveRulesController.submitRule);
 
         get(Path.Web.INTELLIGENCE_POLL, PollController.showPollIntelligenceType);
         post(Path.Web.INTELLIGENCE_POLL, PollController.submitPollIntelligenceType);

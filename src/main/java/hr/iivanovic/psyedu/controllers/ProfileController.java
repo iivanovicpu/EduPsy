@@ -23,16 +23,20 @@ public class ProfileController extends AbstractController {
         LoginController.ensureUserIsLoggedIn(request, response);
         User user = LoginController.getCurrentUser(request);
         if (clientAcceptsHtml(request)) {
-            HashMap<String, Object> model = new HashMap<>();
-            model.put("validation", false);
-            model.put("intelligenceType", IntelligenceTypes.getById(user.getIntelligenceTypeId()).getDescription());
-            return ViewUtil.render(request, model, Path.Template.PERSONAL_PROFILE);
+            return createProfileModel(request, user);
         }
         if (clientAcceptsJson(request)) {
             return dataToJson(user);
         }
         return ViewUtil.notAcceptable.handle(request, response);
     };
+
+    private static Object createProfileModel(Request request, User user) {
+        HashMap<String, Object> model = new HashMap<>();
+        model.put("validation", false);
+        model.put("intelligenceType", IntelligenceTypes.getById(user.getIntelligenceTypeId()).getDescription());
+        return ViewUtil.render(request, model, Path.Template.PERSONAL_PROFILE);
+    }
 
     public static Route submitPersonalProfile = (Request request, Response response)-> {
         LoginController.ensureUserIsLoggedIn(request, response);
@@ -41,10 +45,7 @@ public class ProfileController extends AbstractController {
         user.setColor("main_" + color + ".css");
         dbProvider.save(user);
         if (clientAcceptsHtml(request)) {
-            HashMap<String, Object> model = new HashMap<>();
-            model.put("validation", false);
-            model.put("intelligenceType", IntelligenceTypes.getById(user.getIntelligenceTypeId()).getDescription());
-            return ViewUtil.render(request, model, Path.Template.PERSONAL_PROFILE);
+            return createProfileModel(request, user);
         }
         if (clientAcceptsJson(request)) {
             return dataToJson(user);

@@ -11,7 +11,7 @@
 
     <form method="post" action="$WebPath.getSUBMIT_EDITED_SUBJECT()" class="form-group">
         <input type="hidden" name="id" value="$subject.id"/>
-        <textarea id="subject" name="doc"></textarea>
+            <textarea id="subject" name="doc"></textarea>
         <input type="submit" class="btn btn-primary" name="submit" value="$msg.get("SUBJECT_EDIT_SUBMIT")">
         <button type="submit" formaction="/subjects/$subject.id" class="btn btn-warning">$msg.get("SUBJECT_EDIT_CANCEL")</button>
     </form>

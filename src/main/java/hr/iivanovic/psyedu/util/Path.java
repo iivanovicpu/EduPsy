@@ -16,6 +16,8 @@ public class Path {
         @Getter public static final String SUBJECTS = "/subjects/";
         @Getter public static final String VIEW_SUBJECT = "/subjects/:id/";
         @Getter public static final String EDIT_SUBJECT = "/edit_subject/:id/";
+        @Getter public static final String EDIT_SUBJECT_ITEM = "/edit_subject_item/:id/:parentId/:action/";
+        @Getter public static final String ADD_SUBJECT_ITEM = "/add_subject_item/:subjectId/";
         @Getter public static final String SUBMIT_EDITED_SUBJECT = "/edit_subject/";
         @Getter public static final String ADD_SUBJECT = "/addsubject/";
         @Getter public static final String ONE_TITLE = "/onetitle/:id/:subjectid/";
@@ -38,6 +40,8 @@ public class Path {
 
         public final static String SUBJECTS_ALL = "/velocity/subjects/all.vm";
         public final static String SUBJECTS_ONE = "/velocity/subjects/one.vm";
+        public final static String EDIT_SUBJECT = "/velocity/subjects/edit_subject.vm";
+        public final static String EDIT_SUBJECT_ITEM = "/velocity/subjects/edit_subject_item.vm";
         public final static String SUBJECTS_ONE_QUESTIONS = "/velocity/subjects/onesubjectquestions.vm";
         public final static String SUBJECTS_ONE_EDIT = "/velocity/subjects/edit.vm";
         public final static String SUBJECT_ADD = "/velocity/subjects/add.vm";

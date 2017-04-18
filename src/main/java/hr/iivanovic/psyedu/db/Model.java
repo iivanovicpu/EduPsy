@@ -8,6 +8,8 @@ public interface Model {
 
     void createSubject(String title, String keywords, String url, SubjectLevel subjectLevel);
 
+    void createSubSubject(Subject subject);
+
     List<User> getAllUsers();
 
     User getUserByUsername(String username);
@@ -42,4 +44,7 @@ public interface Model {
 
     List<LearningStyle> getAllLearningStyles();
 
+    List<Subject> getSubjectsForEdit(int subjectId);
+
+    void updateSubject(Subject subject);
 }

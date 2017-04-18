@@ -1,5 +1,6 @@
 package hr.iivanovic.psyedu.db;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -41,7 +42,7 @@ public class Sql2oModel implements Model {
     @Override
     public void createSubject(String title, String keywords, String url, SubjectLevel subjectLevel) {
         try (Connection conn = sql2o.open()) {
-            conn.createQuery("insert into subjects(title, keywords, url, subject_level_id) VALUES ( :title, :keywords, :url, :levelid)")
+            conn.createQuery("insert into subjects(title, keywords, url, subject_level_id, content, additional_content) VALUES ( :title, :keywords, :url, :levelid, '<html></html>','<html></html>')")
                     .addParameter("title", title)
                     .addParameter("keywords", keywords)
                     .addParameter("url", url)
@@ -50,6 +51,27 @@ public class Sql2oModel implements Model {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void createSubSubject(Subject subject) {
+        try (Connection conn = sql2o.open()) {
+            conn.createQuery("insert into subjects ( title, keywords, url, subject_id, parent_subject_id, subject_level_id, ordinal_number, content, additional_content) " +
+                    "                       VALUES (:title, :keywords, :url, :subjectId, :parentSubjectId, :subjectLevelId, :order, :content, :additionalContent)")
+                    .addParameter("title", subject.getTitle())
+                    .addParameter("keywords", subject.getKeywords())
+                    .addParameter("url", subject.getUrl())
+                    .addParameter("subjectId", subject.getSubjectId())
+                    .addParameter("parentSubjectId", subject.getParentSubjectId())
+                    .addParameter("subjectLevelId", subject.getSubjectLevelId())
+                    .addParameter("order", subject.getOrder())
+                    .addParameter("content", subject.getContent())
+                    .addParameter("additionalContent", subject.getAdditionalContent())
+                    .executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -91,8 +113,10 @@ public class Sql2oModel implements Model {
         try (Connection conn = sql2o.open()) {
             List<Subject> subjects = conn.createQuery("select * from subjects")
                     .addColumnMapping("subject_id", "subjectId")
+                    .addColumnMapping("parent_subject_id", "parentSubjectId")
                     .addColumnMapping("subject_level_id", "subjectLevelId")
                     .addColumnMapping("ordinal_number", "order")
+                    .addColumnMapping("additional_content", "additionalContent")
                     .executeAndFetch(Subject.class);
             return subjects;
         }
@@ -104,8 +128,10 @@ public class Sql2oModel implements Model {
             Subject subject = conn.createQuery("select * from subjects where id=:id")
                     .addParameter("id", id)
                     .addColumnMapping("subject_id", "subjectId")
+                    .addColumnMapping("parent_subject_id", "parentSubjectId")
                     .addColumnMapping("subject_level_id", "subjectLevelId")
                     .addColumnMapping("ordinal_number", "order")
+                    .addColumnMapping("additional_content", "additionalContent")
                     .executeAndFetchFirst(Subject.class);
 
             return subject;
@@ -265,6 +291,51 @@ public class Sql2oModel implements Model {
             }
             return learningStyles;
         }
+    }
+
+    @Override
+    public List<Subject> getSubjectsForEdit(int subjectId) {
+        try (Connection conn = sql2o.open()) {
+            List<Subject> subjects = conn.createQuery("select * from subjects where id=:id or parent_subject_id=:id")
+                    .addParameter("id", subjectId)
+                    .addColumnMapping("subject_id", "subjectId")
+                    .addColumnMapping("parent_subject_id", "parentSubjectId")
+                    .addColumnMapping("subject_level_id", "subjectLevelId")
+                    .addColumnMapping("ordinal_number", "order")
+                    .addColumnMapping("additional_content", "additionalContent")
+                    .executeAndFetch(Subject.class);
+
+            return subjects.stream().sorted(Comparator.comparing(Subject::getId)).collect(Collectors.toList());
+        }
+    }
+
+    @Override
+    public void updateSubject(Subject subject) {
+        try (Connection conn = sql2o.open()) {
+            conn.createQuery("update subjects set " +
+                    "   title = :title, " +
+                    "   keywords = :keywords, " +
+                    "   url = :url, " +
+                    "   subject_id = :subjectId, " +
+                    "   parent_subject_id = :parentSubjectId, " +
+                    "   subject_level_id = :subjectLevelId, " +
+                    "   ordinal_number = :orderNumber, " +
+                    "   content = :content, " +
+                    "   additional_content = :additionalContent " +
+                    " where id = :id")
+                    .addParameter("id", subject.getId())
+                    .addParameter("subjectId", subject.getSubjectId())
+                    .addParameter("parentSubjectId", subject.getParentSubjectId())
+                    .addParameter("title", subject.getTitle())
+                    .addParameter("keywords", subject.getKeywords())
+                    .addParameter("content", subject.getContent())
+                    .addParameter("additionalContent", subject.getAdditionalContent())
+                    .addParameter("orderNumber", subject.getOrder())
+                    .addParameter("subjectLevelId", subject.getSubjectLevelId())
+                    .addParameter("url", subject.getUrl())
+                    .executeUpdate();
+        }
+
     }
 
     private List<AdaptiveRules> getLearningStyleRules(int learningStyleId) {

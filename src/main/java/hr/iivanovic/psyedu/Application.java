@@ -10,6 +10,7 @@ import static spark.Spark.staticFiles;
 import static spark.debug.DebugScreen.enableDebugScreen;
 
 import hr.iivanovic.psyedu.controllers.AdaptiveRulesController;
+import hr.iivanovic.psyedu.controllers.AdminSubjectsController;
 import hr.iivanovic.psyedu.controllers.ExamController;
 import hr.iivanovic.psyedu.controllers.PollController;
 import hr.iivanovic.psyedu.controllers.ProfileController;
@@ -39,7 +40,6 @@ public class Application {
         staticFiles.expireTime(600L);
         enableDebugScreen();
 
-//        Sql2o sql2o = DbUtil.getH2DataSource();
         Model model = Sql2oModel.getInstance();
         if (developmentMode) {
             InitDb initDb = new InitDb();
@@ -70,7 +70,6 @@ public class Application {
 
         get(Path.Web.SUBJECTS, SubjectsController.fetchAllSubjects);
         get(Path.Web.VIEW_SUBJECT, SubjectsController.fetchOneSubject);
-        get(Path.Web.EDIT_SUBJECT, SubjectsController.fetchOneSubjectEdit);
         get(Path.Web.ONE_SUBJECT_QUESTIONS, SubjectQuestionsController.fetchtitlesForAddQuestions);
         get(Path.Web.ONE_TITLE_QUESTIONS, SubjectQuestionsController.fetchOneTitleForAddQuestions);
         post(Path.Web.ONE_TITLE_QUESTIONS, SubjectQuestionsController.submitQuestion);
@@ -79,6 +78,10 @@ public class Application {
         post(Path.Web.ADD_SUBJECT, SubjectsController.submitAddedSubject);
         get(Path.Web.ONE_TITLE, SubjectsController.fetchOneTitle);
         post(Path.Web.ONE_TITLE, SubjectsController.submitOneTitleStatus);
+
+        get(Path.Web.EDIT_SUBJECT, AdminSubjectsController.fetchSubjectForEdit);
+        get(Path.Web.EDIT_SUBJECT_ITEM, AdminSubjectsController.editSubjectItem);
+        post(Path.Web.EDIT_SUBJECT_ITEM, AdminSubjectsController.submitEditedSubject);
 
         get(Path.Web.EXAM, ExamController.fetchQuestionsForTitle);
         post(Path.Web.EXAM, ExamController.submitExamQuestions);

@@ -68,7 +68,6 @@ public class Application {
         // Set up routes
         get(Path.Web.INDEX, IndexController.serveIndexPage);
 
-        get(Path.Web.SUBJECTS, SubjectsController.fetchAllSubjects);
         get(Path.Web.VIEW_SUBJECT, SubjectsController.fetchOneSubject);
         get(Path.Web.ONE_SUBJECT_QUESTIONS, SubjectQuestionsController.fetchtitlesForAddQuestions);
         get(Path.Web.ONE_TITLE_QUESTIONS, SubjectQuestionsController.fetchOneTitleForAddQuestions);
@@ -79,6 +78,7 @@ public class Application {
         get(Path.Web.ONE_TITLE, SubjectsController.fetchOneTitle);
         post(Path.Web.ONE_TITLE, SubjectsController.submitOneTitleStatus);
 
+        get(Path.Web.SUBJECTS, AdminSubjectsController.fetchAllParentSubjects);
         get(Path.Web.EDIT_SUBJECT, AdminSubjectsController.fetchSubjectForEdit);
         get(Path.Web.EDIT_SUBJECT_ITEM, AdminSubjectsController.editSubjectItem);
         post(Path.Web.EDIT_SUBJECT_ITEM, AdminSubjectsController.submitEditedSubject);

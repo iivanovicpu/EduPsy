@@ -6,7 +6,7 @@ public interface Model {
 
     void createUser(String username, String password, String firstName, String lastName, String email, String status);
 
-    void createSubject(String title, String keywords, String url, SubjectLevel subjectLevel);
+    void createSubject(String title, String keywords, String url, SubjectLevel subjectLevel, int subjectPositionId);
 
     void createSubSubject(Subject subject);
 
@@ -47,4 +47,6 @@ public interface Model {
     List<Subject> getSubjectsForEdit(int subjectId);
 
     void updateSubject(Subject subject);
+
+    List<Subject> getAllParentSubjects();
 }

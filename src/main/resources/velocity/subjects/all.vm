@@ -4,7 +4,7 @@
 <div class="row row-3">
     #foreach($subject in $subjects)
         <div class="col">
-            <a class="book" href="$WebPath.getSUBJECTS()$subject.getId()"
+            <a class="book" href="/edit_subject/$subject.id/"
                title="$subject.getKeywords()">$subject.getTitle()</a>
         </div>
     #end

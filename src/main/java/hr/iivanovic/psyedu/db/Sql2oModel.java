@@ -40,13 +40,14 @@ public class Sql2oModel implements Model {
     }
 
     @Override
-    public void createSubject(String title, String keywords, String url, SubjectLevel subjectLevel) {
+    public void createSubject(String title, String keywords, String url, SubjectLevel subjectLevel, int subjectPositionId) {
         try (Connection conn = sql2o.open()) {
-            conn.createQuery("insert into subjects(title, keywords, url, subject_level_id, content, additional_content) VALUES ( :title, :keywords, :url, :levelid, '<html></html>','<html></html>')")
+            conn.createQuery("insert into subjects(title, keywords, url, subject_level_id, content, additional_content, subject_position_id) VALUES ( :title, :keywords, :url, :levelid, '<html></html>','<html></html>', :subjectPositionId)")
                     .addParameter("title", title)
                     .addParameter("keywords", keywords)
                     .addParameter("url", url)
                     .addParameter("levelid", subjectLevel.getId())
+                    .addParameter("subjectPositionId", subjectPositionId)
                     .executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -56,8 +57,8 @@ public class Sql2oModel implements Model {
     @Override
     public void createSubSubject(Subject subject) {
         try (Connection conn = sql2o.open()) {
-            conn.createQuery("insert into subjects ( title, keywords, url, subject_id, parent_subject_id, subject_level_id, ordinal_number, content, additional_content) " +
-                    "                       VALUES (:title, :keywords, :url, :subjectId, :parentSubjectId, :subjectLevelId, :order, :content, :additionalContent)")
+            conn.createQuery("insert into subjects ( title, keywords, url, subject_id, parent_subject_id, subject_level_id, ordinal_number, content, additional_content, subject_position_id) " +
+                    "                       VALUES (:title, :keywords, :url, :subjectId, :parentSubjectId, :subjectLevelId, :order, :content, :additionalContent, :subjectPositionId)")
                     .addParameter("title", subject.getTitle())
                     .addParameter("keywords", subject.getKeywords())
                     .addParameter("url", subject.getUrl())
@@ -67,6 +68,7 @@ public class Sql2oModel implements Model {
                     .addParameter("order", subject.getOrder())
                     .addParameter("content", subject.getContent())
                     .addParameter("additionalContent", subject.getAdditionalContent())
+                    .addParameter("subjectPositionId", subject.getSubjectPosition().getId())
                     .executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -117,6 +119,7 @@ public class Sql2oModel implements Model {
                     .addColumnMapping("subject_level_id", "subjectLevelId")
                     .addColumnMapping("ordinal_number", "order")
                     .addColumnMapping("additional_content", "additionalContent")
+                    .addColumnMapping("subject_position_id", "subjectPositionId")
                     .executeAndFetch(Subject.class);
             return subjects;
         }
@@ -132,6 +135,7 @@ public class Sql2oModel implements Model {
                     .addColumnMapping("subject_level_id", "subjectLevelId")
                     .addColumnMapping("ordinal_number", "order")
                     .addColumnMapping("additional_content", "additionalContent")
+                    .addColumnMapping("subject_position_id", "subjectPositionId")
                     .executeAndFetchFirst(Subject.class);
 
             return subject;
@@ -303,6 +307,7 @@ public class Sql2oModel implements Model {
                     .addColumnMapping("subject_level_id", "subjectLevelId")
                     .addColumnMapping("ordinal_number", "order")
                     .addColumnMapping("additional_content", "additionalContent")
+                    .addColumnMapping("subject_position_id", "subjectPositionId")
                     .executeAndFetch(Subject.class);
 
             return subjects.stream().sorted(Comparator.comparing(Subject::getId)).collect(Collectors.toList());
@@ -334,6 +339,22 @@ public class Sql2oModel implements Model {
                     .addParameter("subjectLevelId", subject.getSubjectLevelId())
                     .addParameter("url", subject.getUrl())
                     .executeUpdate();
+        }
+
+    }
+
+    @Override
+    public List<Subject> getAllParentSubjects() {
+        try (Connection conn = sql2o.open()) {
+            List<Subject> subjects = conn.createQuery("select * from subjects where subject_id is null")
+                    .addColumnMapping("subject_id", "subjectId")
+                    .addColumnMapping("parent_subject_id", "parentSubjectId")
+                    .addColumnMapping("subject_level_id", "subjectLevelId")
+                    .addColumnMapping("ordinal_number", "order")
+                    .addColumnMapping("additional_content", "additionalContent")
+                    .addColumnMapping("subject_position_id", "subjectPositionId")
+                    .executeAndFetch(Subject.class);
+            return subjects;
         }
 
     }

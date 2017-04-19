@@ -6,7 +6,10 @@ CREATE TABLE IF NOT EXISTS EXTERNAL_LINKS (
 );
 
 ALTER TABLE subjects ADD COLUMN subject_id INT NULL;
-ALTER TABLE subjects ADD COLUMN parent_subject_id INT NULL;
+ ALTER TABLE subjects ADD COLUMN parent_subject_id INT NULL;
+ ALTER TABLE subjects DROP COLUMN parent_subject_id;
+
+ALTER TABLE subjects ADD COLUMN subject_position_id INT NOT NULL DEFAULT 1;
 ALTER TABLE subjects ADD COLUMN subject_level_id INT NULL;
 ALTER TABLE subjects ADD COLUMN ordinal_number INT NULL;
 ALTER TABLE subjects ADD COLUMN content TEXT NULL;

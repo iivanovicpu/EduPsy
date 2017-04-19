@@ -4,27 +4,16 @@ import static hr.iivanovic.psyedu.util.JsonUtil.dataToJson;
 import static hr.iivanovic.psyedu.util.RequestUtil.clientAcceptsHtml;
 import static hr.iivanovic.psyedu.util.RequestUtil.clientAcceptsJson;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import hr.iivanovic.psyedu.AppConfiguration;
 import hr.iivanovic.psyedu.db.Subject;
 import hr.iivanovic.psyedu.db.SubjectLevel;
-import hr.iivanovic.psyedu.db.TitleLearningStatus;
-import hr.iivanovic.psyedu.db.User;
-import hr.iivanovic.psyedu.html.HtmlParser;
+import hr.iivanovic.psyedu.db.SubjectPosition;
 import hr.iivanovic.psyedu.util.Path;
 import hr.iivanovic.psyedu.util.ViewUtil;
 import spark.Request;
@@ -37,6 +26,21 @@ import spark.utils.StringUtils;
  * @date 29.08.16.
  */
 public class AdminSubjectsController extends AbstractController {
+
+    public static Route fetchAllParentSubjects = (Request request, Response response) -> {
+        LoginController.ensureUserIsLoggedIn(request, response);
+        if (clientAcceptsHtml(request)) {
+            HashMap<String, Object> model = new HashMap<>();
+            model.put("subjects", dbProvider.getAllParentSubjects());
+            model.put("editAllowed", LoginController.isEditAllowed(request));
+            return ViewUtil.render(request, model, Path.Template.SUBJECTS_ALL);
+        }
+        if (clientAcceptsJson(request)) {
+            return dataToJson(dbProvider.getAllSubjects());
+        }
+        return ViewUtil.notAcceptable.handle(request, response);
+    };
+
 
     public static Route fetchSubjectForEdit = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
@@ -70,7 +74,7 @@ public class AdminSubjectsController extends AbstractController {
             model.put("subjectId", subjectId);
             model.put("parentSubjectId", parentSubjectId);
             Subject subject = new Subject();
-            if("edit".equals(action)){
+            if ("edit".equals(action)) {
                 subject = dbProvider.getSubject(subjectId);
             }
             model.put("subject", subject);
@@ -92,7 +96,7 @@ public class AdminSubjectsController extends AbstractController {
             String content = request.queryParams("content");
             String additionalContent = request.queryParams("additionalContent");
             Subject subject;
-            if("edit".equals(action)){
+            if ("edit".equals(action)) {
                 subject = dbProvider.getSubject(subjectId);
                 subject.setAdditionalContent(additionalContent);
                 subject.setContent(content);
@@ -100,8 +104,10 @@ public class AdminSubjectsController extends AbstractController {
                 subject.setTitle(title);
                 dbProvider.updateSubject(subject);
             }
-            if("add".equals(action)){
-                subject = new Subject(0,title,keywords,null,subjectId,parentSubjectId,SubjectLevel.OSNOVNO.getId(),0,content,additionalContent);
+            if ("add".equals(action)) {
+                Subject parentSubject = dbProvider.getSubject(subjectId);
+                SubjectPosition subPosition = SubjectPosition.getById(parentSubject.getSubjectPositionId()).getSubPosition();
+                subject = new Subject(0, title, keywords, null, subjectId, parentSubjectId, SubjectLevel.OSNOVNO.getId(), 0, content, additionalContent, subPosition.getId(), subPosition);
                 dbProvider.createSubSubject(subject);
             }
 

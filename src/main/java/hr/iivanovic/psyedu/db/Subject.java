@@ -21,6 +21,7 @@ public class Subject {
     private int subjectLevelId;
     private int order;
     private String content;
-
     private String additionalContent;
+    private int subjectPositionId;
+    private SubjectPosition subjectPosition;
 }

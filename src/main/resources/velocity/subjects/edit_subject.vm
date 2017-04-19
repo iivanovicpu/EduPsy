@@ -1,16 +1,27 @@
 #parse("/velocity/layout.vm")
 #@mainLayout()
 <div>$successmsg</div>
-        #foreach($subject in $subjects)
-            <form>
-        <div>$subject.getTitle()
-            <button type="submit" class="btn btn-primary" formmethod="get" formaction="/edit_subject_item/$subject.getId()/$subject.getParentSubjectId()/edit/">
-            <span class="glyphicon glyphicon-edit" title="uredi"></span>
-        </button>
-            <button type="submit" class="btn btn-primary" formmethod="get" formaction="/edit_subject_item/$subject.getId()/$subject.getParentSubjectId()/add/">
-            <span class="glyphicon glyphicon-plus" title="dodaj"></span>
-        </button>
-            </form>
-        #end
-    </div>
+    #foreach($subject in $subjects)
+    <form>
+        <div>
+            $subject.getTitle()
+            <button type="submit" class="btn btn-primary" formmethod="get"
+                    formaction="/edit_subject_item/$subject.getId()/$subject.getParentSubjectId()/edit/">
+                <span class="glyphicon glyphicon-edit" title="uredi"></span>
+            </button>
+            #if($subject.getSubjectPositionId() < 4)
+                <button type="submit" class="btn btn-primary" formmethod="get"
+                        formaction="/edit_subject_item/$subject.getId()/$subject.getParentSubjectId()/add/">
+                    <span class="glyphicon glyphicon-plus" title="dodaj"></span>
+                </button>
+            #end
+            <button type="submit" class="btn btn-primary" formmethod="get"
+                    formaction="/admin_subject/$subject.id/"
+            ">
+            <span class="glyphicon glyphicon-question-sign" title="ispitna pitanja"></span>
+            </button>
+        </div>
+    </form>
+    #end
+</div>
 #end

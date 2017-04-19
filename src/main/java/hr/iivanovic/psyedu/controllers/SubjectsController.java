@@ -24,6 +24,7 @@ import hr.iivanovic.psyedu.AppConfiguration;
 import hr.iivanovic.psyedu.db.LearningLog;
 import hr.iivanovic.psyedu.db.Subject;
 import hr.iivanovic.psyedu.db.SubjectLevel;
+import hr.iivanovic.psyedu.db.SubjectPosition;
 import hr.iivanovic.psyedu.db.TitleLearningStatus;
 import hr.iivanovic.psyedu.db.User;
 import hr.iivanovic.psyedu.html.HtmlParser;
@@ -43,19 +44,6 @@ public class SubjectsController extends AbstractController {
 
     private static HtmlParser htmlParser = HtmlParser.getInstance();
 
-    public static Route fetchAllSubjects = (Request request, Response response) -> {
-        LoginController.ensureUserIsLoggedIn(request, response);
-        if (clientAcceptsHtml(request)) {
-            HashMap<String, Object> model = new HashMap<>();
-            model.put("subjects", dbProvider.getAllSubjects());
-            model.put("editAllowed", LoginController.isEditAllowed(request));
-            return ViewUtil.render(request, model, Path.Template.SUBJECTS_ALL);
-        }
-        if (clientAcceptsJson(request)) {
-            return dataToJson(dbProvider.getAllSubjects());
-        }
-        return ViewUtil.notAcceptable.handle(request, response);
-    };
 
     public static Route fetchOneSubject = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
@@ -92,7 +80,7 @@ public class SubjectsController extends AbstractController {
             if (LoginController.isStudent(request)) {
                 User student = LoginController.getCurrentUser(request);
                 LearningLog learningLog = dbProvider.getLearningLogStatus(student.getId(), subjectId, titleId);
-                if(null == learningLog) {
+                if (null == learningLog) {
                     dbProvider.logLearningStatus(student.getId(), subjectId, titleId, TitleLearningStatus.OPENED.getId());
 
                 }
@@ -140,10 +128,10 @@ public class SubjectsController extends AbstractController {
             for (AdaptiveRuleTypes ruleType : AdaptiveRuleTypes.values()) {
                 marks = marks.concat("'").concat(ruleType.getMark()).concat("',");
             }
-            marks = marks.substring(0, marks.length()-1).concat("];</script>");
+            marks = marks.substring(0, marks.length() - 1).concat("];</script>");
             // todo: napuniti marks iz adaptive rules tablice
 //            model.put("marks","<script>var oznake = ['***','**','blabla'];</script>");
-            model.put("marks",marks);
+            model.put("marks", marks);
             model.put("subject", subject);
             model.put("editAllowed", LoginController.isEditAllowed(request));
             return ViewUtil.render(request, model, Path.Template.SUBJECTS_ONE_EDIT);
@@ -219,7 +207,7 @@ public class SubjectsController extends AbstractController {
         String filePath = AppConfiguration.getInstance().getExternalLocation().concat("materijali/").concat(filename);
         createDirIfNotExists(filePath, title);
 
-        dbProvider.createSubject(title, keywords, "/materijali/".concat(filename), SubjectLevel.OSNOVNO);
+        dbProvider.createSubject(title, keywords, "/materijali/".concat(filename), SubjectLevel.OSNOVNO, SubjectPosition.PREDMET.getId());
 
         if (clientAcceptsHtml(request)) {
             response.redirect(Path.Web.getSUBJECTS());
@@ -229,16 +217,16 @@ public class SubjectsController extends AbstractController {
     public static final Logger LOGGER = LoggerFactory.getLogger(SubjectsController.class);
 
     private static void createDirIfNotExists(String subjectDirectory, String title) {
-            File dir = new File(subjectDirectory);
-            if(!dir.exists()){
-                try {
-                    dir.mkdir();
-                } catch (SecurityException e){
-                    LOGGER.error("error creating dir: {} for title: {}", dir.getPath(), title, e);
-                }
-            } else {
-                LOGGER.info("File already exists.");
+        File dir = new File(subjectDirectory);
+        if (!dir.exists()) {
+            try {
+                dir.mkdir();
+            } catch (SecurityException e) {
+                LOGGER.error("error creating dir: {} for title: {}", dir.getPath(), title, e);
             }
+        } else {
+            LOGGER.info("File already exists.");
+        }
     }
 
     private static String validateSubject(String title) {

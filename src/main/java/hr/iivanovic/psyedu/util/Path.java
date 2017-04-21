@@ -22,7 +22,7 @@ public class Path {
         @Getter public static final String ADD_SUBJECT = "/addsubject/";
         @Getter public static final String ONE_TITLE = "/onetitle/:id/:subjectid/";
         @Getter public static final String ONE_SUBJECT_QUESTIONS = "/admin_subject/:id/";
-        @Getter public static final String ONE_TITLE_QUESTIONS = "/onetitlequestions/:id/:subjectid/";
+        @Getter public static final String ONE_TITLE_QUESTIONS = "/onetitlequestions/:subjectid/";
         @Getter public static final String PERSONAL_PROFILE = "/profile/";
         @Getter public static final String EXAM = "/exam/:subjectid/:titleid/";
         @Getter public static final String STUDENTS = "/students/";

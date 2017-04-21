@@ -16,7 +16,7 @@
                 <a href="/edit_subject_item/$subject.getId()/$subject.getParentSubjectId()/add/" title="dodaj" style="padding-left: 5px">
                     <span class="glyphicon glyphicon-plus" title="dodaj"></span></a>
             #end
-            <a href="/admin_subject/$subject.id/" title="ispitna pitanja" style="padding-left: 5px">
+            <a href="/onetitlequestions/$subject.id/" title="ispitna pitanja" style="padding-left: 5px">
                 <span class="glyphicon glyphicon-question-sign" title="ispitna pitanja"></span></a>
         </div>
     </form>

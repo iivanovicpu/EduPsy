@@ -12,7 +12,6 @@ import lombok.Data;
 public class Question {
     private int id;
     private int subjectId;
-    private String titleId;
     private String question;
     private String answers;
     private int points;
@@ -20,9 +19,8 @@ public class Question {
     public Question() {
     }
 
-    public Question(int subjectId, String titleId, String question, String answers, int points){
+    public Question(int subjectId, String question, String answers, int points){
         this.subjectId = subjectId;
-        this.titleId = titleId;
         this.question = question;
         this.answers = answers;
         this.points = points;

@@ -51,22 +51,14 @@ public class SubjectQuestionsController extends AbstractController {
 
     public static Route fetchOneTitleForAddQuestions = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
-        String id = request.params("id");
         int subjectId = Integer.parseInt(request.params("subjectid"));
-        System.out.println(id + " " + subjectId);
         if (clientAcceptsHtml(request)) {
             HashMap<String, Object> model = new HashMap<>();
             model.put("validation",false);
             model.put("subjectId",subjectId);
-            model.put("titleId",id);
-            List<Question> questions = dbProvider.getAllQuestionsForSubjectAndTitle(subjectId, id);
+            List<Question> questions = dbProvider.getAllQuestionsForSubjectAndTitle(subjectId);
             String htmlQuestions = renderQuestions(questions);
-
             model.put("questions", htmlQuestions);
-
-            Subject subject = dbProvider.getSubject(subjectId);
-            String content = htmlParser.getOneTitleContent(AppConfiguration.getInstance().getExternalLocation() + subject.getUrl().substring(1,subject.getUrl().length()), id);
-            model.put("content",content);
             return ViewUtil.render(request, model, Path.Template.SUBJECT_ONE_TITLE_QUESTIONS);
         }
         return ViewUtil.notAcceptable.handle(request, response);
@@ -76,22 +68,17 @@ public class SubjectQuestionsController extends AbstractController {
         LoginController.ensureUserIsLoggedIn(request, response);
         if (clientAcceptsHtml(request)) {
             int subjectId = Integer.parseInt(request.queryParams("subjectid"));
-            String titleId = request.queryParams("titleid");
             HashMap<String, Object> model = new HashMap<>();
             ValidationResult validationResult = validatedQuestion(request);
             Question question = validationResult.getQuestion();
-            Subject subject = dbProvider.getSubject(subjectId);
-            String content = htmlParser.getOneTitleContent(AppConfiguration.getInstance().getExternalLocation() + subject.getUrl().substring(1,subject.getUrl().length()), titleId);
-            model.put("content",content);
             model.put("validation",validationResult.getValidationMessage());
             model.put("subjectId", question.getSubjectId());
-            model.put("titleId", titleId);
             if(validationResult.isValid()){
                 model.put("validation", false);
                 System.out.println(validationResult);
                 dbProvider.createQuestion(validationResult.question);
             }
-            List<Question> questions = dbProvider.getAllQuestionsForSubjectAndTitle(subjectId, titleId);
+            List<Question> questions = dbProvider.getAllQuestionsForSubjectAndTitle(subjectId);
             String htmlQuestions = renderQuestions(questions);
             model.put("questions", htmlQuestions);
             model.put("validation", validationResult.getValidationMessage());
@@ -103,13 +90,8 @@ public class SubjectQuestionsController extends AbstractController {
     private static ValidationResult validatedQuestion(Request request) {
         ValidationResult result = new ValidationResult();
         StringBuilder sb = new StringBuilder();
-        String titleId = request.queryParams("titleid");
         int subjectid;
         int points;
-        if(null == titleId || titleId.isEmpty()){
-            sb.append("\nheader data corrupt - titleId (0)");
-            result.setValid(false);
-        }
         try {
             subjectid = Integer.parseInt(request.queryParams("subjectid"));
             if(subjectid == 0){
@@ -139,10 +121,10 @@ public class SubjectQuestionsController extends AbstractController {
             throw e;
         }
         if(result.isValid()){
-            result.setQuestion(new Question(subjectid, titleId, question, answers, points));
+            result.setQuestion(new Question(subjectid, question, answers, points));
             return result;
         } else {
-            result.setQuestion(new Question(subjectid, titleId, question, answers, points));
+            result.setQuestion(new Question(subjectid, question, answers, points));
             result.setValidationMessage(sb.toString());
             return result;
         }

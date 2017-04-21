@@ -20,7 +20,7 @@ public interface Model {
 
     void createQuestion(Question question);
 
-    List<Question> getAllQuestionsForSubjectAndTitle(int subjectId, String titleId);
+    List<Question> getAllQuestionsForSubjectAndTitle(int subjectId);
 
     List<AdaptiveRule> getAllAdaptiveRules();
 

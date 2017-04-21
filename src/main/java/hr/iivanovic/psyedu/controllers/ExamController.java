@@ -28,7 +28,7 @@ public class ExamController extends AbstractController {
         User student = LoginController.getCurrentUser(request);
         if (clientAcceptsHtml(request)) {
             Map<String, Object> model = new HashMap<>();
-            List<Question> questions = dbProvider.getAllQuestionsForSubjectAndTitle(subjectid, titleid);
+            List<Question> questions = dbProvider.getAllQuestionsForSubjectAndTitle(subjectid);
             String htmlQuestions = "ispitna pitanja za ovo gradivo nisu unesena !";
             if(questions.size() > 0){
                  htmlQuestions = renderQuestions(questions);
@@ -53,7 +53,7 @@ public class ExamController extends AbstractController {
                 System.out.println(param + " " + request.queryParams(param));
             }
             Map<String, Object> model = new HashMap<>();
-            List<Question> questions = dbProvider.getAllQuestionsForSubjectAndTitle(subjectid, titleid);
+            List<Question> questions = dbProvider.getAllQuestionsForSubjectAndTitle(subjectid);
             String htmlQuestions = "ispitna pitanja za ovo gradivo nisu unesena !";
             if(questions.size() > 0){
                  htmlQuestions = renderQuestions(questions);

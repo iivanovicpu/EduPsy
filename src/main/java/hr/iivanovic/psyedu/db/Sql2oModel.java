@@ -145,9 +145,8 @@ public class Sql2oModel implements Model {
     @Override
     public void createQuestion(Question question) {
         try (Connection conn = sql2o.open()) {
-            conn.createQuery("INSERT INTO questions (subjectId, titleId, question, answers, points) VALUES (:subjectId, :titleId, :question, :answers, :points);")
+            conn.createQuery("INSERT INTO questions (subjectId, question, answers, points) VALUES (:subjectId, :question, :answers, :points);")
                     .addParameter("subjectId", question.getSubjectId())
-                    .addParameter("titleId", question.getTitleId())
                     .addParameter("question", question.getQuestion())
                     .addParameter("answers", question.getAnswers())
                     .addParameter("points", question.getPoints())
@@ -158,11 +157,10 @@ public class Sql2oModel implements Model {
     }
 
     @Override
-    public List<Question> getAllQuestionsForSubjectAndTitle(int subjectId, String titleId) {
+    public List<Question> getAllQuestionsForSubjectAndTitle(int subjectId) {
         try (Connection conn = sql2o.open()) {
-            return conn.createQuery("select * from questions where subjectId=:subjectId and titleId=:titleId")
+            return conn.createQuery("select * from questions where subjectId=:subjectId")
                     .addParameter("subjectId", subjectId)
-                    .addParameter("titleId", titleId)
                     .executeAndFetch(Question.class);
         }
     }

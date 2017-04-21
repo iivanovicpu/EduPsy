@@ -2,24 +2,22 @@
 #@mainLayout()
 <div>$successmsg</div>
     #foreach($subject in $subjects)
-    <form>
-        <div>
-            $subject.getTitle()
-            <button type="submit" class="btn btn-primary" formmethod="get"
-                    formaction="/edit_subject_item/$subject.getId()/$subject.getParentSubjectId()/edit/">
-                <span class="glyphicon glyphicon-edit" title="uredi"></span>
-            </button>
+    <form class="form-inline">
+        <div class="form-group">
+            <div class="h$subject.subjectPositionId">
+                $subject.getTitle()
+            </div>
+        </div>
+        <div class="form-group">
+            <a href="/edit_subject_item/$subject.getId()/$subject.getParentSubjectId()/edit/" title="uredi" style="padding-left: 5px">
+                <span class="glyphicon glyphicon-edit" title="uredi"></span></a>
+
             #if($subject.getSubjectPositionId() < 4)
-                <button type="submit" class="btn btn-primary" formmethod="get"
-                        formaction="/edit_subject_item/$subject.getId()/$subject.getParentSubjectId()/add/">
-                    <span class="glyphicon glyphicon-plus" title="dodaj"></span>
-                </button>
+                <a href="/edit_subject_item/$subject.getId()/$subject.getParentSubjectId()/add/" title="dodaj" style="padding-left: 5px">
+                    <span class="glyphicon glyphicon-plus" title="dodaj"></span></a>
             #end
-            <button type="submit" class="btn btn-primary" formmethod="get"
-                    formaction="/admin_subject/$subject.id/"
-            ">
-            <span class="glyphicon glyphicon-question-sign" title="ispitna pitanja"></span>
-            </button>
+            <a href="/admin_subject/$subject.id/" title="ispitna pitanja" style="padding-left: 5px">
+                <span class="glyphicon glyphicon-question-sign" title="ispitna pitanja"></span></a>
         </div>
     </form>
     #end

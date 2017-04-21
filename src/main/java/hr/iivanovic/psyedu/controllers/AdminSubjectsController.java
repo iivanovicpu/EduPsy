@@ -92,6 +92,7 @@ public class AdminSubjectsController extends AbstractController {
             int parentSubjectId = Integer.parseInt(request.queryParams("parentSubjectId"));
 
             String title = request.queryParams("title");
+            int subjectLevelId = Integer.parseInt(request.queryParams("subjectLevelId"));
             String keywords = request.queryParams("keywords");
             String content = request.queryParams("content");
             String additionalContent = request.queryParams("additionalContent");
@@ -102,6 +103,7 @@ public class AdminSubjectsController extends AbstractController {
                 subject.setContent(content);
                 subject.setKeywords(keywords);
                 subject.setTitle(title);
+                subject.setSubjectLevelId(subjectLevelId);
                 dbProvider.updateSubject(subject);
             }
             if ("add".equals(action)) {

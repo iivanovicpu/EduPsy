@@ -4,6 +4,7 @@ import static hr.iivanovic.psyedu.util.JsonUtil.dataToJson;
 import static hr.iivanovic.psyedu.util.RequestUtil.clientAcceptsHtml;
 import static hr.iivanovic.psyedu.util.RequestUtil.clientAcceptsJson;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import hr.iivanovic.psyedu.AppConfiguration;
 import hr.iivanovic.psyedu.db.Subject;
 import hr.iivanovic.psyedu.db.SubjectLevel;
 import hr.iivanovic.psyedu.db.SubjectPosition;
@@ -26,6 +28,29 @@ import spark.utils.StringUtils;
  * @date 29.08.16.
  */
 public class AdminSubjectsController extends AbstractController {
+
+    public static Route submitAddedSubject = (request, response) -> {
+        String title = request.queryParams("title");
+        String keywords = request.queryParams("keywords");
+        HashMap<String, Object> model = new HashMap<>();
+        String validationMsg = validateSubject(title);
+        if (!StringUtils.isEmpty(validationMsg)) {
+            model.put("validation", validationMsg);
+            model.put("editAllowed", LoginController.isEditAllowed(request));
+            return ViewUtil.render(request, model, Path.Template.SUBJECT_ADD);
+        }
+        String titleReplaced = title.replaceAll(" ", "").replaceAll("[^\\x00-\\x7F]", "");
+        String filename = titleReplaced.substring(0, titleReplaced.length() > 10 ? 10 : titleReplaced.length()).toLowerCase();
+        createDirIfNotExists(filename, title);
+
+        dbProvider.createSubject(title, keywords, "/materijali/".concat(filename), SubjectLevel.OSNOVNO, SubjectPosition.PREDMET.getId());
+
+        if (clientAcceptsHtml(request)) {
+            response.redirect(Path.Web.getSUBJECTS());
+        }
+        return ViewUtil.notAcceptable.handle(request, response);
+    };
+
 
     public static Route fetchAllParentSubjects = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
@@ -110,6 +135,15 @@ public class AdminSubjectsController extends AbstractController {
                 Subject parentSubject = dbProvider.getSubject(subjectId);
                 SubjectPosition subPosition = SubjectPosition.getById(parentSubject.getSubjectPositionId()).getSubPosition();
                 subject = new Subject(0, title, keywords, null, subjectId, parentSubjectId, SubjectLevel.OSNOVNO.getId(), 0, content, additionalContent, subPosition.getId(), subPosition);
+                if(subject.getSubjectPosition().getId() < 3) {
+                    String titleReplaced = title.replaceAll(" ", "").replaceAll("[^\\x00-\\x7F]", "");
+                    String filename = titleReplaced.substring(0, titleReplaced.length() > 10 ? 10 : titleReplaced.length()).toLowerCase();
+                    String filePath = parentSubject.getUrl().concat("/").concat(filename);
+                    createDirIfNotExists(filePath, title);
+                    subject.setUrl(filePath);
+                } else {
+                    subject.setUrl(parentSubject.getUrl());
+                }
                 dbProvider.createSubSubject(subject);
             }
 
@@ -136,5 +170,19 @@ public class AdminSubjectsController extends AbstractController {
                     .forEach(subject -> sb.append("naslov:\" ").append(title).append("\" već postoji u bazi!"));
         }
         return sb.toString();
+    }
+
+    private static void createDirIfNotExists(String subjectDirectory, String title) {
+        String filePath = AppConfiguration.getInstance().getExternalLocation().concat("materijali/").concat(subjectDirectory);
+        File dir = new File(filePath);
+        if (!dir.exists()) {
+            try {
+                dir.mkdir();
+            } catch (SecurityException e) {
+                LOGGER.error("error creating dir: {} for title: {}", dir.getPath(), title, e);
+            }
+        } else {
+            LOGGER.info("File already exists.");
+        }
     }
 }

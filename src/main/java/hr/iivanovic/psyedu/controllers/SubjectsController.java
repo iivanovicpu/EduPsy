@@ -44,7 +44,6 @@ public class SubjectsController extends AbstractController {
 
     private static HtmlParser htmlParser = HtmlParser.getInstance();
 
-
     public static Route fetchOneSubject = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
         long subjectId = Integer.parseInt(request.params("id"));
@@ -118,30 +117,6 @@ public class SubjectsController extends AbstractController {
         return ViewUtil.notAcceptable.handle(request, response);
     };
 
-    public static Route fetchOneSubjectEdit = (Request request, Response response) -> {
-        LoginController.ensureUserIsLoggedIn(request, response);
-        long id = Long.parseLong(request.params(":id"));
-        if (clientAcceptsHtml(request)) {
-            HashMap<String, Object> model = new HashMap<>();
-            Subject subject = dbProvider.getSubject(id);
-            String marks = "<script>var oznake = [";
-            for (AdaptiveRuleTypes ruleType : AdaptiveRuleTypes.values()) {
-                marks = marks.concat("'").concat(ruleType.getMark()).concat("',");
-            }
-            marks = marks.substring(0, marks.length() - 1).concat("];</script>");
-            // todo: napuniti marks iz adaptive rules tablice
-//            model.put("marks","<script>var oznake = ['***','**','blabla'];</script>");
-            model.put("marks", marks);
-            model.put("subject", subject);
-            model.put("editAllowed", LoginController.isEditAllowed(request));
-            return ViewUtil.render(request, model, Path.Template.SUBJECTS_ONE_EDIT);
-        }
-        if (clientAcceptsJson(request)) {
-            return dataToJson(dbProvider.getSubject(id));
-        }
-        return ViewUtil.notAcceptable.handle(request, response);
-    };
-
     public static Route submitEditedSubject = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
         long id = Long.parseLong(request.queryParams("id"));
@@ -179,7 +154,6 @@ public class SubjectsController extends AbstractController {
         return ViewUtil.notAcceptable.handle(request, response);
     };
 
-
     public static Route addNewSubject = (Request request, Response response) -> {
         if (clientAcceptsHtml(request)) {
             HashMap<String, Object> model = new HashMap<>();
@@ -191,54 +165,6 @@ public class SubjectsController extends AbstractController {
         }
         return ViewUtil.notAcceptable.handle(request, response);
     };
-
-    public static Route submitAddedSubject = (request, response) -> {
-        String title = request.queryParams("title");
-        String keywords = request.queryParams("keywords");
-        HashMap<String, Object> model = new HashMap<>();
-        String validationMsg = validateSubject(title);
-        if (!StringUtils.isEmpty(validationMsg)) {
-            model.put("validation", validationMsg);
-            model.put("editAllowed", LoginController.isEditAllowed(request));
-            return ViewUtil.render(request, model, Path.Template.SUBJECT_ADD);
-        }
-        String titleReplaced = title.replaceAll(" ", "").replaceAll("[^\\x00-\\x7F]", "");
-        String filename = titleReplaced.substring(0, titleReplaced.length() > 10 ? 10 : titleReplaced.length()).toLowerCase();
-        String filePath = AppConfiguration.getInstance().getExternalLocation().concat("materijali/").concat(filename);
-        createDirIfNotExists(filePath, title);
-
-        dbProvider.createSubject(title, keywords, "/materijali/".concat(filename), SubjectLevel.OSNOVNO, SubjectPosition.PREDMET.getId());
-
-        if (clientAcceptsHtml(request)) {
-            response.redirect(Path.Web.getSUBJECTS());
-        }
-        return ViewUtil.notAcceptable.handle(request, response);
-    };
-    public static final Logger LOGGER = LoggerFactory.getLogger(SubjectsController.class);
-
-    private static void createDirIfNotExists(String subjectDirectory, String title) {
-        File dir = new File(subjectDirectory);
-        if (!dir.exists()) {
-            try {
-                dir.mkdir();
-            } catch (SecurityException e) {
-                LOGGER.error("error creating dir: {} for title: {}", dir.getPath(), title, e);
-            }
-        } else {
-            LOGGER.info("File already exists.");
-        }
-    }
-
-    private static String validateSubject(String title) {
-        StringBuilder sb = new StringBuilder();
-        if (StringUtils.isEmpty(title)) {
-            sb.append("naslov je obavezan podatak\n");
-        } else {
-            dbProvider.getAllSubjects().stream().filter(subject -> subject.getTitle().equals(title))
-                    .forEach(subject -> sb.append("naslov:\" ").append(title).append("\" već postoji u bazi!"));
-        }
-        return sb.toString();
-    }
 
     private static void copyFileUsingStream(File source, File dest) throws IOException {
         InputStream is = null;

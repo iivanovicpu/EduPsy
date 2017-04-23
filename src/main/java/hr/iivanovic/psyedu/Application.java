@@ -74,7 +74,7 @@ public class Application {
         post(Path.Web.ONE_TITLE_QUESTIONS, SubjectQuestionsController.submitQuestion);
         post(Path.Web.SUBMIT_EDITED_SUBJECT, SubjectsController.submitEditedSubject);
         get(Path.Web.ADD_SUBJECT, SubjectsController.addNewSubject);
-        post(Path.Web.ADD_SUBJECT, SubjectsController.submitAddedSubject);
+        post(Path.Web.ADD_SUBJECT, AdminSubjectsController.submitAddedSubject);
         get(Path.Web.ONE_TITLE, SubjectsController.fetchOneTitle);
         post(Path.Web.ONE_TITLE, SubjectsController.submitOneTitleStatus);
 

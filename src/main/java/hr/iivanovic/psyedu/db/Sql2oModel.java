@@ -307,7 +307,10 @@ public class Sql2oModel implements Model {
                     .addColumnMapping("additional_content", "additionalContent")
                     .addColumnMapping("subject_position_id", "subjectPositionId")
                     .executeAndFetch(Subject.class);
-
+            for (Subject subject : subjects) {
+                if(null == subject.getParentSubjectId())
+                    subject.setParentSubjectId(subjectId);
+            }
             return subjects.stream().sorted(Comparator.comparing(Subject::getId)).collect(Collectors.toList());
         }
     }

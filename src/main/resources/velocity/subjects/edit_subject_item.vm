@@ -42,19 +42,13 @@
                 <input type="text" readonly value="$!subject.url">
             </div>
         </div>
-        #if($subject.additionalContent != '')
-            <div class="form-group" id="additional">
-                <textarea id="additionalContent" name="additionalContent">$!subject.additionalContent</textarea>
-            </div>
-        #else
-            <div id="toggleAdditional" style="cursor: pointer; text-decoration: underline">
-                Dodatni sadržaj
-            </div>
-            <br>
-            <div class="form-group" id="additional" style="display: none">
-                <textarea id="additionalContent" name="additionalContent">$!subject.additionalContent</textarea>
-            </div>
-        #end
+        <div id="toggleAdditional" style="cursor: pointer; text-decoration: underline">
+            Dodatni sadržaj
+        </div>
+        <br>
+        <div class="form-group" id="additional" style="display: none">
+            <textarea id="additionalContent" name="additionalContent">$!subject.additionalContent</textarea>
+        </div>
 
         <button type="submit" class="btn btn-primary">#if($action == 'edit')
             Izmijeni

@@ -24,6 +24,7 @@ public class ViewUtil {
         model.put("msg", new MessageBundle(getSessionLocale(request)));
         model.put("currentUser", getSessionCurrentUser(request));
         model.put("WebPath", Path.Web.class); // Access application URLs from templates
+        model.put("sidebarContent", ""); // sidebar content for layout
         return strictVelocityEngine().render(new ModelAndView(model, templatePath));
     }
 

@@ -77,14 +77,18 @@
             </ul>
             <div class="userinfo" style="float: right; color: white; padding-top: 10px; text-align: right;">
                 #if($currentUser)
-                    <li>
-                        <form method="post" action="$WebPath.getLOGOUT()">
-                            <div>$currentUser.firstName $currentUser.lastName $currentUser.status</div>
-                            <button id="logout">$msg.get("COMMON_NAV_LOGOUT")</button>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <form name="logout" method="post" action="$WebPath.getLOGOUT()">
+                                <div>$currentUser.firstName $currentUser.lastName $currentUser.status</div>
+                                <a href="javascript:document.logout.submit()"><span class="glyphicon glyphicon-log-out"></span>&nbsp;Odjava</a>
                         </form>
-                    </li>
+                        </li>
+                    </ul>
                 #else
-                    <li><a href="$WebPath.getLOGIN()" style="color: white;">$msg.get("COMMON_NAV_LOGIN")</a></li>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="$WebPath.getLOGIN()"><span class="glyphicon glyphicon-log-in"></span>&nbsp;Prijava</a></li>
+                    </ul>
                 #end
             </div>
         </div>
@@ -98,21 +102,23 @@
     </header>
 
 
-    <div class="row">
-        <div class="col-lg-12">
+    <div class="row content">
+        <div class="col-sm-10 text-left">
             $bodyContent
+        </div>
+        <div class="col-sm-2 sidenav">
+            $!sidebarContent
         </div>
     </div>
     <hr>
 </div>
-##<footer style="align-content: center">
-##    $msg.get("COMMON_FOOTER_TEXT")
-##</footer>
+<footer class="container-fluid text-center">
+    <p>Footer Text</p>
+</footer>
 <script src="/js/jquery.js"></script>
 
 <!-- Bootstrap Core JavaScript -->
 <script src="/js/bootstrap.min.js"></script>
-
 
 </body>
 </html>

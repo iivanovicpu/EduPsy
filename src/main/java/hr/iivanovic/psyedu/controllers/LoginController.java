@@ -35,7 +35,7 @@ public class LoginController {
             return ViewUtil.render(request, model, Path.Template.LOGIN);
         }
         model.put("authenticationSucceeded", true);
-        request.session().attribute("currentUser", user);
+        request.session().attribute(CURRENT_USER, user);
         // todo: provjera da li su ispunjeni upitnici inteligencije i i stilova učenja
         if(isStudent(request) && !user.isCompletedIntelligencePoll()){
             response.redirect(Path.Web.INTELLIGENCE_POLL);

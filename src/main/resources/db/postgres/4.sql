@@ -94,7 +94,7 @@ INSERT INTO LEARNING_STYLES_ADAPTIVE_RULES (adaptive_rule_id, learning_style_id)
 INSERT INTO LEARNING_STYLES_ADAPTIVE_RULES (adaptive_rule_id, learning_style_id) VALUES (5, (SELECT id FROM LEARNING_STYLES WHERE code = 'SEN'));
 INSERT INTO LEARNING_STYLES_ADAPTIVE_RULES (adaptive_rule_id, learning_style_id) VALUES (11, (SELECT id FROM LEARNING_STYLES WHERE code = 'SEN'));
 
-
+ALTER TABLE learning_log DROP COLUMN titleid;
 
 
 

@@ -75,8 +75,9 @@ public class Application {
         post(Path.Web.SUBMIT_EDITED_SUBJECT, SubjectsController.submitEditedSubject);
         get(Path.Web.ADD_SUBJECT, SubjectsController.addNewSubject);
         post(Path.Web.ADD_SUBJECT, AdminSubjectsController.submitAddedSubject);
-        get(Path.Web.ONE_TITLE, SubjectsController.fetchOneTitle);
-        post(Path.Web.ONE_TITLE, SubjectsController.submitOneTitleStatus);
+        get(Path.Web.ONE_PARENT_TITLE, SubjectsController.fetchOneTitle);
+        get(Path.Web.ONE_CHILD_TITLE, SubjectsController.fetchOneChildTitle);
+        post(Path.Web.ONE_CHILD_TITLE, SubjectsController.submitOneTitleStatus);
 
         get(Path.Web.SUBJECTS, AdminSubjectsController.fetchAllParentSubjects);
         get(Path.Web.EDIT_SUBJECT, AdminSubjectsController.fetchSubjectForEdit);

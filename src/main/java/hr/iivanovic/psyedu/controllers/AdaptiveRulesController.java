@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import hr.iivanovic.psyedu.db.AdaptiveRules;
-import hr.iivanovic.psyedu.db.IntelligenceType;
-import hr.iivanovic.psyedu.db.LearningStyle;
+import hr.iivanovic.psyedu.db.AdaptiveRule;
+import hr.iivanovic.psyedu.db.IntelligenceTypeDb;
+import hr.iivanovic.psyedu.db.LearningStyleDb;
 import hr.iivanovic.psyedu.util.Path;
 import hr.iivanovic.psyedu.util.ViewUtil;
 import spark.Request;
@@ -30,14 +30,15 @@ public class AdaptiveRulesController extends AbstractController {
     };
 
     private static Map<String, Object> createModel() {
-        List<IntelligenceType> allIntelligenceTypes = dbProvider.getAllIntelligenceTypes();
-        List<LearningStyle> allLearningStyles = dbProvider.getAllLearningStyles();
+        // todo: from enum
+        List<IntelligenceTypeDb> allIntelligenceTypeDbs = dbProvider.getAllIntelligenceTypes();
+        List<LearningStyleDb> allLearningStyleDbs = dbProvider.getAllLearningStyles();
 
         Map<String, Object> model = new HashMap<>();
         model.put("validation", false);
-        model.put("styles", allLearningStyles);
-        model.put("intelligences", allIntelligenceTypes);
-        model.put("rules", AdaptiveRules.values());
+        model.put("styles", allLearningStyleDbs);
+        model.put("intelligences", allIntelligenceTypeDbs);
+        model.put("rules", AdaptiveRule.values());
         model.put("adaptiverules", dbProvider.getAllAdaptiveRules());
         return model;
     }

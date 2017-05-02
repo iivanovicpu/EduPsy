@@ -6,6 +6,7 @@ import static hr.iivanovic.psyedu.util.RequestUtil.clientAcceptsJson;
 
 import java.util.HashMap;
 
+import hr.iivanovic.psyedu.db.IntelligenceType;
 import hr.iivanovic.psyedu.db.User;
 import hr.iivanovic.psyedu.util.Path;
 import hr.iivanovic.psyedu.util.ViewUtil;
@@ -34,7 +35,7 @@ public class ProfileController extends AbstractController {
     private static Object createProfileModel(Request request, User user) {
         HashMap<String, Object> model = new HashMap<>();
         model.put("validation", false);
-        model.put("intelligenceType", IntelligenceTypes.getById(user.getIntelligenceTypeId()).getDescription());
+        model.put("intelligenceType", IntelligenceType.getById(user.getIntelligenceTypeId()).getDescription());
         return ViewUtil.render(request, model, Path.Template.PERSONAL_PROFILE);
     }
 

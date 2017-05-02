@@ -20,7 +20,8 @@ public class Path {
         @Getter public static final String ADD_SUBJECT_ITEM = "/add_subject_item/:subjectId/";
         @Getter public static final String SUBMIT_EDITED_SUBJECT = "/edit_subject/";
         @Getter public static final String ADD_SUBJECT = "/addsubject/";
-        @Getter public static final String ONE_TITLE = "/onetitle/:id/:subjectid/";
+        @Getter public static final String ONE_PARENT_TITLE = "/onetitle/:id/";
+        @Getter public static final String ONE_CHILD_TITLE = "/onetitlechild/:id/";
         @Getter public static final String ONE_SUBJECT_QUESTIONS = "/admin_subject/:id/";
         @Getter public static final String ONE_TITLE_QUESTIONS = "/onetitlequestions/:subjectid/";
         @Getter public static final String PERSONAL_PROFILE = "/profile/";

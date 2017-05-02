@@ -9,9 +9,10 @@ import lombok.Data;
  * @date 09.04.17.
  */
 @Data
-public class LearningStyle {
+@Deprecated
+public class IntelligenceTypeDb {
     private int id;
+    private String Name;
     private String code;
-    private String name;
-    private List<AdaptiveRules> adaptiveRules;
+    private List<AdaptiveRule> adaptiveRules;
 }

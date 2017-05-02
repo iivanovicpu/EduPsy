@@ -22,7 +22,7 @@ public interface Model {
 
     List<Question> getAllQuestionsForSubjectAndTitle(int subjectId);
 
-    List<AdaptiveRule> getAllAdaptiveRules();
+    List<AdaptiveRuleDb> getAllAdaptiveRules();
 
     int nextIdx(String tag);
 
@@ -40,13 +40,17 @@ public interface Model {
 
     void updateStudentLearningStylePollResult(int id, int aktivni, int reflektivni, int opazajni, int intuitivni, int vizualni, int verbalni, int sekvencijalni, int globalni);
 
-    List<IntelligenceType> getAllIntelligenceTypes();
+    List<IntelligenceTypeDb> getAllIntelligenceTypes();
 
-    List<LearningStyle> getAllLearningStyles();
+    List<LearningStyleDb> getAllLearningStyles();
 
-    List<Subject> getSubjectsForEdit(int subjectId);
+    List<AdaptiveRule> getIntelligenceTypeRules(int intelligenceTypeId);
+
+    List<Subject> getSubjectsByParentSubjectId(int parentSubjectId);
 
     void updateSubject(Subject subject);
 
     List<Subject> getAllParentSubjects();
+
+    List<AdaptiveRule> getLearningStyleRules(int learningStyleId);
 }

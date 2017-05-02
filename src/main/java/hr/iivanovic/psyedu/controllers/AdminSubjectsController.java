@@ -7,7 +7,6 @@ import static hr.iivanovic.psyedu.util.RequestUtil.clientAcceptsJson;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,7 +74,7 @@ public class AdminSubjectsController extends AbstractController {
         int subjectId = Integer.parseInt(request.params("id"));
         if (clientAcceptsHtml(request)) {
             HashMap<String, Object> model = new HashMap<>();
-            List<Subject> subjects = dbProvider.getSubjectsForEdit(subjectId);
+            List<Subject> subjects = dbProvider.getSubjectsByParentSubjectId(subjectId);
             model.put("subjects", subjects);
             model.put("successmsg", "");
             return ViewUtil.render(request, model, Path.Template.EDIT_SUBJECT);

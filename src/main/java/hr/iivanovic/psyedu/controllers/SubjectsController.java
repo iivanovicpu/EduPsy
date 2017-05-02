@@ -17,14 +17,10 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import hr.iivanovic.psyedu.AppConfiguration;
-import hr.iivanovic.psyedu.db.LearningLog;
+import hr.iivanovic.psyedu.db.AdaptiveRule;
+import hr.iivanovic.psyedu.db.LearningStyleRule;
 import hr.iivanovic.psyedu.db.Subject;
-import hr.iivanovic.psyedu.db.SubjectLevel;
-import hr.iivanovic.psyedu.db.SubjectPosition;
 import hr.iivanovic.psyedu.db.TitleLearningStatus;
 import hr.iivanovic.psyedu.db.User;
 import hr.iivanovic.psyedu.html.HtmlParser;
@@ -34,7 +30,6 @@ import hr.iivanovic.psyedu.util.ViewUtil;
 import spark.Request;
 import spark.Response;
 import spark.Route;
-import spark.utils.StringUtils;
 
 /**
  * @author iivanovic
@@ -72,29 +67,61 @@ public class SubjectsController extends AbstractController {
 
     public static Route fetchOneTitle = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
-        String titleId = request.params("id");
-        int subjectId = Integer.parseInt(request.params("subjectid"));
+        int parentSubjectId = Integer.parseInt(request.params("id"));
         if (clientAcceptsHtml(request)) {
             HashMap<String, Object> model = new HashMap<>();
-            if (LoginController.isStudent(request)) {
-                User student = LoginController.getCurrentUser(request);
-                LearningLog learningLog = dbProvider.getLearningLogStatus(student.getId(), subjectId, titleId);
-                if (null == learningLog) {
-                    dbProvider.logLearningStatus(student.getId(), subjectId, titleId, TitleLearningStatus.OPENED.getId());
+            List<Subject> subjects = dbProvider.getSubjectsByParentSubjectId(parentSubjectId);
+            model.put("subjects", subjects);
+            return ViewUtil.render(request, model, Path.Template.SUBJECTS_ONE);
 
-                }
-                model.put("subjectId", subjectId);
-                model.put("titleId", titleId);
-                model.put("status", null != learningLog ? learningLog.getStatusId() : TitleLearningStatus.OPENED.getId()); // ako je status neobrađeno - prikazati gumb za "označi kao završeno"
-
-                Subject subject = dbProvider.getSubject(subjectId);
-                String content = htmlParser.getOneTitleContent(AppConfiguration.getInstance().getExternalLocation() + subject.getUrl().substring(1, subject.getUrl().length()), titleId);
-                model.put("content", content);
-                return ViewUtil.render(request, model, Path.Template.SUBJECT_ONE_TITLE);
-            }
         }
         return ViewUtil.notAcceptable.handle(request, response);
     };
+
+    public static Route fetchOneChildTitle = (Request request, Response response) -> {
+        LoginController.ensureUserIsLoggedIn(request, response);
+        getUserAdaptiveRules(LoginController.getCurrentUser(request));
+        int id = Integer.parseInt(request.params("id"));
+        if (clientAcceptsHtml(request)) {
+            HashMap<String, Object> model = new HashMap<>();
+            Subject subject = dbProvider.getSubject(id);
+            if(null == subject.getParentSubjectId())
+                subject.setParentSubjectId(subject.getId());
+            model.put("subject", subject);
+            // todo: sidebar s pravilima navigacije
+            model.put("sidebarContent", createSidebarNavigation(subject.getParentSubjectId()));
+            return ViewUtil.render(request, model, Path.Template.SUBJECT_ONE_TITLE);
+
+        }
+        return ViewUtil.notAcceptable.handle(request, response);
+    };
+
+    private static void getUserAdaptiveRules(User student) {
+        List<AdaptiveRule> rules = new LinkedList<>();
+        rules.addAll(dbProvider.getIntelligenceTypeRules(student.getIntelligenceTypeId()));
+        for (LearningStyle learningStyle : student.getLearningStyles()) {
+            rules.addAll(LearningStyleRule.findRulesByLearningStyle(learningStyle));
+        }
+        for (AdaptiveRule rule : rules) {
+            System.out.println(rule);
+        }
+    }
+
+    private static String createSidebarNavigation(int parentSubjectId) {
+        StringBuilder stringBuilder = new StringBuilder();
+        List<Subject> subjects = dbProvider.getSubjectsByParentSubjectId(parentSubjectId);
+        for (Subject subject : subjects) {
+            stringBuilder
+                    .append("<p><a href='/onetitlechild/")
+                    .append(subject.getId())
+                    .append("/'>")
+                    .append(subject.getTitle())
+                    .append("</a></p>");
+        }
+        return stringBuilder.toString();
+
+
+    }
 
     public static Route submitOneTitleStatus = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);

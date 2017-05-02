@@ -4,12 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import hr.iivanovic.psyedu.db.IntelligenceType;
 import hr.iivanovic.psyedu.db.User;
 import hr.iivanovic.psyedu.util.Path;
 import hr.iivanovic.psyedu.util.ViewUtil;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -40,8 +39,8 @@ public class StudentsController extends AbstractController {
                 Map<String, Object> model = new HashMap<>();
                 model.put("validation", false);
                 model.put("student", student);
-                model.put("styles", LearningStyles.values());
-                model.put("intelligenceType", IntelligenceTypes.getById(student.getIntelligenceTypeId()).getDescription());
+                model.put("styles", LearningStyle.values());
+                model.put("intelligenceType", IntelligenceType.getById(student.getIntelligenceTypeId()).getDescription());
                 return ViewUtil.render(request, model, Path.Template.STUDENT_DETAILS);
             } else {
                 ViewUtil.notAcceptable.handle(request,response);

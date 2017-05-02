@@ -5,6 +5,7 @@ import static hr.iivanovic.psyedu.util.RequestUtil.clientAcceptsHtml;
 import java.util.HashMap;
 import java.util.Objects;
 
+import hr.iivanovic.psyedu.db.IntelligenceType;
 import hr.iivanovic.psyedu.db.User;
 import hr.iivanovic.psyedu.util.Path;
 import hr.iivanovic.psyedu.util.ViewUtil;
@@ -57,13 +58,13 @@ public class PollController extends AbstractController {
             }
             int intelligenceTypeId = 0;
             if(verbal > nonVerbal && verbal > mathLogic){
-                intelligenceTypeId = IntelligenceTypes.V.getId();
+                intelligenceTypeId = IntelligenceType.V.getId();
             }
             if(nonVerbal > verbal && nonVerbal > mathLogic){
-                intelligenceTypeId = IntelligenceTypes.NV.getId();
+                intelligenceTypeId = IntelligenceType.NV.getId();
             }
             if(mathLogic > verbal && mathLogic > nonVerbal){
-                intelligenceTypeId = IntelligenceTypes.ML.getId();
+                intelligenceTypeId = IntelligenceType.ML.getId();
             }
             dbProvider.updateStudentIntelligenceType(user.getId(), intelligenceTypeId);
             model.put("validation", "Anketa je uspješno ispunjena, zahvaljujemo!");

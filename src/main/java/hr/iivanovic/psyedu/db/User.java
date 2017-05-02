@@ -1,5 +1,8 @@
 package hr.iivanovic.psyedu.db;
 
+import java.util.List;
+
+import hr.iivanovic.psyedu.controllers.LearningStyle;
 import lombok.Data;
 
 /**
@@ -29,5 +32,8 @@ public class User {
     private int lsPointsGlobal;
     private int lsPointsIntuitive;
     private int lsPointsSensor;
+
+    private List<LearningStyle> learningStyles;
+    private IntelligenceType intelligenceType;
 
 }

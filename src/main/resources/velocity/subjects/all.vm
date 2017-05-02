@@ -4,8 +4,13 @@
 <div class="row row-3">
     #foreach($subject in $subjects)
         <div class="col">
+            #if($editAllowed)
             <a class="book" href="/edit_subject/$subject.id/"
                title="$subject.getKeywords()">$subject.getTitle()</a>
+            #else
+                <a class="book" href="/onetitle/$subject.id/"
+                   title="$subject.getKeywords()">$subject.getTitle()</a>
+            #end
         </div>
     #end
 </div>

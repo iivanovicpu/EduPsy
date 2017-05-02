@@ -7,8 +7,11 @@ import static hr.iivanovic.psyedu.util.RequestUtil.removeSessionAttrLoggedOut;
 import static hr.iivanovic.psyedu.util.RequestUtil.removeSessionAttrLoginRedirect;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
+import hr.iivanovic.psyedu.db.IntelligenceType;
 import hr.iivanovic.psyedu.db.User;
 import hr.iivanovic.psyedu.util.Path;
 import hr.iivanovic.psyedu.util.ViewUtil;
@@ -18,7 +21,7 @@ import spark.Route;
 
 public class LoginController {
 
-    public static final String CURRENT_USER = "currentUser";
+    private static final String CURRENT_USER = "currentUser";
 
     public static Route serveLoginPage = (Request request, Response response) -> {
         Map<String, Object> model = new HashMap<>();
@@ -36,18 +39,54 @@ public class LoginController {
         }
         model.put("authenticationSucceeded", true);
         request.session().attribute(CURRENT_USER, user);
-        // todo: provjera da li su ispunjeni upitnici inteligencije i i stilova učenja
-        if(isStudent(request) && !user.isCompletedIntelligencePoll()){
+
+        if (isStudent(request) && !user.isCompletedIntelligencePoll()) {
             response.redirect(Path.Web.INTELLIGENCE_POLL);
         }
-        if(isStudent(request) && !user.isCompletedLearningStylePoll()){
+        if (isStudent(request) && !user.isCompletedLearningStylePoll()) {
             response.redirect(Path.Web.LEARNING_STYLE_POLL);
+        }
+        if (isStudent(request)) {
+            fillLearningStylesAndIntelligence(user);
         }
         if (getQueryLoginRedirect(request) != null) {
             response.redirect(getQueryLoginRedirect(request));
         }
         return ViewUtil.render(request, model, Path.Template.LOGIN);
     };
+
+    private static void fillLearningStylesAndIntelligence(User user) {
+        List<LearningStyle> styles = new LinkedList<>();
+        int diff = Math.abs(user.getLsPointsActive() - user.getLsPointsReflective());
+        if (diff > 3) {
+            styles.add(user.getLsPointsActive() > user.getLsPointsReflective() ? LearningStyle.STYLE_1_AKT : LearningStyle.STYLE_1_REF);
+        } else {
+            styles.add(LearningStyle.STYLE_1_NAR);
+        }
+
+        diff = Math.abs(user.getLsPointsVisual() - user.getLsPointsVerbal());
+        if (diff > 3) {
+            styles.add(user.getLsPointsVisual() > user.getLsPointsVerbal() ? LearningStyle.STYLE_2_VIS : LearningStyle.STYLE_2_VER);
+        } else {
+            styles.add(LearningStyle.STYLE_2_NVV);
+        }
+
+        diff = Math.abs(user.getLsPointsSequential() - user.getLsPointsGlobal());
+        if (diff > 3) {
+            styles.add(user.getLsPointsSequential() > user.getLsPointsGlobal() ? LearningStyle.STYLE_3_SEQ : LearningStyle.STYLE_3_GLO);
+        } else {
+            styles.add(LearningStyle.STYLE_3_NSG);
+        }
+
+        diff = Math.abs(user.getLsPointsIntuitive() - user.getLsPointsSensor());
+        if (diff > 3) {
+            styles.add(user.getLsPointsIntuitive() > user.getLsPointsSensor() ? LearningStyle.STYLE_4_INT : LearningStyle.STYLE_4_SEN);
+        } else {
+            styles.add(LearningStyle.STYLE_4_NIS);
+        }
+        user.setLearningStyles(styles);
+        user.setIntelligenceType(IntelligenceType.getById(user.getIntelligenceTypeId()));
+    }
 
     public static Route handleLogoutPost = (Request request, Response response) -> {
         request.session().removeAttribute(CURRENT_USER);
@@ -56,27 +95,25 @@ public class LoginController {
         return null;
     };
 
-    // The origin of the request (request.pathInfo()) is saved in the session so
-    // the user can be redirected back after login
-    public static void ensureUserIsLoggedIn(Request request, Response response) {
+    static void ensureUserIsLoggedIn(Request request, Response response) {
         if (request.session().attribute(CURRENT_USER) == null) {
             request.session().attribute("loginRedirect", request.pathInfo());
             response.redirect(Path.Web.LOGIN);
         }
-    };
+    }
 
-    public static boolean isEditAllowed(Request request){
+    static boolean isEditAllowed(Request request) {
         User currentUser = request.session().attribute(CURRENT_USER);
         return currentUser != null && ("TEACHER".equals(currentUser.getStatus()) || "ADMIN".equals(currentUser.getStatus()));
     }
 
-    public static boolean isStudent(Request request){
+    static boolean isStudent(Request request) {
         User currentUser = request.session().attribute(CURRENT_USER);
         return currentUser != null && ("STUDENT".equals(currentUser.getStatus()));
     }
 
 
-    public static User getCurrentUser(Request request){
+    static User getCurrentUser(Request request) {
         return request.session().attribute(CURRENT_USER);
     }
 

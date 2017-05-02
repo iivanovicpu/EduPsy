@@ -1,15 +1,9 @@
 #macro(mainLayout)
 <!DOCTYPE html>
 <html lang="en">
-
-##<?xml version="1.0" encoding="UTF-8"?>
-##<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
-##      xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
-##<html>
 <head>
     <meta charset="UTF-8">
 
-##    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>$msg.get("COMMON_TITLE")</title>
     <meta name="author" content="Igor Ivanović">
 
@@ -106,6 +100,18 @@
         <div class="col-sm-10 text-left">
             $bodyContent
         </div>
+        #if($currentUser && $currentUser.status == 'STUDENT')
+            <div class="col-sm-2 sidenav" style="color: #959595; border: solid #959595 1px; margin-bottom: 20px;">
+                <strong>Parametri korištenja:</strong><br>
+                Stilovi učenja:<br>
+                #foreach($style in $currentUser.learningStyles)
+                    $style.description<br>
+                #end
+                <br>
+                Vrsta inteligencije:<br>
+                $currentUser.intelligenceType.description
+            </div>
+        #end
         <div class="col-sm-2 sidenav">
             $!sidebarContent
         </div>

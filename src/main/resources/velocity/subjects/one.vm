@@ -1,45 +1,12 @@
 #parse("/velocity/layout.vm")
 #@mainLayout()
-    #if($subject)
-        <h1>$subject.getTitle()</h1>
-        <h2>$subject.getKeywords()</h2>
-        <div id="url">$subject.getUrl()</div>
-    #else
-        <h1>$msg.get("SUBJECTS_SUBJECT_NOT_FOUND")</h1>
-    #end
-    #if($isStudent)
-        #foreach($title in $titles)
-            <div class="$title.classAttribute"><a href="/onetitle/$title.id/$title.subjectId">$title.title</a>
-                #if($title.learningLogStatus == 1)
-                    <span class="glyphicon glyphicon-eye-open" title="otvarano"></span>
-                #end
-                #if($title.learningLogStatus == 2)
-                    <span class="glyphicon glyphicon-ok-circle"title="naučeno"></span>
-                    <a href="/exam/$title.subjectId/$title.id" title="ispitna pitanja"><span class="glyphicon glyphicon-edit" title="ispitna pitanja"></span></a>
-                #end
-                #if($title.learningLogStatus == 3)
-                    <span class="glyphicon glyphicon-info-sign" title="otvorena ispitna pitanja"></span>
-                    <span class="glyphicon glyphicon-ok-circle"title="naučeno"></span>
-                    <a href="/exam/$title.subjectId/$title.id" title="ispitna pitanja"><span class="glyphicon glyphicon-edit" title="ispitna pitanja"></span></a>
-                #end
-                #if($title.learningLogStatus == 4)
-                    <span class="glyphicon glyphicon-ok" title="završeno"></span>
-                #end
+    #foreach($subject in $subjects)
+    <form class="form-inline">
+        <div class="form-group">
+            <div class="h$subject.subjectPositionId">
+                <a href="/onetitlechild/$subject.getId()/" title="$subject.keywords">$subject.getTitle()</a>
             </div>
-        #end
-    #else
-        <div>$successmsg</div>
-        <form method="get" action="/edit_subject/$subject.getId()/">
-            <button type="submit" class="btn btn-primary">$msg.get("SUBJECTS_ONE_BTN_EDIT")</button>
-            <button type="submit" formaction="/admin_subject/$subject.id/" formmethod="get" class="btn btn-primary">$msg.get("SUBJECTS_ONE_BTN_ADD_QUESTIONS")</button>
-        </form>
-
-        <div id="cnt"></div>
-        <script src="/js/jquery.js"></script>
-        <script type="application/javascript">
-            $.get($("#url").html(), function (data) {
-                $("#cnt").append(data);
-            });
-        </script>
+        </div>
+    </form>
     #end
 #end

@@ -7,10 +7,10 @@ import java.util.Arrays;
  * @date 12.10.16.
  */
 public enum IntelligenceType {
-    O(1, "O - Opća"),
-    ML(2, "ML - Logičko-matematička"),
-    NV(3, "NV - Prostorna"),
-    V(4, "V -Lingvistička");
+    O(1, "O - Opći tip inteligencije"),
+    ML(2, "ML - Matematičko-logička inteligencije"),
+    NV(3, "NV - Non Verbal, Prostorna inteligencija"),
+    V(4, "V - Verbal, Lingvistička inteligencija");
 
     private final int id;
 

@@ -28,9 +28,9 @@ public interface Model {
 
     void save(User user);
 
-    void logLearningStatus(int studentId, int subjectId, String titleId, int statusId);
+    void logLearningStatus(int studentId, int subjectId, int statusId);
 
-    LearningLog getLearningLogStatus(int studentId, int subjectId, String titleId);
+    LearningLog getLearningLogStatus(int studentId, int subjectId);
 
     List<User> getAllStudents();
 

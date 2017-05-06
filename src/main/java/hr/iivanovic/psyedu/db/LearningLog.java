@@ -13,7 +13,6 @@ public class LearningLog {
     private int id;
     private int studentId;
     private int subjectId;
-    private String titleId;
     private Date date;
     private int statusId;
 }

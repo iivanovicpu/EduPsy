@@ -4,7 +4,24 @@
     <form class="form-inline">
         <div class="form-group">
             <div class="h$subject.subjectPositionId">
-                <a href="/onetitlechild/$subject.getId()/" title="$subject.keywords">$subject.getTitle()</a>
+                #if($subject.isLinkAllowed() || $subject.id == $nextParent || $subject.id == $nextChild || $subject.subjectPositionId == 1)
+                    <a href="/onetitlechild/$subject.getId()/" title="$subject.keywords">$subject.getTitle()</a>
+                #else
+                    $subject.getTitle()
+                #end
+                #if($subject.getLearningStatus().id == 1)
+                    <span class="glyphicon glyphicon-eye-open" title="otvarano"></span>
+                #end
+                #if($subject.getLearningStatus().id == 2)
+                    <span class="glyphicon glyphicon-ok-circle" title="naučeno"></span>
+                #end
+                #if($subject.getLearningStatus().id == 3)
+                    <span class="glyphicon glyphicon-info-sign" title="otvorena ispitna pitanja"></span>
+                #end
+                #if($subject.getLearningStatus().id == 4)
+                    <span class="glyphicon glyphicon-ok" title="završeno"></span>
+                #end
+
             </div>
         </div>
     </form>

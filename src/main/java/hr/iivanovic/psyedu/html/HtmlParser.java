@@ -70,6 +70,7 @@ public class HtmlParser {
         return titles;
     }
 
+    @Deprecated
     public List<TitleLink> getAllSubjectsLinks(File htmlDoc, String uri, int subjectId, User student) {
         List<TitleLink> titleLinks = new LinkedList<>();
         Document doc;
@@ -81,7 +82,7 @@ public class HtmlParser {
                 String id = element.attr("id");
                 int statusId = 0;
                 if(null != student) {
-                    LearningLog learningLogStatus = dbProvider.getLearningLogStatus(student.getId(), subjectId, id);
+                    LearningLog learningLogStatus = dbProvider.getLearningLogStatus(student.getId(), subjectId);
                     statusId = null == learningLogStatus ? 0 : learningLogStatus.getStatusId();
                 }
                 TitleLink titleLinkElement = new TitleLink(title, id, subjectId, id.substring(0, 2), statusId);

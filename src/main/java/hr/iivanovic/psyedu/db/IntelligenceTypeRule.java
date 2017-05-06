@@ -1,5 +1,9 @@
 package hr.iivanovic.psyedu.db;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 /**
  * @author iivanovic
  * @date 30.04.17.
@@ -25,5 +29,20 @@ public enum IntelligenceTypeRule {
     IntelligenceTypeRule(IntelligenceType intelligenceType, AdaptiveRule adaptiveRule) {
         this.intelligenceType = intelligenceType;
         this.adaptiveRule = adaptiveRule;
+    }
+
+    public static List<AdaptiveRule> findRulesByIntelligenceType(IntelligenceType intelligenceType) {
+        return Stream.of(IntelligenceTypeRule.values())
+                .filter(r -> r.intelligenceType.equals(intelligenceType))
+                .map(IntelligenceTypeRule::getAdaptiveRule)
+                .collect(Collectors.toList());
+    }
+
+    public IntelligenceType getIntelligenceType() {
+        return intelligenceType;
+    }
+
+    public AdaptiveRule getAdaptiveRule() {
+        return adaptiveRule;
     }
 }

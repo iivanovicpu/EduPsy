@@ -37,7 +37,7 @@ public class ExamController extends AbstractController {
             model.put("subjectId", subjectid);
             model.put("titleId", titleid);
             model.put("validation", false);
-            dbProvider.logLearningStatus(student.getId(),subjectid,titleid, TitleLearningStatus.OPENED_EXAM.getId());
+            dbProvider.logLearningStatus(student.getId(),subjectid, TitleLearningStatus.OPENED_EXAM.getId());
             return ViewUtil.render(request, model, Path.Template.EXAM);
         }
         return ViewUtil.notAcceptable.handle(request, response);
@@ -69,7 +69,7 @@ public class ExamController extends AbstractController {
             // todo: broj osvojenih bodova upisuje se u tablicu uspjeha za studenta
             // todo: PROVJERITI - da li postoji prag prolaznosti ili sl.
 
-            dbProvider.logLearningStatus(student.getId(),subjectid,titleid, TitleLearningStatus.FINISHED_EXAM.getId());
+            dbProvider.logLearningStatus(student.getId(),subjectid, TitleLearningStatus.FINISHED_EXAM.getId());
             return ViewUtil.render(request, model, Path.Template.EXAM);
         }
         return ViewUtil.notAcceptable.handle(request, response);

@@ -18,8 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import hr.iivanovic.psyedu.AppConfiguration;
-import hr.iivanovic.psyedu.db.AdaptiveRule;
-import hr.iivanovic.psyedu.db.LearningStyleRule;
+import hr.iivanovic.psyedu.controllers.view.SubjectView;
 import hr.iivanovic.psyedu.db.Subject;
 import hr.iivanovic.psyedu.db.TitleLearningStatus;
 import hr.iivanovic.psyedu.db.User;
@@ -67,61 +66,39 @@ public class SubjectsController extends AbstractController {
 
     public static Route fetchOneTitle = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
+        User currentUser = LoginController.getCurrentUser(request);
         int parentSubjectId = Integer.parseInt(request.params("id"));
         if (clientAcceptsHtml(request)) {
             HashMap<String, Object> model = new HashMap<>();
-            List<Subject> subjects = dbProvider.getSubjectsByParentSubjectId(parentSubjectId);
+            SubjectView subjectView = new SubjectView(dbProvider.getSubject(parentSubjectId),currentUser);
+            List<SubjectView> subjects = subjectView.getSubjectViewsForSameParent();
             model.put("subjects", subjects);
+            model.put("nextParent", subjectView.getNextParentId());
+            model.put("nextChild", subjectView.getNextChildId());
             return ViewUtil.render(request, model, Path.Template.SUBJECTS_ONE);
-
         }
         return ViewUtil.notAcceptable.handle(request, response);
     };
 
     public static Route fetchOneChildTitle = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
-        getUserAdaptiveRules(LoginController.getCurrentUser(request));
+        User currentUser = LoginController.getCurrentUser(request);
         int id = Integer.parseInt(request.params("id"));
         if (clientAcceptsHtml(request)) {
             HashMap<String, Object> model = new HashMap<>();
             Subject subject = dbProvider.getSubject(id);
-            if(null == subject.getParentSubjectId())
-                subject.setParentSubjectId(subject.getId());
-            model.put("subject", subject);
-            // todo: sidebar s pravilima navigacije
-            model.put("sidebarContent", createSidebarNavigation(subject.getParentSubjectId()));
+            SubjectView subjectView = new SubjectView(subject, currentUser);
+            model.put("subject", subjectView);
+
+            model.put("sidebarContent", subjectView.createSidebarNavigation());
+
+            dbProvider.logLearningStatus(currentUser.getId(), subject.getId(), TitleLearningStatus.OPENED.getId());
+
             return ViewUtil.render(request, model, Path.Template.SUBJECT_ONE_TITLE);
 
         }
         return ViewUtil.notAcceptable.handle(request, response);
     };
-
-    private static void getUserAdaptiveRules(User student) {
-        List<AdaptiveRule> rules = new LinkedList<>();
-        rules.addAll(dbProvider.getIntelligenceTypeRules(student.getIntelligenceTypeId()));
-        for (LearningStyle learningStyle : student.getLearningStyles()) {
-            rules.addAll(LearningStyleRule.findRulesByLearningStyle(learningStyle));
-        }
-        for (AdaptiveRule rule : rules) {
-            System.out.println(rule);
-        }
-    }
-
-    private static String createSidebarNavigation(int parentSubjectId) {
-        StringBuilder stringBuilder = new StringBuilder();
-        List<Subject> subjects = dbProvider.getSubjectsByParentSubjectId(parentSubjectId);
-        for (Subject subject : subjects) {
-            stringBuilder
-                    .append("<p><a href='/onetitlechild/")
-                    .append(subject.getId())
-                    .append("/'>")
-                    .append(subject.getTitle())
-                    .append("</a></p>");
-        }
-        return stringBuilder.toString();
-
-
-    }
 
     public static Route submitOneTitleStatus = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
@@ -131,7 +108,7 @@ public class SubjectsController extends AbstractController {
             HashMap<String, Object> model = new HashMap<>();
             if (LoginController.isStudent(request)) {
                 User student = LoginController.getCurrentUser(request);
-                dbProvider.logLearningStatus(student.getId(), subjectId, titleId, TitleLearningStatus.LEARNED.getId());
+                dbProvider.logLearningStatus(student.getId(), subjectId, TitleLearningStatus.LEARNED.getId());
                 model.put("status", TitleLearningStatus.LEARNED.getId());
                 model.put("subjectId", subjectId);
                 model.put("titleId", titleId);
@@ -144,6 +121,7 @@ public class SubjectsController extends AbstractController {
         return ViewUtil.notAcceptable.handle(request, response);
     };
 
+    @Deprecated
     public static Route submitEditedSubject = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
         long id = Long.parseLong(request.queryParams("id"));
@@ -217,6 +195,4 @@ public class SubjectsController extends AbstractController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(validPatterns5);
         return LocalDateTime.now().format(formatter);
     }
-
-
 }

@@ -137,7 +137,8 @@ public class Sql2oModel implements Model {
                     .addColumnMapping("additional_content", "additionalContent")
                     .addColumnMapping("subject_position_id", "subjectPositionId")
                     .executeAndFetchFirst(Subject.class);
-
+                if(null == subject.getParentSubjectId())
+                    subject.setParentSubjectId(subject.getId());
             return subject;
         }
     }
@@ -192,12 +193,11 @@ public class Sql2oModel implements Model {
     }
 
     @Override
-    public void logLearningStatus(int studentId, int subjectId, String titleId, int statusId) {
+    public void logLearningStatus(int studentId, int subjectId, int statusId) {
         try (Connection conn = sql2o.open()) {
-            conn.createQuery("insert into LEARNING_LOG (studentId, subjectId, titleId, date, statusId ) values (:studentId, :subjectId, :titleId, :date, :statusId);")
+            conn.createQuery("insert into LEARNING_LOG (studentId, subjectId, date, statusId ) values (:studentId, :subjectId, :date, :statusId);")
                     .addParameter("studentId", studentId)
                     .addParameter("subjectId", subjectId)
-                    .addParameter("titleId", titleId)
                     .addParameter("date", new Date())
                     .addParameter("statusId", statusId)
                     .executeUpdate();
@@ -205,12 +205,11 @@ public class Sql2oModel implements Model {
     }
 
     @Override
-    public LearningLog getLearningLogStatus(int studentId, int subjectId, String titleId) {
+    public LearningLog getLearningLogStatus(int studentId, int subjectId) {
         try (Connection conn = sql2o.open()) {
-            LearningLog learning = conn.createQuery("select * from LEARNING_LOG where studentId = :studentId and subjectId = :subjectId and titleId = :titleId order by statusId desc;")
+            LearningLog learning = conn.createQuery("select * from LEARNING_LOG where studentId = :studentId and subjectId = :subjectId order by statusId desc;")
                     .addParameter("studentId", studentId)
                     .addParameter("subjectId", subjectId)
-                    .addParameter("titleId", titleId)
                     .executeAndFetchFirst(LearningLog.class);
             return learning;
         }

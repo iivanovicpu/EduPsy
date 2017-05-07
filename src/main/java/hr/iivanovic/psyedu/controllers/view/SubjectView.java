@@ -52,7 +52,34 @@ public class SubjectView extends Subject {
 
     public boolean isSequenceNavigation() {
         return getAdaptiveRules().stream().anyMatch(adaptiveRule -> adaptiveRule.equals(AdaptiveRule.SEQUENTIAL_NAVIGATION));
+    }
 
+    public String getHighlightJavasript(){
+        if(isHighlightNeeded()){
+            StringBuilder sb = new StringBuilder();
+            sb.append("<script type=\"application/javascript\">");
+            for (String keyword : keywords()) {
+                sb.append("$(\"#txt\").highlight(\"").append(keyword).append("\");");
+                if(showAdditionalContent()){
+                    sb.append("$(\"#atxt\").highlight(\"").append(keyword).append("\");");
+                }
+            }
+            sb.append("</script>");
+            return sb.toString();
+        }
+        return "";
+    }
+
+    // todo: dok se testira neka uvijek bude uključeno ...
+    public boolean isHighlightNeeded() {
+        return true;
+//        return getAdaptiveRules().stream().anyMatch(adaptiveRule -> adaptiveRule.equals(AdaptiveRule.KEYWORDS_HIGHLIGHTING));
+    }
+
+    // todo: dok se testira neka uvijek bude uključeno ...
+    public boolean showAdditionalContent(){
+        return true;
+//        return getAdaptiveRules().stream().anyMatch(adaptiveRule -> adaptiveRule.equals(AdaptiveRule.SHOW_ADVANCED_SUBJECTS));
     }
 
     private static List<SubjectView> createSubjectViews(List<Subject> subjects, User currentUser) {
@@ -68,6 +95,10 @@ public class SubjectView extends Subject {
             return getLearningStatus().isFinished() || SubjectPosition.PREDMET.equals(getSubjectPosition());
         }
         return true;
+    }
+
+    public String[] keywords() {
+        return null != super.getKeywords() ? super.getKeywords().split(",") : new String[]{};
     }
 
     public String createSidebarNavigation() {

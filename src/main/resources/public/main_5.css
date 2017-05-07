@@ -46,29 +46,6 @@ small {
     padding-left: 100px;
 }
 
-/*
-header {
-    background: #274555;
-    border-bottom: 5px solid #ff7761;
-    box-shadow: 0 1px 0 0 rgba(0,0,0,.6);
-}
-*/
-
-
-/*
-nav {
-    padding: 15px;
-    margin: 0 auto;
-    max-width: 800px;
-    position: relative;
-}
-
-nav #menu {
-    margin-top: 20px;
-    float: right;
-}
-*/
-
 a {
     text-decoration: none;
     color: #ff7761;
@@ -300,3 +277,6 @@ a .bookCover img {
 .bad.notification {
     background: #bb0000;
 }
+
+/*highlighter*/
+.highlight { background-color: yellow }

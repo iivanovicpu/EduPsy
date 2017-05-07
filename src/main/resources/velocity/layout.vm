@@ -126,6 +126,7 @@
     <p>Footer Text</p>
 </footer>
 <script src="/js/jquery.js"></script>
+<script src='/js/jquery.highlight-5.js'></script>
 
 <!-- Bootstrap Core JavaScript -->
 <script src="/js/bootstrap.min.js"></script>

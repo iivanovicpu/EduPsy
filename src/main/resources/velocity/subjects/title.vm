@@ -1,25 +1,15 @@
 #parse("/velocity/layout.vm")
 #@mainLayout()
-        <form method="post" class="form-group">
-            <input type="hidden" name="subjectId" value="$subject.id">
-            <button type="submit" formmethod="get" formaction="/onetitle/$subject.parentSubjectId/" class="btn btn-warning">Natrag</button>
-##            #if($status == 1)
-##                <input type="submit" class="btn btn-primary" name="submit" value="$msg.get("TITLE_LEARNED_SUBMIT")">
-##            #end
-            </form>
-    <br>
-##    #if($status == 1)
-##    <span class="glyphicon glyphicon-eye-open" title="otvarano"></span>
-##    #end
-##    #if($status == 2)
-##    <span class="glyphicon glyphicon-ok-circle" title="naučeno"></span>
-##    #end
-##    #if($status == 3)
-##    <span class="glyphicon glyphicon-info-sign" title="otvorena ispitna pitanja"></span>
-##    #end
-##    #if($status == 4)
-##    <span class="glyphicon glyphicon-ok" title="završeno"></span>
-##    #end
-
-    <div>$subject.content</div>
+<form method="post" class="form-group">
+    <input type="hidden" name="subjectId" value="$subject.id">
+    <button type="submit" formmethod="get" formaction="/onetitle/$subject.parentSubjectId/" class="btn btn-warning">
+        Natrag
+    </button>
+</form>
+<br>
+<div id="txt">$subject.content</div>
+    #if($subject.showAdditionalContent())
+        <div id="atxt">$subject.additionalContent</div>
+    #end
 #end
+$subject.getHighlightJavasript()

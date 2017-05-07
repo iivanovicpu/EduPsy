@@ -53,35 +53,43 @@ public class SubjectQuestionsController extends AbstractController {
         LoginController.ensureUserIsLoggedIn(request, response);
         int subjectId = Integer.parseInt(request.params("subjectid"));
         if (clientAcceptsHtml(request)) {
-            HashMap<String, Object> model = new HashMap<>();
-            model.put("validation",false);
-            model.put("subjectId",subjectId);
+            HashMap<String, Object> model = createModel(subjectId);
             List<Question> questions = dbProvider.getAllQuestionsForSubjectAndTitle(subjectId);
             String htmlQuestions = renderQuestions(questions);
             model.put("questions", htmlQuestions);
+
             return ViewUtil.render(request, model, Path.Template.SUBJECT_ONE_TITLE_QUESTIONS);
         }
         return ViewUtil.notAcceptable.handle(request, response);
     };
 
+    private static HashMap<String, Object> createModel(int subjectId) {
+        Subject subject = dbProvider.getSubject(subjectId);
+        HashMap<String, Object> model = new HashMap<>();
+        model.put("validation",false);
+        model.put("subjectId",subjectId);
+        model.put("subject",subject);
+        QuestionType[] questionTypes = QuestionType.values();
+        model.put("questionTypes", questionTypes);
+        return model;
+    }
+
     public static Route submitQuestion = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
         if (clientAcceptsHtml(request)) {
             int subjectId = Integer.parseInt(request.queryParams("subjectid"));
-            HashMap<String, Object> model = new HashMap<>();
             ValidationResult validationResult = validatedQuestion(request);
-            Question question = validationResult.getQuestion();
-            model.put("validation",validationResult.getValidationMessage());
-            model.put("subjectId", question.getSubjectId());
+
+            HashMap<String, Object> model = createModel(subjectId);
             if(validationResult.isValid()){
                 model.put("validation", false);
                 System.out.println(validationResult);
                 dbProvider.createQuestion(validationResult.question);
             }
+            model.put("validation", validationResult.getValidationMessage());
             List<Question> questions = dbProvider.getAllQuestionsForSubjectAndTitle(subjectId);
             String htmlQuestions = renderQuestions(questions);
             model.put("questions", htmlQuestions);
-            model.put("validation", validationResult.getValidationMessage());
             return ViewUtil.render(request, model, Path.Template.SUBJECT_ONE_TITLE_QUESTIONS);
         }
         return ViewUtil.notAcceptable.handle(request, response);
@@ -92,39 +100,51 @@ public class SubjectQuestionsController extends AbstractController {
         StringBuilder sb = new StringBuilder();
         int subjectid;
         int points;
+        String possibleAnswers = null;
+        String correctAnswers = null;
         try {
             subjectid = Integer.parseInt(request.queryParams("subjectid"));
             if(subjectid == 0){
-                sb.append("\nheader data corrupt - SubjectId (0)");
+                sb.append("header data corrupt - SubjectId (0)");
                 result.setValid(false);
             }
         } catch (NumberFormatException e){
-            sb.append("\nheader data corrupt - subjectId +(" ).append(request.queryParams("subjectId")).append(")");
+            sb.append("header data corrupt - subjectId +(" ).append(request.queryParams("subjectId")).append(")");
             result.setValid(false);
             throw e;
         }
         String question = request.queryParams("question");
         if(null == question || question.isEmpty()){
-            sb.append("\nPitanje - obavezan unos");
+            sb.append("Pitanje - obavezan unos<br>");
             result.setValid(false);
         }
-        String answers = request.queryParams("answers");
-        if(null == answers || answers.isEmpty()){
-            sb.append("\nOdgovori - obavezan podatak");
-            result.setValid(false);
+        int questionTypeId = Integer.parseInt(request.queryParams("questionTypeId"));
+        if(questionTypeId < 3) {
+            possibleAnswers = request.queryParams("possibleAnswers");
+            if (null == possibleAnswers || possibleAnswers.isEmpty()) {
+                sb.append("Mogući odgovori - obavezan podatak za odabrani tip pitanja<br>");
+                result.setValid(false);
+            }
+        }
+        if(questionTypeId < 4) {
+            correctAnswers = request.queryParams("correctAnswers");
+            if (null == correctAnswers || correctAnswers.isEmpty()) {
+                sb.append("Točni odgovor/i - obavezan podatak - obavezan podatak za odabrani tip pitanja<br>");
+                result.setValid(false);
+            }
         }
         try {
             points = Integer.parseInt(request.queryParams("points"));
         } catch (NumberFormatException e){
-            sb.append("\nBodovi - mora biti brojčana vrijednost");
+            sb.append("Bodovi - mora biti brojčana vrijednost");
             result.setValid(false);
             throw e;
         }
         if(result.isValid()){
-            result.setQuestion(new Question(subjectid, question, answers, points));
+            result.setQuestion(new Question(subjectid, question, possibleAnswers, correctAnswers, points, questionTypeId));
             return result;
         } else {
-            result.setQuestion(new Question(subjectid, question, answers, points));
+            result.setQuestion(new Question(subjectid, question, possibleAnswers, correctAnswers, points, questionTypeId));
             result.setValidationMessage(sb.toString());
             return result;
         }

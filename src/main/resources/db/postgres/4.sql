@@ -27,5 +27,11 @@ CREATE TABLE IF NOT EXISTS INTELLIGENCE_TYPES (
 
 ALTER TABLE learning_log DROP COLUMN titleid;
 
+ALTER TABLE questions ADD COLUMN correctAnswers TEXT NULL;
+ALTER TABLE questions RENAME COLUMN answers to possibleAnswers;
+ALTER TABLE questions ALTER COLUMN possibleanswers DROP NOT NULL;
+ALTER TABLE questions ADD COLUMN questiontypeid INT NOT NULL DEFAULT 1;
+DELETE FROM questions;
+
 
 

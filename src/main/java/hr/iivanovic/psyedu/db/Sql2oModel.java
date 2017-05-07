@@ -146,10 +146,12 @@ public class Sql2oModel implements Model {
     @Override
     public void createQuestion(Question question) {
         try (Connection conn = sql2o.open()) {
-            conn.createQuery("INSERT INTO questions (subjectId, question, answers, points) VALUES (:subjectId, :question, :answers, :points);")
+            conn.createQuery("INSERT INTO questions (subjectId, question, questionTypeId, possibleAnswers, correctAnswers, points) VALUES (:subjectId, :question, :questionTypeId, :possibleAnswers, :correctAnswers, :points);")
                     .addParameter("subjectId", question.getSubjectId())
                     .addParameter("question", question.getQuestion())
-                    .addParameter("answers", question.getAnswers())
+                    .addParameter("questionTypeId", question.getQuestionTypeId())
+                    .addParameter("possibleAnswers", question.getPossibleAnswers())
+                    .addParameter("correctAnswers", question.getCorrectAnswers())
                     .addParameter("points", question.getPoints())
                     .executeUpdate();
         } catch (Exception e) {

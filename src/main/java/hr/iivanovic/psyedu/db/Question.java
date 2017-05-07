@@ -12,19 +12,21 @@ import lombok.Data;
 public class Question {
     private int id;
     private int subjectId;
+    private int questionTypeId;
     private String question;
-    private String answers;
+    private String possibleAnswers;
+    private String correctAnswers;
     private int points;
 
-    public Question() {
-    }
-
-    public Question(int subjectId, String question, String answers, int points){
+    public Question(int subjectId, String question, String possibleAnswers, String correctAnswers, int points, int questionTypeId){
         this.subjectId = subjectId;
         this.question = question;
-        this.answers = answers;
+        this.possibleAnswers = possibleAnswers;
+        this.correctAnswers = correctAnswers;
         this.points = points;
+        this.questionTypeId = questionTypeId;
     }
+
 
 
 }

@@ -9,6 +9,10 @@
 
     <!-- Bootstrap Core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- tags-input CSS -->
+    <link href="/css/bootstrap-tagsinput.css" rel="stylesheet">
+
     #if($currentUser && $currentUser.color)
         <link href="/$currentUser.color" rel="stylesheet">
     #else
@@ -126,6 +130,8 @@
 <!-- Bootstrap Core JavaScript -->
 <script src="/js/bootstrap.min.js"></script>
 
+<!-- tags input -->
+<script src="/js/bootstrap-tagsinput.min.js"></script>
 </body>
 </html>
 #end

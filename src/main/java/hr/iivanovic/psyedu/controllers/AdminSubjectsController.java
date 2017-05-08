@@ -128,6 +128,8 @@ public class AdminSubjectsController extends AbstractController {
                 subject.setKeywords(keywords);
                 subject.setTitle(title);
                 subject.setSubjectLevelId(subjectLevelId);
+                createDirIfNotExists(subject.getUrl(), title);
+
                 dbProvider.updateSubject(subject);
             }
             if ("add".equals(action)) {
@@ -172,11 +174,12 @@ public class AdminSubjectsController extends AbstractController {
     }
 
     private static void createDirIfNotExists(String subjectDirectory, String title) {
-        String filePath = AppConfiguration.getInstance().getExternalLocation().concat("materijali/").concat(subjectDirectory);
+        String filePath = AppConfiguration.getInstance().getExternalLocation().concat(subjectDirectory);
         File dir = new File(filePath);
         if (!dir.exists()) {
             try {
-                dir.mkdir();
+                boolean createdDirs = dir.mkdirs();
+                LOGGER.info("directory: {} - created: {}", dir.getPath(), createdDirs);
             } catch (SecurityException e) {
                 LOGGER.error("error creating dir: {} for title: {}", dir.getPath(), title, e);
             }

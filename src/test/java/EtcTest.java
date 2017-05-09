@@ -19,13 +19,13 @@ public class EtcTest {
 
     private void testGrouping(){
         List<Subject> list = new LinkedList<>();
-        list.add(new Subject(1,"Predmet 1","","",1,1,0,0,"","",1, SubjectPosition.PREDMET));
-        list.add(new Subject(2,"Cjelina 1","","",1,1,0,0,"","",2, SubjectPosition.CJELINA));
-        list.add(new Subject(3,"Cjelina 2","","",1,1,0,0,"","",2, SubjectPosition.CJELINA));
-        list.add(new Subject(4,"Jedinica 1","","",2,1,0,0,"","",3, SubjectPosition.JEDINICA));
-        list.add(new Subject(5,"Čestica 1","","",4,1,0,0,"","",4, SubjectPosition.CESTICA));
-        list.add(new Subject(6,"Jedinica 2","","",3,1,0,0,"","",3, SubjectPosition.JEDINICA));
-        list.add(new Subject(7,"Čestica 2","","",6,1,0,0,"","",4, SubjectPosition.CESTICA));
+        list.add(new Subject(1,"Predmet 1","","",1,1,0,0,"","","",1, SubjectPosition.PREDMET));
+        list.add(new Subject(2,"Cjelina 1","","",1,1,0,0,"","","",2, SubjectPosition.CJELINA));
+        list.add(new Subject(3,"Cjelina 2","","",1,1,0,0,"","","",2, SubjectPosition.CJELINA));
+        list.add(new Subject(4,"Jedinica 1","","",2,1,0,0,"","","",3, SubjectPosition.JEDINICA));
+        list.add(new Subject(5,"Čestica 1","","",4,1,0,0,"","","",4, SubjectPosition.CESTICA));
+        list.add(new Subject(6,"Jedinica 2","","",3,1,0,0,"","","",3, SubjectPosition.JEDINICA));
+        list.add(new Subject(7,"Čestica 2","","",6,1,0,0,"","","",4, SubjectPosition.CESTICA));
 //        list.forEach(System.out::println);
 
 //        Map<Integer, List<Subject>> groupping = list.stream()

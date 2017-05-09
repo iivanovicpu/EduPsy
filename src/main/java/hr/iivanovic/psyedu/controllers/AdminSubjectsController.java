@@ -40,9 +40,10 @@ public class AdminSubjectsController extends AbstractController {
         }
         String titleReplaced = title.replaceAll(" ", "").replaceAll("[^\\x00-\\x7F]", "");
         String filename = titleReplaced.substring(0, titleReplaced.length() > 10 ? 10 : titleReplaced.length()).toLowerCase();
-        createDirIfNotExists(filename, title);
+        String filenamePath = "/materijali/".concat(filename);
+        createDirIfNotExists(filenamePath, title);
 
-        dbProvider.createSubject(title, keywords, "/materijali/".concat(filename), SubjectLevel.OSNOVNO, SubjectPosition.PREDMET.getId());
+        dbProvider.createSubject(title, keywords, filenamePath, SubjectLevel.OSNOVNO, SubjectPosition.PREDMET.getId());
 
         if (clientAcceptsHtml(request)) {
             response.redirect(Path.Web.getSUBJECTS());
@@ -120,6 +121,7 @@ public class AdminSubjectsController extends AbstractController {
             String keywords = request.queryParams("keywords");
             String content = request.queryParams("content");
             String additionalContent = request.queryParams("additionalContent");
+            String summaryAndGoals = request.queryParams("summaryAndGoals");
             Subject subject;
             if ("edit".equals(action)) {
                 subject = dbProvider.getSubject(subjectId);
@@ -128,6 +130,7 @@ public class AdminSubjectsController extends AbstractController {
                 subject.setKeywords(keywords);
                 subject.setTitle(title);
                 subject.setSubjectLevelId(subjectLevelId);
+                subject.setSummaryAndGoals(summaryAndGoals);
                 createDirIfNotExists(subject.getUrl(), title);
 
                 dbProvider.updateSubject(subject);
@@ -135,7 +138,7 @@ public class AdminSubjectsController extends AbstractController {
             if ("add".equals(action)) {
                 Subject parentSubject = dbProvider.getSubject(subjectId);
                 SubjectPosition subPosition = SubjectPosition.getById(parentSubject.getSubjectPositionId()).getSubPosition();
-                subject = new Subject(0, title, keywords, null, subjectId, parentSubjectId, SubjectLevel.OSNOVNO.getId(), 0, content, additionalContent, subPosition.getId(), subPosition);
+                subject = new Subject(0, title, keywords, null, subjectId, parentSubjectId, SubjectLevel.OSNOVNO.getId(), 0, content, additionalContent, summaryAndGoals, subPosition.getId(), subPosition);
                 if(subject.getSubjectPosition().getId() < 3) {
                     String titleReplaced = title.replaceAll(" ", "").replaceAll("[^\\x00-\\x7F]", "");
                     String filename = titleReplaced.substring(0, titleReplaced.length() > 10 ? 10 : titleReplaced.length()).toLowerCase();

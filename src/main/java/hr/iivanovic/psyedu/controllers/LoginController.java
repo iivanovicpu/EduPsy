@@ -6,11 +6,13 @@ import static hr.iivanovic.psyedu.util.RequestUtil.getQueryUsername;
 import static hr.iivanovic.psyedu.util.RequestUtil.removeSessionAttrLoggedOut;
 import static hr.iivanovic.psyedu.util.RequestUtil.removeSessionAttrLoginRedirect;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import hr.iivanovic.psyedu.db.AdaptiveRule;
 import hr.iivanovic.psyedu.db.IntelligenceType;
 import hr.iivanovic.psyedu.db.User;
 import hr.iivanovic.psyedu.util.Path;
@@ -40,6 +42,9 @@ public class LoginController {
         model.put("authenticationSucceeded", true);
         request.session().attribute(CURRENT_USER, user);
 
+        //todo: uvjetovati postavkom iz config-a
+        boolean debug = true;
+
         if (isStudent(request) && !user.isCompletedIntelligencePoll()) {
             response.redirect(Path.Web.INTELLIGENCE_POLL);
         }
@@ -52,8 +57,16 @@ public class LoginController {
         if (getQueryLoginRedirect(request) != null) {
             response.redirect(getQueryLoginRedirect(request));
         }
+        if(isStudent(request) && debug){
+            fillDebugData(user);
+        }
         return ViewUtil.render(request, model, Path.Template.LOGIN);
     };
+
+    private static void fillDebugData(User user){
+        user.setDebug(true);
+        user.setDebugRules(Arrays.asList(AdaptiveRule.values()));
+    }
 
     private static void fillLearningStylesAndIntelligence(User user) {
         List<LearningStyle> styles = new LinkedList<>();

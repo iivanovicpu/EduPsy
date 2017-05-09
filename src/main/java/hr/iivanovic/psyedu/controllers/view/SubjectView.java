@@ -27,7 +27,7 @@ import lombok.Data;
 public class SubjectView extends Subject {
 
     public SubjectView(Subject sub, User student) {
-        super(sub.getId(), sub.getTitle(), sub.getKeywords(), sub.getUrl(), sub.getSubjectId(), sub.getParentSubjectId(), sub.getSubjectLevelId(), sub.getOrder(), sub.getContent(), sub.getAdditionalContent(), sub.getSubjectPositionId(), sub.getSubjectPosition());
+        super(sub.getId(), sub.getTitle(), sub.getKeywords(), sub.getUrl(), sub.getSubjectId(), sub.getParentSubjectId(), sub.getSubjectLevelId(), sub.getOrder(), sub.getContent(), sub.getAdditionalContent(), null, sub.getSubjectPositionId(), sub.getSubjectPosition());
         this.student = student;
     }
 

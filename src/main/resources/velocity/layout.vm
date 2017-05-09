@@ -114,6 +114,20 @@
                 <br>
                 Vrsta inteligencije:<br>
                 $currentUser.intelligenceType.description
+                #if($currentUser.debug)
+                    <hr>
+                    <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#debug" aria-expanded="false">Testiranje pravila</button>
+                    <br>
+                    <div class="collapse" id="debug">
+                        <form action="/testrules/" method="post">
+                        #foreach($aRule in $currentUser.debugRules)
+                            <input class="debugrule" type="checkbox" name="$aRule" id="$aRule.id" value="$aRule.id" #if ($currentUser.getUserRules().contains($aRule)) checked#end >$aRule.title<br>
+                        #end
+                            <input type="submit" value="primijeni">
+                        </form>
+                    </div>
+                    <hr>
+                #end
             </div>
         #end
         <div class="col-sm-2 sidenav">
@@ -133,6 +147,27 @@
 
 <!-- tags input -->
 <script src="/js/bootstrap-tagsinput.min.js"></script>
+
+<script type="application/javascript">
+    $('.debugrule').click(function() {
+            $.ajax({
+                type: "POST",
+                url: '/testrules/',
+                data: {"ruleId": $(this).attr('id'), "value" : this.checked}, //--> send id of checked checkbox on other page
+                success: function(data) {
+                    alert('it worked');
+                    alert(data);
+//                    $('#container').html(data);
+                },
+                error: function() {
+                    alert('it broke');
+                },
+                complete: function() {
+                    alert('it completed');
+                }
+            });
+    });
+</script>
 </body>
 </html>
 #end

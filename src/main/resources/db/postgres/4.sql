@@ -14,6 +14,7 @@ ALTER TABLE subjects ADD COLUMN subject_level_id INT NULL;
 ALTER TABLE subjects ADD COLUMN ordinal_number INT NULL;
 ALTER TABLE subjects ADD COLUMN content TEXT NULL;
 ALTER TABLE subjects ADD COLUMN additional_content TEXT NULL;
+ALTER TABLE subjects ADD COLUMN summary_goals TEXT NULL;
 
 UPDATE subjects SET subject_level_id = 1; -- osnovno (SubjectLevel enum)
 

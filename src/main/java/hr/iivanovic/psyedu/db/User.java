@@ -1,5 +1,6 @@
 package hr.iivanovic.psyedu.db;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import hr.iivanovic.psyedu.controllers.LearningStyle;
@@ -36,4 +37,13 @@ public class User {
     private List<LearningStyle> learningStyles;
     private IntelligenceType intelligenceType;
 
+    private boolean debug;
+    private List<AdaptiveRule> debugRules;
+
+    public List<AdaptiveRule> getUserRules(){
+        List<AdaptiveRule> rules = new LinkedList<>();
+        learningStyles.forEach(learningStyle -> rules.addAll(LearningStyleRule.findRulesByLearningStyle(learningStyle)));
+        rules.addAll(IntelligenceTypeRule.findRulesByIntelligenceType(intelligenceType));
+        return rules;
+    }
 }

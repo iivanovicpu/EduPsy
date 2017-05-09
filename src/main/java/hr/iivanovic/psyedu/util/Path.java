@@ -32,6 +32,7 @@ public class Path {
         @Getter public static final String INTELLIGENCE_POLL = "/intelligencepoll/";
         @Getter public static final String LEARNING_STYLE_POLL = "/learningstylepoll/";
         @Getter public static final String STUDENT_DETAILS = "/studentdtl/:id/";
+        @Getter public static final String DEBUG = "/testrules/";
     }
 
     public static class Template {

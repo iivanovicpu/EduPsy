@@ -11,11 +11,13 @@ import static spark.debug.DebugScreen.enableDebugScreen;
 
 import hr.iivanovic.psyedu.controllers.AdaptiveRulesController;
 import hr.iivanovic.psyedu.controllers.AdminSubjectsController;
+import hr.iivanovic.psyedu.controllers.DebugController;
 import hr.iivanovic.psyedu.controllers.ExamController;
 import hr.iivanovic.psyedu.controllers.PollController;
 import hr.iivanovic.psyedu.controllers.ProfileController;
 import hr.iivanovic.psyedu.controllers.StudentsController;
 import hr.iivanovic.psyedu.controllers.SubjectQuestionsController;
+import hr.iivanovic.psyedu.db.AdaptiveRule;
 import hr.iivanovic.psyedu.db.Model;
 import hr.iivanovic.psyedu.db.Sql2oModel;
 import hr.iivanovic.psyedu.controllers.IndexController;
@@ -61,6 +63,16 @@ public class Application {
             return dataToJson(model.getSubject(id));
         });
 
+        post("/testrules/", (request, response) -> {
+            System.out.println("jeee");
+            int adaptiveRuleId = Integer.parseInt(request.queryParams("ruleId"));
+            boolean value = Boolean.parseBoolean(request.queryParams("value"));
+            System.out.println(value);
+            response.status(200);
+            response.type("application/json");
+            return dataToJson(AdaptiveRule.getById(adaptiveRuleId));
+        });
+
         // Set up before-filters (called before each get/post)
         before("*", Filters.addTrailingSlashes);
         before("*", Filters.handleLocaleChange);
@@ -101,6 +113,8 @@ public class Application {
 
         get(Path.Web.LEARNING_STYLE_POLL, PollController.showPollLearningStyle);
         post(Path.Web.LEARNING_STYLE_POLL, PollController.submitPollLearningStyle);
+
+//        post(Path.Web.DEBUG, DebugController.submitDebugRules);
 
         get(Path.Web.LOGIN, LoginController.serveLoginPage);
         post(Path.Web.LOGIN, LoginController.handleLoginPost);

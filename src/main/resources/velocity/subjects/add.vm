@@ -20,7 +20,7 @@
             <div class="form-group">
                 <label class="control-label col-sm-2" for="keywords">$msg.get("SUBJECT_KEYWORDS_PLACEHOLDER")</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="keywords" name="keywords">
+                    <input type="text" class="form-control" id="keywords" name="keywords" data-role="tagsinput">
                 </div>
             </div>
             <button type="submit" class="btn btn-primary">$msg.get("SUBJECT_BTN_ADD")</button>

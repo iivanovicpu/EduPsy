@@ -57,8 +57,8 @@ public class Sql2oModel implements Model {
     @Override
     public void createSubSubject(Subject subject) {
         try (Connection conn = sql2o.open()) {
-            conn.createQuery("insert into subjects ( title, keywords, url, subject_id, parent_subject_id, subject_level_id, ordinal_number, content, additional_content, subject_position_id) " +
-                    "                       VALUES (:title, :keywords, :url, :subjectId, :parentSubjectId, :subjectLevelId, :order, :content, :additionalContent, :subjectPositionId)")
+            conn.createQuery("insert into subjects ( title, keywords, url, subject_id, parent_subject_id, subject_level_id, ordinal_number, content, additional_content, summary_goals, subject_position_id) " +
+                    "                       VALUES (:title, :keywords, :url, :subjectId, :parentSubjectId, :subjectLevelId, :order, :content, :additionalContent, :summaryAndGoals, :subjectPositionId)")
                     .addParameter("title", subject.getTitle())
                     .addParameter("keywords", subject.getKeywords())
                     .addParameter("url", subject.getUrl())
@@ -68,6 +68,7 @@ public class Sql2oModel implements Model {
                     .addParameter("order", subject.getOrder())
                     .addParameter("content", subject.getContent())
                     .addParameter("additionalContent", subject.getAdditionalContent())
+                    .addParameter("summaryAndGoals", subject.getSummaryAndGoals())
                     .addParameter("subjectPositionId", subject.getSubjectPosition().getId())
                     .executeUpdate();
         } catch (Exception e) {
@@ -120,6 +121,7 @@ public class Sql2oModel implements Model {
                     .addColumnMapping("ordinal_number", "order")
                     .addColumnMapping("additional_content", "additionalContent")
                     .addColumnMapping("subject_position_id", "subjectPositionId")
+                    .addColumnMapping("summary_goals", "summaryAndGoals")
                     .executeAndFetch(Subject.class);
             return subjects;
         }
@@ -136,6 +138,7 @@ public class Sql2oModel implements Model {
                     .addColumnMapping("ordinal_number", "order")
                     .addColumnMapping("additional_content", "additionalContent")
                     .addColumnMapping("subject_position_id", "subjectPositionId")
+                    .addColumnMapping("summary_goals", "summaryAndGoals")
                     .executeAndFetchFirst(Subject.class);
                 if(null == subject.getParentSubjectId())
                     subject.setParentSubjectId(subject.getId());
@@ -296,6 +299,7 @@ public class Sql2oModel implements Model {
                     .addColumnMapping("ordinal_number", "order")
                     .addColumnMapping("additional_content", "additionalContent")
                     .addColumnMapping("subject_position_id", "subjectPositionId")
+                    .addColumnMapping("summary_goals", "summaryAndGoals")
                     .executeAndFetch(Subject.class);
             for (Subject subject : subjects) {
                 if(null == subject.getParentSubjectId())
@@ -315,6 +319,7 @@ public class Sql2oModel implements Model {
                     .addColumnMapping("ordinal_number", "order")
                     .addColumnMapping("additional_content", "additionalContent")
                     .addColumnMapping("subject_position_id", "subjectPositionId")
+                    .addColumnMapping("summary_goals", "summaryAndGoals")
                     .executeAndFetch(Subject.class);
             return subjects;
         }
@@ -333,7 +338,8 @@ public class Sql2oModel implements Model {
                     "   subject_level_id = :subjectLevelId, " +
                     "   ordinal_number = :orderNumber, " +
                     "   content = :content, " +
-                    "   additional_content = :additionalContent " +
+                    "   additional_content = :additionalContent, " +
+                    "   summary_goals = :summaryAndGoals " +
                     " where id = :id")
                     .addParameter("id", subject.getId())
                     .addParameter("subjectId", subject.getSubjectId())
@@ -342,6 +348,7 @@ public class Sql2oModel implements Model {
                     .addParameter("keywords", subject.getKeywords())
                     .addParameter("content", subject.getContent())
                     .addParameter("additionalContent", subject.getAdditionalContent())
+                    .addParameter("summaryAndGoals", subject.getSummaryAndGoals())
                     .addParameter("orderNumber", subject.getOrder())
                     .addParameter("subjectLevelId", subject.getSubjectLevelId())
                     .addParameter("url", subject.getUrl())

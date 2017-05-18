@@ -1,5 +1,6 @@
 package hr.iivanovic.psyedu;
 
+import static hr.iivanovic.psyedu.controllers.LoginController.CURRENT_USER;
 import static hr.iivanovic.psyedu.util.JsonUtil.dataToJson;
 import static spark.Spark.after;
 import static spark.Spark.before;
@@ -23,13 +24,13 @@ import hr.iivanovic.psyedu.db.Sql2oModel;
 import hr.iivanovic.psyedu.controllers.IndexController;
 import hr.iivanovic.psyedu.controllers.SubjectsController;
 import hr.iivanovic.psyedu.controllers.LoginController;
+import hr.iivanovic.psyedu.db.User;
 import hr.iivanovic.psyedu.util.Filters;
 import hr.iivanovic.psyedu.util.InitDb;
 import hr.iivanovic.psyedu.util.Path;
 import hr.iivanovic.psyedu.util.ViewUtil;
 
 public class Application {
-    public static boolean developmentMode = AppConfiguration.getInstance().isDevelopmentMode();
 
     public static void main(String[] args) {
 
@@ -43,11 +44,6 @@ public class Application {
         enableDebugScreen();
 
         Model model = Sql2oModel.getInstance();
-        if (developmentMode) {
-            InitDb initDb = new InitDb();
-            initDb.init();
-            developmentMode = false;
-        }
 
         /* rest api */
         get("/api/subjects/", (request, response) -> {
@@ -64,13 +60,19 @@ public class Application {
         });
 
         post("/testrules/", (request, response) -> {
-            System.out.println("jeee");
             int adaptiveRuleId = Integer.parseInt(request.queryParams("ruleId"));
-            boolean value = Boolean.parseBoolean(request.queryParams("value"));
-            System.out.println(value);
+            boolean isChecked = Boolean.parseBoolean(request.queryParams("value"));
             response.status(200);
             response.type("application/json");
-            return dataToJson(AdaptiveRule.getById(adaptiveRuleId));
+            AdaptiveRule adaptiveRule = AdaptiveRule.getById(adaptiveRuleId);
+            User user = request.session().attribute(CURRENT_USER);
+            if(isChecked) {
+                user.addAdaptiveRule(adaptiveRule);
+            } else {
+                user.removeAdaptiveRule(adaptiveRule);
+            }
+            System.out.println(user.getUserRules());
+            return dataToJson(adaptiveRule);
         });
 
         // Set up before-filters (called before each get/post)

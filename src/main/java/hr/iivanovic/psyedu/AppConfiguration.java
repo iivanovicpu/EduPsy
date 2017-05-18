@@ -85,4 +85,5 @@ public class AppConfiguration {
     public boolean isDevelopmentMode() {
         return "true".equals(config.getProperty(DEVELOPMENT_MODE));
     }
+
 }

@@ -155,15 +155,10 @@
                 url: '/testrules/',
                 data: {"ruleId": $(this).attr('id'), "value" : this.checked}, //--> send id of checked checkbox on other page
                 success: function(data) {
-                    alert('it worked');
-                    alert(data);
-//                    $('#container').html(data);
                 },
                 error: function() {
-                    alert('it broke');
                 },
                 complete: function() {
-                    alert('it completed');
                 }
             });
     });

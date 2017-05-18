@@ -1,16 +1,19 @@
 package hr.iivanovic.psyedu.db;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import hr.iivanovic.psyedu.controllers.LearningStyle;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author iivanovic
  * @date 28.08.16.
  */
 @Data
+@Slf4j
 public class User {
     private int id;
     private String username;
@@ -39,11 +42,28 @@ public class User {
 
     private boolean debug;
     private List<AdaptiveRule> debugRules;
+    private List<AdaptiveRule> userRules;
 
-    public List<AdaptiveRule> getUserRules(){
-        List<AdaptiveRule> rules = new LinkedList<>();
-        learningStyles.forEach(learningStyle -> rules.addAll(LearningStyleRule.findRulesByLearningStyle(learningStyle)));
-        rules.addAll(IntelligenceTypeRule.findRulesByIntelligenceType(intelligenceType));
-        return rules;
+    public void fillUserAdaptiveRules() {
+        userRules = new LinkedList<>();
+        learningStyles.forEach(learningStyle -> userRules.addAll(LearningStyleRule.findRulesByLearningStyle(learningStyle)));
+        userRules.addAll(IntelligenceTypeRule.findRulesByIntelligenceType(intelligenceType));
     }
+
+    public List<AdaptiveRule> getUserRules() {
+        return userRules;
+    }
+
+    public void removeAdaptiveRule(AdaptiveRule adaptiveRule) {
+        userRules.removeIf(adaptiveRule1 -> adaptiveRule1.equals(adaptiveRule));
+        log.info("debug: adaptive rule {} removed from user rules", adaptiveRule);
+    }
+
+    public void addAdaptiveRule(AdaptiveRule adaptiveRule) {
+        if (!userRules.contains(adaptiveRule)) {
+            userRules.add(adaptiveRule);
+        }
+        log.info("debug: adaptive rule {} added to user rules", adaptiveRule);
+    }
+
 }

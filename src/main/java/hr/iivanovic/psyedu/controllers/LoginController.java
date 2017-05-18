@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import hr.iivanovic.psyedu.AppConfiguration;
 import hr.iivanovic.psyedu.db.AdaptiveRule;
 import hr.iivanovic.psyedu.db.IntelligenceType;
 import hr.iivanovic.psyedu.db.User;
@@ -23,7 +24,9 @@ import spark.Route;
 
 public class LoginController {
 
-    private static final String CURRENT_USER = "currentUser";
+    public static final String CURRENT_USER = "currentUser";
+
+    public static boolean developmentMode = AppConfiguration.getInstance().isDevelopmentMode();
 
     public static Route serveLoginPage = (Request request, Response response) -> {
         Map<String, Object> model = new HashMap<>();
@@ -57,7 +60,7 @@ public class LoginController {
         if (getQueryLoginRedirect(request) != null) {
             response.redirect(getQueryLoginRedirect(request));
         }
-        if(isStudent(request) && debug){
+        if(isStudent(request) && developmentMode){
             fillDebugData(user);
         }
         return ViewUtil.render(request, model, Path.Template.LOGIN);
@@ -99,6 +102,7 @@ public class LoginController {
         }
         user.setLearningStyles(styles);
         user.setIntelligenceType(IntelligenceType.getById(user.getIntelligenceTypeId()));
+        user.fillUserAdaptiveRules();
     }
 
     public static Route handleLogoutPost = (Request request, Response response) -> {

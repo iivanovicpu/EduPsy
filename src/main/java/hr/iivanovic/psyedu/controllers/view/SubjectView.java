@@ -51,7 +51,7 @@ public class SubjectView extends Subject {
     }
 
     public boolean isSequenceNavigation() {
-        return getAdaptiveRules().stream().anyMatch(adaptiveRule -> adaptiveRule.equals(AdaptiveRule.SEQUENTIAL_NAVIGATION));
+        return getAdaptiveRules().stream().anyMatch(adaptiveRule -> adaptiveRule.equals(AdaptiveRule.P5_SEQUENTIAL_NAVIGATION));
     }
 
     public String getHighlightJavasript(){
@@ -73,13 +73,13 @@ public class SubjectView extends Subject {
     // todo: dok se testira neka uvijek bude uključeno ...
     public boolean isHighlightNeeded() {
         return true;
-//        return getAdaptiveRules().stream().anyMatch(adaptiveRule -> adaptiveRule.equals(AdaptiveRule.KEYWORDS_HIGHLIGHTING));
+//        return getAdaptiveRules().stream().anyMatch(adaptiveRule -> adaptiveRule.equals(AdaptiveRule.P6_KEYWORDS_HIGHLIGHTING));
     }
 
     // todo: dok se testira neka uvijek bude uključeno ...
     public boolean showAdditionalContent(){
         return true;
-//        return getAdaptiveRules().stream().anyMatch(adaptiveRule -> adaptiveRule.equals(AdaptiveRule.SHOW_ADVANCED_SUBJECTS));
+//        return getAdaptiveRules().stream().anyMatch(adaptiveRule -> adaptiveRule.equals(AdaptiveRule.P1_SHOW_ADVANCED_SUBJECTS));
     }
 
     private static List<SubjectView> createSubjectViews(List<Subject> subjects, User currentUser) {

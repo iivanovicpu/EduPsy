@@ -11,23 +11,23 @@ import hr.iivanovic.psyedu.controllers.LearningStyle;
  * @date 29.04.17.
  */
 public enum LearningStyleRule {
-    AKT_2(LearningStyle.STYLE_1_AKT, AdaptiveRule.SHOW_LINKS),
-    AKT_9(LearningStyle.STYLE_1_AKT, AdaptiveRule.QUESTIONS_HOW_WHAT_WHY),
-    REF_5(LearningStyle.STYLE_1_REF, AdaptiveRule.SEQUENTIAL_NAVIGATION),
-    REF_10(LearningStyle.STYLE_1_REF, AdaptiveRule.ASK_ESSAY),
-    VIZ_2(LearningStyle.STYLE_2_VIS, AdaptiveRule.SHOW_LINKS),
-    VIZ_6(LearningStyle.STYLE_2_VIS, AdaptiveRule.KEYWORDS_HIGHLIGHTING),
-    VIZ_7(LearningStyle.STYLE_2_VIS, AdaptiveRule.QUESTIONS_GROUPING),
-    VER_2(LearningStyle.STYLE_2_VER, AdaptiveRule.SHOW_LINKS),
-    VER_6(LearningStyle.STYLE_2_VER, AdaptiveRule.KEYWORDS_HIGHLIGHTING),
-    SEK_5(LearningStyle.STYLE_3_SEQ, AdaptiveRule.SEQUENTIAL_NAVIGATION),
-    SEK_3(LearningStyle.STYLE_3_SEQ, AdaptiveRule.TEXT_MAX_1000),
-    GLO_7(LearningStyle.STYLE_3_GLO, AdaptiveRule.QUESTIONS_GROUPING),
-    GLO_8(LearningStyle.STYLE_3_GLO, AdaptiveRule.LONGER_TEXT),
-    INT_1(LearningStyle.STYLE_4_INT, AdaptiveRule.SHOW_ADVANCED_SUBJECTS),
-    INT_9(LearningStyle.STYLE_4_INT, AdaptiveRule.QUESTIONS_HOW_WHAT_WHY),
-    SEN_5(LearningStyle.STYLE_4_SEN, AdaptiveRule.SEQUENTIAL_NAVIGATION),
-    SEN_11(LearningStyle.STYLE_4_SEN, AdaptiveRule.SHORT_QUESTIONS);
+    AKT_2(LearningStyle.STYLE_1_AKT, AdaptiveRule.P2_SHOW_LINKS),
+    AKT_9(LearningStyle.STYLE_1_AKT, AdaptiveRule.P9_QUESTIONS_HOW_WHAT_WHY),
+    REF_5(LearningStyle.STYLE_1_REF, AdaptiveRule.P5_SEQUENTIAL_NAVIGATION),
+    REF_10(LearningStyle.STYLE_1_REF, AdaptiveRule.P10_ASK_ESSAY),
+    VIZ_2(LearningStyle.STYLE_2_VIS, AdaptiveRule.P2_SHOW_LINKS),
+    VIZ_6(LearningStyle.STYLE_2_VIS, AdaptiveRule.P6_KEYWORDS_HIGHLIGHTING),
+    VIZ_7(LearningStyle.STYLE_2_VIS, AdaptiveRule.P7_QUESTIONS_GROUPING),
+    VER_2(LearningStyle.STYLE_2_VER, AdaptiveRule.P2_SHOW_LINKS),
+    VER_6(LearningStyle.STYLE_2_VER, AdaptiveRule.P6_KEYWORDS_HIGHLIGHTING),
+    SEK_5(LearningStyle.STYLE_3_SEQ, AdaptiveRule.P5_SEQUENTIAL_NAVIGATION),
+    SEK_3(LearningStyle.STYLE_3_SEQ, AdaptiveRule.P3_TEXT_MAX_1000),
+    GLO_7(LearningStyle.STYLE_3_GLO, AdaptiveRule.P7_QUESTIONS_GROUPING),
+    GLO_8(LearningStyle.STYLE_3_GLO, AdaptiveRule.P8_LONGER_TEXT),
+    INT_1(LearningStyle.STYLE_4_INT, AdaptiveRule.P1_SHOW_ADVANCED_SUBJECTS),
+    INT_9(LearningStyle.STYLE_4_INT, AdaptiveRule.P9_QUESTIONS_HOW_WHAT_WHY),
+    SEN_5(LearningStyle.STYLE_4_SEN, AdaptiveRule.P5_SEQUENTIAL_NAVIGATION),
+    SEN_11(LearningStyle.STYLE_4_SEN, AdaptiveRule.P11_SHORT_QUESTIONS);
 
     private final LearningStyle learningStyle;
     private final AdaptiveRule adaptiveRule;

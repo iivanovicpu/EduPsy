@@ -32,7 +32,9 @@ ALTER TABLE questions ADD COLUMN correctAnswers TEXT NULL;
 ALTER TABLE questions RENAME COLUMN answers to possibleAnswers;
 ALTER TABLE questions ALTER COLUMN possibleanswers DROP NOT NULL;
 ALTER TABLE questions ADD COLUMN questiontypeid INT NOT NULL DEFAULT 1;
+ALTER TABLE questions DROP COLUMN titleId;
 DELETE FROM questions;
 
+ALTER TABLE users DROP COLUMN learningstyleid;
 
 

@@ -155,6 +155,7 @@
                 url: '/testrules/',
                 data: {"ruleId": $(this).attr('id'), "value" : this.checked}, //--> send id of checked checkbox on other page
                 success: function(data) {
+                    // todo: reload page
                 },
                 error: function() {
                 },

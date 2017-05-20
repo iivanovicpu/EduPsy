@@ -28,6 +28,6 @@ public enum TitleLearningStatus {
     }
 
     public boolean isFinished(){
-        return id >= 3;
+        return id >= FINISHED_EXAM.getId();
     }
 }

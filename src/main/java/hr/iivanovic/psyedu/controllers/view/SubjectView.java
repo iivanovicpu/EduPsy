@@ -26,6 +26,8 @@ import lombok.Data;
 @Data
 public class SubjectView extends Subject {
 
+    private static int SEQ_NAVIGATION_CONDITION = TitleLearningStatus.FINISHED_EXAM.getId();
+
     public SubjectView(Subject sub, User student) {
         super(sub.getId(), sub.getTitle(), sub.getKeywords(), sub.getUrl(), sub.getSubjectId(), sub.getParentSubjectId(), sub.getSubjectLevelId(), sub.getOrder(), sub.getContent(), sub.getAdditionalContent(), null, sub.getSubjectPositionId(), sub.getSubjectPosition());
         this.student = student;
@@ -38,11 +40,7 @@ public class SubjectView extends Subject {
     private User student;
 
     public List<AdaptiveRule> getAdaptiveRules() {
-        List<AdaptiveRule> adaptiveRules = IntelligenceTypeRule.findRulesByIntelligenceType(IntelligenceType.getById(student.getIntelligenceTypeId()));
-        for (LearningStyle learningStyle : student.getLearningStyles()) {
-            adaptiveRules.addAll(LearningStyleRule.findRulesByLearningStyle(learningStyle));
-        }
-        return adaptiveRules;
+        return student.getUserRules();
     }
 
     public TitleLearningStatus getLearningStatus() {
@@ -70,16 +68,12 @@ public class SubjectView extends Subject {
         return "";
     }
 
-    // todo: dok se testira neka uvijek bude uključeno ...
     public boolean isHighlightNeeded() {
-        return true;
-//        return getAdaptiveRules().stream().anyMatch(adaptiveRule -> adaptiveRule.equals(AdaptiveRule.P6_KEYWORDS_HIGHLIGHTING));
+        return getAdaptiveRules().stream().anyMatch(adaptiveRule -> adaptiveRule.equals(AdaptiveRule.P6_KEYWORDS_HIGHLIGHTING));
     }
 
-    // todo: dok se testira neka uvijek bude uključeno ...
     public boolean showAdditionalContent(){
-        return true;
-//        return getAdaptiveRules().stream().anyMatch(adaptiveRule -> adaptiveRule.equals(AdaptiveRule.P1_SHOW_ADVANCED_SUBJECTS));
+        return getAdaptiveRules().stream().anyMatch(adaptiveRule -> adaptiveRule.equals(AdaptiveRule.P1_SHOW_ADVANCED_SUBJECTS));
     }
 
     private static List<SubjectView> createSubjectViews(List<Subject> subjects, User currentUser) {
@@ -115,7 +109,7 @@ public class SubjectView extends Subject {
                         .append(subjView.getTitle())
                         .append("</a></p>");
             } else {
-                if (subjView.getId() == getNextChildId() || subjView.getId() == getNextParentId() || subjView.getLearningStatus().getId() >= 3) {
+                if (subjView.getId() == getNextChildId() || subjView.getId() == getNextParentId() || subjView.getLearningStatus().getId() >= SEQ_NAVIGATION_CONDITION) {
                     stringBuilder
                             .append("<p><a href='/onetitlechild/")
                             .append(subjView.getId())
@@ -136,7 +130,7 @@ public class SubjectView extends Subject {
     public int getNextParentId() {
         int nextParentId;
         SubjectView nextParentSubject = getNextParent();
-        nextParentId = null != nextParentSubject && this.getLearningStatus().getId() >= 3 ? nextParentSubject.getId() : 0;
+        nextParentId = null != nextParentSubject && this.getLearningStatus().getId() >= SEQ_NAVIGATION_CONDITION ? nextParentSubject.getId() : 0;
         return nextParentId;
     }
 
@@ -149,7 +143,7 @@ public class SubjectView extends Subject {
     public int getNextChildId() {
         int nextChildId;
         SubjectView childSubjectView = getNextChild();
-        nextChildId = null != childSubjectView && this.getLearningStatus().getId() >= 3 ? childSubjectView.getId() : 0;
+        nextChildId = null != childSubjectView && this.getLearningStatus().getId() >= SEQ_NAVIGATION_CONDITION ? childSubjectView.getId() : 0;
         return nextChildId;
     }
 

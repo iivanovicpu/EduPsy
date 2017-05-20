@@ -71,7 +71,6 @@ public class Application {
             } else {
                 user.removeAdaptiveRule(adaptiveRule);
             }
-            System.out.println(user.getUserRules());
             return dataToJson(adaptiveRule);
         });
 

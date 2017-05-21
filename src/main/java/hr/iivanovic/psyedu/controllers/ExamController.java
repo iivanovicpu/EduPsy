@@ -68,6 +68,7 @@ public class ExamController extends AbstractController {
             model.put("subjectId", subjectid);
 
             model.put("validation", sb);
+            model.put("success",success);
 
             if(success) {
                 dbProvider.logLearningStatus(student.getId(), subjectid, TitleLearningStatus.FINISHED_EXAM.getId());

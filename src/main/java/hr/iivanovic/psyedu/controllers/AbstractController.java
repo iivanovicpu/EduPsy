@@ -28,20 +28,25 @@ public class AbstractController {
                 renderRadioButtonsAnswer(sb, question);
             }
             if (QuestionType.ENTER_SHORT_ANSWER.equals(questionType)) {
-                sb.append("<br><input type=\"text\" name=\"").append(question.getId()).append("_").append(question.getId()).append("\">");
+                renderTextInputAnswer(sb, question);
             }
             if (QuestionType.ENTER_DESCRIPTIVE_ANSWER.equals(questionType)) {
-                sb.append("<br><textarea name=\"").append(question.getId()).append("_").append(question.getId()).append("\" rows=\"10\" cols=\"30\"></textarea>");
+                renderTextAreaAnswer(sb, question);
             }
             sb.append("</div>");
         }
         return sb.toString();
     }
 
+    private static void renderTextAreaAnswer(StringBuilder sb, Question question) {
+        sb.append("<br><textarea name=\"").append(question.getId()).append("_").append(question.getId()).append("\" rows=\"10\" cols=\"30\"></textarea>");
+    }
+
+    private static void renderTextInputAnswer(StringBuilder sb, Question question) {
+        sb.append("<br><input type=\"text\" name=\"").append(question.getId()).append("_").append(question.getId()).append("\">");
+    }
+
     private static void renderRadioButtonsAnswer(StringBuilder sb, Question question) {
-        /*<div class="radio">
-  <label><input type="radio" name="optradio">Option 1</label>
-</div>*/
         String questionPossibleAnswers = question.getPossibleAnswers();
         String[] possibleAnswers = null != questionPossibleAnswers ? questionPossibleAnswers.split(",") : new String[0];
         for (String answer : possibleAnswers) {
@@ -54,11 +59,12 @@ public class AbstractController {
     }
 
     private static void renderCheckBoxesAnswer(StringBuilder sb, Question question) {
+        int idx = 0;
         String questionPossibleAnswers = question.getPossibleAnswers();
         String[] possibleAnswers = null != questionPossibleAnswers ? questionPossibleAnswers.split(",") : new String[0];
         for (String answer : possibleAnswers) {
             sb.append("<div class=\"checkbox\">");
-            String questionId = question.getId() + "_" + question.getId();
+            String questionId = question.getId() + "_" + idx++;
             sb.append("<label><input type=\"checkbox\" name=\"").append(questionId).append("\" value=\"").append(answer).append("\">").append(answer).append("</label>");
             sb.append("</div>");
         }

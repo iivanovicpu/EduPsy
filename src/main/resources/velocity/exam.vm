@@ -12,14 +12,13 @@
 <div>
     <form method="post" class="form-horizontal" id="questionForm">
         <input type="hidden" name="subjectid" value="$subjectId"/>
-        <input type="hidden" name="titleid" value="$titleId"/>
 
         $questions
 
         <hr>
 
         <button type="submit" class="btn btn-primary">Pošalji odgovore</button>
-        <button type="submit" formmethod="get" formaction="/subjects/$subjectId" class="btn btn-warning">Odustani</button>
+        <button type="submit" formmethod="get" formaction="/onetitlechild/$subjectId" class="btn btn-warning">Odustani</button>
     </form>
 </div>
 #end

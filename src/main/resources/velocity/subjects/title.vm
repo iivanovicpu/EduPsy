@@ -5,6 +5,16 @@
     <button type="submit" formmethod="get" formaction="/onetitle/$subject.parentSubjectId/" class="btn btn-warning">
         Natrag
     </button>
+    #if($subject.getLearningStatus().id < 4)
+        <button type="submit" formaction="/exam/$subject.id/" formmethod="get" title="ispitna pitanja" class="btn btn-default">
+            <span class="glyphicon glyphicon-question-sign" title="ispitna pitanja"></span>Ispitna pitanja</button>
+    #else
+        &nbsp;&nbsp;
+        <span class="glyphicon glyphicon-ok" title="završeno">&nbsp;Ispit je odrađen</span>
+
+    #end
+
+
 </form>
 <br>
 <div id="txt">$subject.content</div>

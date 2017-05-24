@@ -10,6 +10,14 @@ import static spark.Spark.post;
 import static spark.Spark.staticFiles;
 import static spark.debug.DebugScreen.enableDebugScreen;
 
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Collection;
+
+import javax.servlet.MultipartConfigElement;
+import javax.servlet.http.Part;
+
 import hr.iivanovic.psyedu.controllers.AdaptiveRulesController;
 import hr.iivanovic.psyedu.controllers.AdminSubjectsController;
 import hr.iivanovic.psyedu.controllers.DebugController;
@@ -18,6 +26,7 @@ import hr.iivanovic.psyedu.controllers.PollController;
 import hr.iivanovic.psyedu.controllers.ProfileController;
 import hr.iivanovic.psyedu.controllers.StudentsController;
 import hr.iivanovic.psyedu.controllers.SubjectQuestionsController;
+import hr.iivanovic.psyedu.controllers.UploadController;
 import hr.iivanovic.psyedu.db.AdaptiveRule;
 import hr.iivanovic.psyedu.db.Model;
 import hr.iivanovic.psyedu.db.Sql2oModel;
@@ -81,6 +90,9 @@ public class Application {
         // Set up routes
         get(Path.Web.INDEX, IndexController.serveIndexPage);
 
+        // upload todo: napravit odvnojeni controller
+        post("/upload/","multipart/form-data", UploadController.uploadFile);
+        post("/deletelink/", AdminSubjectsController.deleteExternalLink);
         get(Path.Web.VIEW_SUBJECT, SubjectsController.fetchOneSubject);
         get(Path.Web.ONE_SUBJECT_QUESTIONS, SubjectQuestionsController.fetchtitlesForAddQuestions);
         get(Path.Web.ONE_TITLE_QUESTIONS, SubjectQuestionsController.fetchOneTitleForAddQuestions);

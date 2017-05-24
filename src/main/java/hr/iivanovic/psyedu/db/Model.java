@@ -22,6 +22,12 @@ public interface Model {
 
     List<Question> getAllQuestionsForSubjectAndTitle(int subjectId);
 
+    List<ExternalLink> getAllExternalLinksBySubjectId(int subjectId);
+
+    void createExternalLink(ExternalLink externalLink);
+
+    void deleteExternalLink(int id);
+
     List<AdaptiveRuleDb> getAllAdaptiveRules();
 
     int nextIdx(String tag);

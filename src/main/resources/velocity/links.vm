@@ -1,0 +1,30 @@
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Naslov</th>
+            <th>Url</th>
+            <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+            #foreach($link in $links)
+            <tr>
+                <td>&nbsp;</td>
+                <td>$link.title</td>
+                <td>$link.url</td>
+                <td>&nbsp</td>
+                <td>
+                    <form method="post" action="/deletelink/">
+                        <input type="hidden" name="linkId" value="$link.id">
+                        <input type="hidden" name="subjectId" value="$subjectId">
+                        <input type="hidden" name="parentSubjectId" value="$parentSubjectId">
+                        <button type="submit" class="btn btn-danger">Briši</button>
+                    </form>
+                </td>
+            </tr>
+            #end
+        </tbody>
+    </table>
+</div>

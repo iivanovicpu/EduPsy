@@ -1,0 +1,10 @@
+#if($validation)
+    #if($!success)
+    <div class="alert alert-success fade in" id="validation">
+    #else
+    <div class="alert alert-danger fade in" id="validation">
+    #end
+    <a href="#" class="close" data-dismiss="alert">&times;</a>
+    $validation
+    </div>
+#end

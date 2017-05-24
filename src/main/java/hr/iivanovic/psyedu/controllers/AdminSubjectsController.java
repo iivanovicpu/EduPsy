@@ -6,12 +6,14 @@ import static hr.iivanovic.psyedu.util.RequestUtil.clientAcceptsJson;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import hr.iivanovic.psyedu.AppConfiguration;
+import hr.iivanovic.psyedu.db.ExternalLink;
 import hr.iivanovic.psyedu.db.Subject;
 import hr.iivanovic.psyedu.db.SubjectLevel;
 import hr.iivanovic.psyedu.db.SubjectPosition;
@@ -99,11 +101,28 @@ public class AdminSubjectsController extends AbstractController {
             model.put("subjectId", subjectId);
             model.put("parentSubjectId", parentSubjectId);
             Subject subject = new Subject();
+            List<ExternalLink> externalLinks = new LinkedList<>();
             if ("edit".equals(action)) {
                 subject = dbProvider.getSubject(subjectId);
+                externalLinks = dbProvider.getAllExternalLinksBySubjectId(subjectId);
             }
             model.put("subject", subject);
+            model.put("links", externalLinks);
             return ViewUtil.render(request, model, Path.Template.EDIT_SUBJECT_ITEM);
+        }
+        return ViewUtil.notAcceptable.handle(request, response);
+    };
+
+    public static Route deleteExternalLink = (Request request, Response response) -> {
+        if (clientAcceptsHtml(request) && LoginController.isEditAllowed(request)) {
+            String subjectId = request.queryParams("subjectId");
+            String parentSubjectId = request.queryParams("parentSubjectId");
+            int linkId = Integer.parseInt(request.queryParams("linkId"));
+            dbProvider.deleteExternalLink(linkId);
+            response.redirect(Path.Web.EDIT_SUBJECT_ITEM
+                    .replaceFirst(":id", subjectId)
+                    .replaceFirst(":parentId", parentSubjectId)
+                    .replaceFirst(":action", "edit"));
         }
         return ViewUtil.notAcceptable.handle(request, response);
     };

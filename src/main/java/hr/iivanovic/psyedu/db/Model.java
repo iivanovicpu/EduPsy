@@ -20,6 +20,8 @@ public interface Model {
 
     void createQuestion(Question question);
 
+    void deleteQuestion(int questionId);
+
     List<Question> getAllQuestionsForSubjectAndTitle(int subjectId);
 
     List<ExternalLink> getAllExternalLinksBySubjectId(int subjectId);

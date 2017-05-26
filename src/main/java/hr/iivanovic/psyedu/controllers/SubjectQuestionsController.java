@@ -55,7 +55,7 @@ public class SubjectQuestionsController extends AbstractController {
         if (clientAcceptsHtml(request)) {
             HashMap<String, Object> model = createModel(subjectId);
             List<Question> questions = dbProvider.getAllQuestionsForSubjectAndTitle(subjectId);
-            String htmlQuestions = renderQuestions(questions);
+            String htmlQuestions = renderQuestions(questions, LoginController.isStudent(request));
             model.put("questions", htmlQuestions);
 
             return ViewUtil.render(request, model, Path.Template.SUBJECT_ONE_TITLE_QUESTIONS);
@@ -88,7 +88,24 @@ public class SubjectQuestionsController extends AbstractController {
             }
             model.put("validation", validationResult.getValidationMessage());
             List<Question> questions = dbProvider.getAllQuestionsForSubjectAndTitle(subjectId);
-            String htmlQuestions = renderQuestions(questions);
+            String htmlQuestions = renderQuestions(questions, LoginController.isStudent(request));
+            model.put("questions", htmlQuestions);
+            return ViewUtil.render(request, model, Path.Template.SUBJECT_ONE_TITLE_QUESTIONS);
+        }
+        return ViewUtil.notAcceptable.handle(request, response);
+    };
+
+    public static Route deleteQuestion = (Request request, Response response) -> {
+        LoginController.ensureUserIsLoggedIn(request, response);
+        if (clientAcceptsHtml(request)) {
+            int subjectId = Integer.parseInt(request.queryParams("subjectid"));
+            int questionId = Integer.parseInt(request.queryParams("questionid"));
+            dbProvider.deleteQuestion(questionId);
+
+            HashMap<String, Object> model = createModel(subjectId);
+            model.put("validation", "zapis uspješno obrisan!");
+            List<Question> questions = dbProvider.getAllQuestionsForSubjectAndTitle(subjectId);
+            String htmlQuestions = renderQuestions(questions, LoginController.isStudent(request));
             model.put("questions", htmlQuestions);
             return ViewUtil.render(request, model, Path.Template.SUBJECT_ONE_TITLE_QUESTIONS);
         }

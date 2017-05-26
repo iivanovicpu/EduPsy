@@ -95,8 +95,9 @@ public class Application {
         post("/deletelink/", AdminSubjectsController.deleteExternalLink);
         get(Path.Web.VIEW_SUBJECT, SubjectsController.fetchOneSubject);
         get(Path.Web.ONE_SUBJECT_QUESTIONS, SubjectQuestionsController.fetchtitlesForAddQuestions);
-        get(Path.Web.ONE_TITLE_QUESTIONS, SubjectQuestionsController.fetchOneTitleForAddQuestions);
+        get("/onetitlequestions/:subjectid/", SubjectQuestionsController.fetchOneTitleForAddQuestions);
         post(Path.Web.ONE_TITLE_QUESTIONS, SubjectQuestionsController.submitQuestion);
+        post("/deletequestion/",SubjectQuestionsController.deleteQuestion);
         get(Path.Web.ADD_SUBJECT, SubjectsController.addNewSubject);
         post(Path.Web.ADD_SUBJECT, AdminSubjectsController.submitAddedSubject);
         get(Path.Web.ONE_PARENT_TITLE, SubjectsController.fetchOneTitle);

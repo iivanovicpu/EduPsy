@@ -1,6 +1,8 @@
 #parse("/velocity/layout.vm")
 #@mainLayout()
 <form method="post" class="form-group">
+    <div class="h$subject.subjectPositionId">$subject.title</div>
+
     <input type="hidden" name="subjectId" value="$subject.id">
     <button type="submit" formmethod="get" formaction="/onetitle/$subject.parentSubjectId/" class="btn btn-warning">
         Natrag

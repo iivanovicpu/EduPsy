@@ -163,6 +163,15 @@ public class Sql2oModel implements Model {
     }
 
     @Override
+    public void deleteQuestion(int questionId){
+        try (Connection conn = sql2o.open()) {
+            conn.createQuery("DELETE FROM questions WHERE id=:questionId;")
+                    .addParameter("questionId", questionId)
+                    .executeUpdate();
+        }
+    }
+
+    @Override
     public List<Question> getAllQuestionsForSubjectAndTitle(int subjectId) {
         try (Connection conn = sql2o.open()) {
             return conn.createQuery("select * from questions where subjectId=:subjectId")

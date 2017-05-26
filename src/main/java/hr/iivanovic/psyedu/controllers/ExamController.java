@@ -33,7 +33,7 @@ public class ExamController extends AbstractController {
             List<Question> questions = dbProvider.getAllQuestionsForSubjectAndTitle(subjectid);
             String htmlQuestions = "ispitna pitanja za ovo gradivo nisu unesena !";
             if (questions.size() > 0) {
-                htmlQuestions = renderQuestions(questions);
+                htmlQuestions = renderQuestions(questions,LoginController.isStudent(request));
             }
             model.put("questions", htmlQuestions);
             model.put("subjectId", subjectid);
@@ -62,7 +62,7 @@ public class ExamController extends AbstractController {
 
             Map<String, Object> model = new HashMap<>();
             if (questions.size() > 0) {
-                htmlQuestions = renderQuestions(questions);
+                htmlQuestions = renderQuestions(questions,LoginController.isStudent(request));
             }
             model.put("questions", htmlQuestions);
             model.put("subjectId", subjectid);

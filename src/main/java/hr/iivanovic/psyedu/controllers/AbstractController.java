@@ -13,13 +13,12 @@ import hr.iivanovic.psyedu.db.Sql2oModel;
 public class AbstractController {
     public static Model dbProvider = Sql2oModel.getInstance();
 
-    protected static String renderQuestions(List<Question> questions) {
+    protected static String renderQuestions(List<Question> questions, boolean isStudent) {
         StringBuilder sb = new StringBuilder();
         for (Question question : questions) {
             sb.append("<div class=\"form-group\">");
             sb.append("<hr>").append(question.getQuestion());
             QuestionType questionType = QuestionType.getById(question.getQuestionTypeId());
-
 
             if (QuestionType.SELECT_MULTIPLE_ANSWERS.equals(questionType)) {
                 renderCheckBoxesAnswer(sb, question);
@@ -32,6 +31,14 @@ public class AbstractController {
             }
             if (QuestionType.ENTER_DESCRIPTIVE_ANSWER.equals(questionType)) {
                 renderTextAreaAnswer(sb, question);
+            }
+            if(!isStudent) {
+                sb.append("<form method=\"post\" action=\"/deletequestion/\">");
+                sb.append("<input type=\"hidden\" name=\"questionid\" value=\"").append(question.getId()).append("\">");
+                sb.append("<input type=\"hidden\" name=\"subjectid\" value=\"").append(question.getSubjectId()).append("\">");
+                sb.append("<button type=\"submit\" class=\"btn btn-danger\">Briši</button>\n");
+                sb.append("Riješenje: ").append(question.getCorrectAnswers());
+                sb.append("</form>");
             }
             sb.append("</div>");
         }

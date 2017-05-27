@@ -67,6 +67,14 @@
                 <input type="text" readonly value="$!subject.url">
             </div>
         </div>
+        #if($action == 'edit')
+
+            <div class="form-group">
+                <button type="button" class="btn btn-info" onclick="location.href = '/upload/$subject.getId()/';"
+                        aria-expanded="false">Poveznice ...
+                </button>
+            </div>
+        #end
 
         <button type="submit" class="btn btn-primary">#if($action == 'edit')
             Izmijeni
@@ -77,14 +85,6 @@
         <input type="button" class="btn btn-warning" value="Odustani"
                onclick="location.href = '/edit_subject/$parentSubjectId/';">
     </form>
-    #end
-
-    #if($action == 'edit')
-        <hr>
-        <h3>Poveznice:</h3>
-        #parse("/velocity/upload.vm")
-        <hr>
-        #parse("/velocity/links.vm")
     #end
 
 <script src="/js/jquery.js"></script>

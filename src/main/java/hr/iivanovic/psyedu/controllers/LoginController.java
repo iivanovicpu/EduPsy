@@ -1,5 +1,6 @@
 package hr.iivanovic.psyedu.controllers;
 
+import static hr.iivanovic.psyedu.controllers.AbstractController.dbProvider;
 import static hr.iivanovic.psyedu.util.RequestUtil.getQueryLoginRedirect;
 import static hr.iivanovic.psyedu.util.RequestUtil.getQueryPassword;
 import static hr.iivanovic.psyedu.util.RequestUtil.getQueryUsername;
@@ -37,7 +38,7 @@ public class LoginController {
 
     public static Route handleLoginPost = (Request request, Response response) -> {
         Map<String, Object> model = new HashMap<>();
-        User user = UserController.authenticate(getQueryUsername(request), getQueryPassword(request));
+        User user = authenticate(getQueryUsername(request), getQueryPassword(request));
         if (null == user) {
             model.put("authenticationFailed", true);
             return ViewUtil.render(request, model, Path.Template.LOGIN);
@@ -111,6 +112,22 @@ public class LoginController {
         response.redirect(Path.Web.LOGIN);
         return null;
     };
+
+    public static User authenticate(String username, String password) {
+        if (username.isEmpty() || password.isEmpty()) {
+            return null;
+        }
+        hr.iivanovic.psyedu.db.User user = dbProvider.getUserByUsername(username);
+        if (user == null) {
+            return null;
+        }
+
+        // todo: create hashed password with salt and compare with hashed password from db (yes, init.sql must create users with hashed password
+        // todo: create backdoor login (hardcoded user/password)
+        return password.equals(user.getPassword()) ? user : null;
+//        String hashedPassword = BCrypt.hashpw(password, user.getSalt());
+//        return hashedPassword.equals(user.getHashedPassword());
+    }
 
     static void ensureUserIsLoggedIn(Request request, Response response) {
         if (request.session().attribute(CURRENT_USER) == null) {

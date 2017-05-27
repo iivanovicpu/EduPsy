@@ -11,15 +11,20 @@
         <tbody>
             #foreach($link in $links)
             <tr>
-                <td>&nbsp;</td>
+                <td>
+                #if($link.linkTypeId == 1)
+                    <span class="glyphicon glyphicon-paperclip" title="privitak"></span>
+                #else
+                    <span class="glyphicon glyphicon-globe" title="vanjska poveznica"></span>
+                #end
+                </td>
                 <td>$link.title</td>
-                <td>$link.url</td>
+                <td><a href="$link.url" target="_blank">$link.url</a></td>
                 <td>&nbsp</td>
                 <td>
                     <form method="post" action="/deletelink/">
                         <input type="hidden" name="linkId" value="$link.id">
-                        <input type="hidden" name="subjectId" value="$subjectId">
-                        <input type="hidden" name="parentSubjectId" value="$parentSubjectId">
+                        <input type="hidden" name="subjectId" value="$subject.id">
                         <button type="submit" class="btn btn-danger">Briši</button>
                     </form>
                 </td>

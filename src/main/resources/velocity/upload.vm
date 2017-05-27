@@ -1,22 +1,64 @@
-<form class="form-horizontal" action="/upload/" enctype="multipart/form-data" method="post">
-    <input type="hidden" name="subjectId" value="$subjectId">
+#parse("/velocity/layout.vm")
+#@mainLayout()
+<h2>Poveznice za: $subject.title</h2>
+    #if($validation)
+    <div class="alert alert-danger fade in" id="validation">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        $validation
+    </div>
+    #end
+
+<form class="form-horizontal" action="/upload/" enctype="multipart/form-data" method="post" id="uploadForm">
+    <input type="hidden" name="subjectId" value="$subject.id">
     <input type="hidden" name="subjectUrl" value="$subject.url">
-    <input type="hidden" name="parentSubjectId" value="$parentSubjectId">
 
     <div class="form-group">
         <label class="control-label col-sm-2">Naslov:</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" name="title" size="30">
+            <input type="text" class="form-control" name="title">
         </div>
     </div>
+
     <div class="form-group">
-        <label class="control-label col-sm-2" class="control-label col-sm-2">Odaberi datoteku:</label>
+        <label class="control-label col-sm-2" for="linkTypeId">Tip poveznice:</label>
         <div class="col-sm-10">
-    <div class="fileinput fileinput-new" data-provides="fileinput">
-        <span class="btn btn-default btn-file"><span>Choose file</span><input type="file" multiple name="file"/></span>
-        <span class="fileinput-filename"></span><span class="fileinput-new">No file chosen</span>
-    </div>
+            <input type="radio" name="linkTypeId" value="1" checked="checked" onchange="toggleControls();">Privitak / upload
+            <input type="radio" name="linkTypeId" value="2"  onchange="toggleControls();">Vanjska poveznica
+        </div>
     </div>
 
-    <button type="submit" class="btn btn-warning">Pošalji</button>
+    <div class="form-group" id="url" hidden>
+        <label class="control-label col-sm-2" for="url">URL: </label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" name="url">
+        </div>
+    </div>
+
+    <div class="form-group" id="upload">
+        <label class="control-label col-sm-2" class="control-label col-sm-2">Odaberi datoteku:</label>
+        <div class="col-sm-10">
+            <div class="fileinput fileinput-new" data-provides="fileinput">
+                <span class="btn btn-default btn-file"><span>Choose file</span><input type="file" multiple name="file"/></span>
+                <span class="fileinput-filename"></span><span class="fileinput-new">No file chosen</span>
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-warning">Spremi</button>
 </form>
+<hr>
+    <div>
+        #parse("/velocity/links.vm")
+    </div>
+#end
+<script type="application/javascript">
+
+    function toggleControls() {
+        if($('input[name=linkTypeId]:checked', '#uploadForm').val() == 1){
+            $("#url").hide();
+            $("#upload").show();
+        } else {
+            $("#url").show();
+            $("#upload").hide();
+        }
+    }
+</script>

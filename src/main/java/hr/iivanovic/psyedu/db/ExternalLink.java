@@ -14,4 +14,5 @@ public class ExternalLink {
     private int subjectId;
     private String title;
     private String url;
+    private int linkTypeId;
 }

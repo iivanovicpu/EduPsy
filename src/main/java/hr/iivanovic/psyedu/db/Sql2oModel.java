@@ -183,9 +183,10 @@ public class Sql2oModel implements Model {
     @Override
     public List<ExternalLink> getAllExternalLinksBySubjectId(int subjectId) {
         try (Connection conn = sql2o.open()){
-            return conn.createQuery("select id, title, url, subject_id from external_links where subject_id=:subjectId")
+            return conn.createQuery("select id, title, url, subject_id, linktypeid from external_links where subject_id=:subjectId")
                     .addParameter("subjectId", subjectId)
                     .addColumnMapping("subject_id", "subjectId")
+                    .addColumnMapping("linktypeid", "linkTypeId")
                     .executeAndFetch(ExternalLink.class);
         }
     }
@@ -193,10 +194,11 @@ public class Sql2oModel implements Model {
     @Override
     public void createExternalLink(ExternalLink externalLink){
         try (Connection conn = sql2o.open()) {
-            conn.createQuery("insert into external_links (title, url, subject_id ) values (:title, :url, :subjectId);")
+            conn.createQuery("insert into external_links (title, url, subject_id, linktypeid ) values (:title, :url, :subjectId, :linkTypeId);")
                     .addParameter("title", externalLink.getTitle())
                     .addParameter("url", externalLink.getUrl())
                     .addParameter("subjectId", externalLink.getSubjectId())
+                    .addParameter("linkTypeId", externalLink.getLinkTypeId())
                     .executeUpdate();
         }
     }

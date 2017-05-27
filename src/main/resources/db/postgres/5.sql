@@ -1,0 +1,1 @@
+ALTER TABLE external_links ADD COLUMN linkTypeId INT NOT NULL DEFAULT 1;

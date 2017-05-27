@@ -44,6 +44,7 @@ public class Path {
         public final static String SUBJECTS_ONE = "/velocity/subjects/one.vm";
         public final static String EDIT_SUBJECT = "/velocity/subjects/edit_subject.vm";
         public final static String EDIT_SUBJECT_ITEM = "/velocity/subjects/edit_subject_item.vm";
+        public final static String UPLOAD = "/velocity/upload.vm";
         public final static String SUBJECTS_ONE_QUESTIONS = "/velocity/subjects/onesubjectquestions.vm";
         public final static String SUBJECTS_ONE_EDIT = "/velocity/subjects/edit.vm";
         public final static String SUBJECT_ADD = "/velocity/subjects/add.vm";

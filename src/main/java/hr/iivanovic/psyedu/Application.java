@@ -4,38 +4,29 @@ import static hr.iivanovic.psyedu.controllers.LoginController.CURRENT_USER;
 import static hr.iivanovic.psyedu.util.JsonUtil.dataToJson;
 import static spark.Spark.after;
 import static spark.Spark.before;
+import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.port;
 import static spark.Spark.post;
 import static spark.Spark.staticFiles;
 import static spark.debug.DebugScreen.enableDebugScreen;
 
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Collection;
-
-import javax.servlet.MultipartConfigElement;
-import javax.servlet.http.Part;
-
 import hr.iivanovic.psyedu.controllers.AdaptiveRulesController;
 import hr.iivanovic.psyedu.controllers.AdminSubjectsController;
-import hr.iivanovic.psyedu.controllers.DebugController;
 import hr.iivanovic.psyedu.controllers.ExamController;
+import hr.iivanovic.psyedu.controllers.IndexController;
+import hr.iivanovic.psyedu.controllers.LoginController;
 import hr.iivanovic.psyedu.controllers.PollController;
 import hr.iivanovic.psyedu.controllers.ProfileController;
 import hr.iivanovic.psyedu.controllers.StudentsController;
 import hr.iivanovic.psyedu.controllers.SubjectQuestionsController;
+import hr.iivanovic.psyedu.controllers.SubjectsController;
 import hr.iivanovic.psyedu.controllers.UploadController;
 import hr.iivanovic.psyedu.db.AdaptiveRule;
 import hr.iivanovic.psyedu.db.Model;
 import hr.iivanovic.psyedu.db.Sql2oModel;
-import hr.iivanovic.psyedu.controllers.IndexController;
-import hr.iivanovic.psyedu.controllers.SubjectsController;
-import hr.iivanovic.psyedu.controllers.LoginController;
 import hr.iivanovic.psyedu.db.User;
 import hr.iivanovic.psyedu.util.Filters;
-import hr.iivanovic.psyedu.util.InitDb;
 import hr.iivanovic.psyedu.util.Path;
 import hr.iivanovic.psyedu.util.ViewUtil;
 
@@ -75,7 +66,7 @@ public class Application {
             response.type("application/json");
             AdaptiveRule adaptiveRule = AdaptiveRule.getById(adaptiveRuleId);
             User user = request.session().attribute(CURRENT_USER);
-            if(isChecked) {
+            if (isChecked) {
                 user.addAdaptiveRule(adaptiveRule);
             } else {
                 user.removeAdaptiveRule(adaptiveRule);
@@ -91,13 +82,14 @@ public class Application {
         get(Path.Web.INDEX, IndexController.serveIndexPage);
 
         // upload todo: napravit odvnojeni controller
-        post("/upload/","multipart/form-data", UploadController.uploadFile);
-        post("/deletelink/", AdminSubjectsController.deleteExternalLink);
+        post("/upload/", "multipart/form-data", UploadController.uploadFile);
+        get("/upload/:subjectId/", UploadController.uploadForm);
+        post("/deletelink/", UploadController.deleteExternalLink);
         get(Path.Web.VIEW_SUBJECT, SubjectsController.fetchOneSubject);
         get(Path.Web.ONE_SUBJECT_QUESTIONS, SubjectQuestionsController.fetchtitlesForAddQuestions);
         get("/onetitlequestions/:subjectid/", SubjectQuestionsController.fetchOneTitleForAddQuestions);
         post(Path.Web.ONE_TITLE_QUESTIONS, SubjectQuestionsController.submitQuestion);
-        post("/deletequestion/",SubjectQuestionsController.deleteQuestion);
+        post("/deletequestion/", SubjectQuestionsController.deleteQuestion);
         get(Path.Web.ADD_SUBJECT, SubjectsController.addNewSubject);
         post(Path.Web.ADD_SUBJECT, AdminSubjectsController.submitAddedSubject);
         get(Path.Web.ONE_PARENT_TITLE, SubjectsController.fetchOneTitle);

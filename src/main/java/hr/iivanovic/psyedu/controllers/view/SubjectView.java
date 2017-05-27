@@ -52,6 +52,10 @@ public class SubjectView extends Subject {
         return getAdaptiveRules().stream().anyMatch(adaptiveRule -> adaptiveRule.equals(AdaptiveRule.P5_SEQUENTIAL_NAVIGATION));
     }
 
+    public boolean showLinks() {
+        return getAdaptiveRules().stream().anyMatch(adaptiveRule -> adaptiveRule.equals(AdaptiveRule.P2_SHOW_LINKS));
+    }
+
     public String getHighlightJavasript(){
         if(isHighlightNeeded()){
             StringBuilder sb = new StringBuilder();

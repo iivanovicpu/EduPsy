@@ -46,7 +46,8 @@ public class UploadController extends AbstractController {
 
             String subjectUrl = request.queryParams("subjectUrl");
             for (Part part : parts) {
-                String fileName = part.getSubmittedFileName();
+                String fileNameOrig = part.getSubmittedFileName();
+                String fileName = null != fileNameOrig ? fileNameOrig.replaceAll(" ","") : null;
                 String appExternalLocation = AppConfiguration.getInstance().getExternalLocation();
                 String fullPath = appExternalLocation + subjectUrl.replaceFirst("/","") + "/" + fileName;
                 String url = subjectUrl + "/" + fileName;

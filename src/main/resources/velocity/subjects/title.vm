@@ -20,6 +20,34 @@
 </form>
 <br>
 <div id="txt">$subject.content</div>
+
+    #if($subject.showLinks())
+        <h4>Poveznice:</h4>
+        <hr>
+        #foreach($link in $links)
+        <div class="col-md-6">
+            #if($link.isImage())
+                <a href="$link.url" target="_blank"><img src="$link.url" title="$link.title" style="width: 150px;"/></a><br>
+                $link.title
+            #elseif($link.isAudio())
+                <audio controls style="width: 100%;">
+                    <source src="$link.url" type='audio/mp4'>
+                    <p>Tvoj preglednik ne podržava HTML5 audio</p>
+                </audio><br>
+                $link.title
+            #elseif($link.isVideo())
+                <video controls style="width: 100%">
+                    <source src="$link.url" type="video/mp4">
+                    <p>Tvoj preglednik ne podržava HTML5 video</p>
+                </video>
+
+            #else
+            <a class="book" href="$link.url" target="_blank">$link.title</a>
+            #end
+        </div>
+        #end
+    #end
+
     #if($subject.showAdditionalContent())
         <div id="atxt">$subject.additionalContent</div>
     #end

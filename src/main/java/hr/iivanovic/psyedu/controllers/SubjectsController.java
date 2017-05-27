@@ -16,9 +16,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import hr.iivanovic.psyedu.AppConfiguration;
+import hr.iivanovic.psyedu.controllers.view.ExternalLinkView;
 import hr.iivanovic.psyedu.controllers.view.SubjectView;
+import hr.iivanovic.psyedu.db.ExternalLink;
 import hr.iivanovic.psyedu.db.Subject;
 import hr.iivanovic.psyedu.db.TitleLearningStatus;
 import hr.iivanovic.psyedu.db.User;
@@ -70,7 +73,7 @@ public class SubjectsController extends AbstractController {
         int parentSubjectId = Integer.parseInt(request.params("id"));
         if (clientAcceptsHtml(request)) {
             HashMap<String, Object> model = new HashMap<>();
-            SubjectView subjectView = new SubjectView(dbProvider.getSubject(parentSubjectId),currentUser);
+            SubjectView subjectView = new SubjectView(dbProvider.getSubject(parentSubjectId), currentUser);
             List<SubjectView> subjects = subjectView.getSubjectViewsForSameParent();
             model.put("subjects", subjects);
             model.put("nextParent", subjectView.getNextParentId());
@@ -91,6 +94,7 @@ public class SubjectsController extends AbstractController {
             model.put("subject", subjectView);
 
             model.put("sidebarContent", subjectView.createSidebarNavigation());
+            model.put("links", createExternalLinkView(dbProvider.getAllExternalLinksBySubjectId(id)));
 
             dbProvider.logLearningStatus(currentUser.getId(), subject.getId(), TitleLearningStatus.OPENED.getId());
 
@@ -99,6 +103,10 @@ public class SubjectsController extends AbstractController {
         }
         return ViewUtil.notAcceptable.handle(request, response);
     };
+
+    private static List<ExternalLinkView> createExternalLinkView(List<ExternalLink> allExternalLinksBySubjectId) {
+        return allExternalLinksBySubjectId.stream().map(ExternalLinkView::new).collect(Collectors.toCollection(LinkedList::new));
+    }
 
     public static Route submitOneTitleStatus = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);

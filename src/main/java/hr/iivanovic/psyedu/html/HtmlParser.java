@@ -94,7 +94,7 @@ public class HtmlParser {
         return titleLinks;
     }
 
-    private Elements getElements(Document document, String... tags) {
+    public static Elements getElements(Document document, String... tags) {
         Elements elements = new Elements();
         Elements documentAllElements = document.getAllElements();
         for (Element documentAllElement : documentAllElements) {

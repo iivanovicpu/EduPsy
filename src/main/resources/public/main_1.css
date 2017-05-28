@@ -282,3 +282,6 @@ a .bookCover img {
 .highlight { background-color: #ffedfd
 }
 
+.bs-example{
+    margin: 20px;
+}

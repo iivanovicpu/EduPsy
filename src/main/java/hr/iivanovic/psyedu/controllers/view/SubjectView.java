@@ -7,16 +7,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import hr.iivanovic.psyedu.controllers.LearningStyle;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import hr.iivanovic.psyedu.db.AdaptiveRule;
-import hr.iivanovic.psyedu.db.IntelligenceType;
-import hr.iivanovic.psyedu.db.IntelligenceTypeRule;
 import hr.iivanovic.psyedu.db.LearningLog;
-import hr.iivanovic.psyedu.db.LearningStyleRule;
+import hr.iivanovic.psyedu.db.Question;
 import hr.iivanovic.psyedu.db.Subject;
 import hr.iivanovic.psyedu.db.SubjectPosition;
 import hr.iivanovic.psyedu.db.TitleLearningStatus;
 import hr.iivanovic.psyedu.db.User;
+import hr.iivanovic.psyedu.html.HtmlParser;
 import lombok.Data;
 
 /**
@@ -56,13 +59,13 @@ public class SubjectView extends Subject {
         return getAdaptiveRules().stream().anyMatch(adaptiveRule -> adaptiveRule.equals(AdaptiveRule.P2_SHOW_LINKS));
     }
 
-    public String getHighlightJavasript(){
-        if(isHighlightNeeded()){
+    public String getHighlightJavasript() {
+        if (isHighlightNeeded()) {
             StringBuilder sb = new StringBuilder();
             sb.append("<script type=\"application/javascript\">");
             for (String keyword : keywords()) {
                 sb.append("$(\"#txt\").highlight(\"").append(keyword).append("\");");
-                if(showAdditionalContent()){
+                if (showAdditionalContent()) {
                     sb.append("$(\"#atxt\").highlight(\"").append(keyword).append("\");");
                 }
             }
@@ -76,7 +79,7 @@ public class SubjectView extends Subject {
         return getAdaptiveRules().stream().anyMatch(adaptiveRule -> adaptiveRule.equals(AdaptiveRule.P6_KEYWORDS_HIGHLIGHTING));
     }
 
-    public boolean showAdditionalContent(){
+    public boolean showAdditionalContent() {
         return getAdaptiveRules().stream().anyMatch(adaptiveRule -> adaptiveRule.equals(AdaptiveRule.P1_SHOW_ADVANCED_SUBJECTS));
     }
 
@@ -88,8 +91,8 @@ public class SubjectView extends Subject {
         return subjectViews;
     }
 
-    public boolean isLinkAllowed(){
-        if(isSequenceNavigation()){
+    public boolean isLinkAllowed() {
+        if (isSequenceNavigation()) {
             return getLearningStatus().isFinished() || SubjectPosition.PREDMET.equals(getSubjectPosition());
         }
         return true;
@@ -129,6 +132,64 @@ public class SubjectView extends Subject {
             }
         }
         return stringBuilder.toString();
+    }
+
+    @Override
+    public String getContent() {
+        String adaptedContent = super.getContent();
+        if (imagesOnTop()) {
+            Document document = Jsoup.parse(adaptedContent);
+            Elements images = HtmlParser.getElements(document, "img");
+            images.remove();
+            adaptedContent = images.toString() + document.toString();
+            System.out.println("images on start");
+        }
+        if (biggerImages()) {
+            Document document = Jsoup.parse(adaptedContent);
+            Elements images = HtmlParser.getElements(document, "img");
+            for (Element image : images) {
+                image.attr("width", "80%");
+                image.attr("height", "80%");
+            }
+            adaptedContent = document.html();
+            System.out.println("bigger images");
+        }
+        if (textUntilTousadCharacters()) {
+            Document document = Jsoup.parse(adaptedContent);
+            Elements paragraphs = HtmlParser.getElements(document, "p");
+            for (Element paragraph : paragraphs) {
+                String text = paragraph.text();
+                int characters = text != null ? text.length() : 0;
+                if (characters > 1000) {
+                    String adoptedText = paragraph.text().replaceAll("(.{900,1000})\\.\\s", "$1.</p><hr><p>");
+                    paragraph.html(adoptedText);
+                }
+            }
+            System.out.println("max 1000 characters in paragraph");
+            adaptedContent = document.html();
+        }
+        return adaptedContent;
+    }
+
+    private boolean imagesOnTop() {
+        return getAdaptiveRules().stream().anyMatch(adaptiveRule -> adaptiveRule.equals(AdaptiveRule.P15_PICTURE_ON_THE_BEGINNING));
+    }
+
+    private boolean biggerImages() {
+        return getAdaptiveRules().stream().anyMatch(adaptiveRule -> adaptiveRule.equals(AdaptiveRule.P4_BIGGER_PICTURES));
+    }
+
+    private boolean textUntilTousadCharacters() {
+        return getAdaptiveRules().stream().anyMatch(adaptiveRule -> adaptiveRule.equals(AdaptiveRule.P3_TEXT_MAX_1000));
+    }
+
+    public boolean questionsInContent() {
+        List<Question> questions = dbProvider.getAllQuestionsForSubjectAndTitle(getId());
+        return questions.size() > 0 && getAdaptiveRules().stream().anyMatch(adaptiveRule -> adaptiveRule.equals(AdaptiveRule.P13_QUESTIONS_IN_CONTENT));
+    }
+
+    public List<Question> getQuestions() {
+        return dbProvider.getAllQuestionsForSubjectAndTitle(getId());
     }
 
     public int getNextParentId() {

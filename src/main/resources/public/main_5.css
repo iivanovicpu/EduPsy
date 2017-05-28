@@ -280,3 +280,7 @@ a .bookCover img {
 
 /*highlighter*/
 .highlight { background-color: yellow }
+
+.bs-example{
+    margin: 20px;
+}

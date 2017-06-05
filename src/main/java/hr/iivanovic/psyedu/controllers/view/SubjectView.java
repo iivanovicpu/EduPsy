@@ -136,7 +136,13 @@ public class SubjectView extends Subject {
 
     @Override
     public String getContent() {
-        String adaptedContent = super.getContent();
+        String adaptedContent;
+        if (textUntilTousadCharacters()) {
+            adaptedContent = createTabbedContent(1000);
+        } else {
+            adaptedContent = createTabbedContent(3000);
+        }
+/* todo: ovo poremeti tabbed content - slike bi trebalo appendati u prvi tab a ne na početak dokumenta
         if (imagesOnTop()) {
             Document document = Jsoup.parse(adaptedContent);
             Elements images = HtmlParser.getElements(document, "img");
@@ -144,6 +150,7 @@ public class SubjectView extends Subject {
             adaptedContent = images.toString() + document.toString();
             System.out.println("images on start");
         }
+*/
         if (biggerImages()) {
             Document document = Jsoup.parse(adaptedContent);
             Elements images = HtmlParser.getElements(document, "img");
@@ -151,24 +158,60 @@ public class SubjectView extends Subject {
                 image.attr("width", "80%");
                 image.attr("height", "80%");
             }
-            adaptedContent = document.html();
+//            adaptedContent = document.html();
             System.out.println("bigger images");
         }
-        if (textUntilTousadCharacters()) {
-            Document document = Jsoup.parse(adaptedContent);
-            Elements paragraphs = HtmlParser.getElements(document, "p");
-            for (Element paragraph : paragraphs) {
-                String text = paragraph.text();
-                int characters = text != null ? text.length() : 0;
-                if (characters > 1000) {
-                    String adoptedText = paragraph.text().replaceAll("(.{900,1000})\\.\\s", "$1.</p><hr><p>");
-                    paragraph.html(adoptedText);
-                }
-            }
-            System.out.println("max 1000 characters in paragraph");
-            adaptedContent = document.html();
-        }
         return adaptedContent;
+    }
+
+    public String createTabbedContent(int charactersByTab) {
+        StringBuilder bodyHtml = new StringBuilder();
+        bodyHtml.append(super.getSummaryAndGoals())
+                .append(super.getContent())
+                .append(super.getAdditionalContent());
+        Document document = Jsoup.parse(bodyHtml.toString());
+        StringBuilder nav = new StringBuilder();
+
+        Elements bodyElements = document.select("body > * "); // svi elementi unutar body-ja
+        List<String> tabContents = new LinkedList<>();
+        StringBuilder segment = new StringBuilder();
+        int tabNumber = 0;
+        for (Element element : bodyElements) {
+            segment.append(element); // .html()
+            if (segment.length() > charactersByTab) {
+                if (tabNumber == 0) {
+                    tabContents.add("<div class=\"tab-pane active\" id=\"tab" + tabNumber + "\">" + segment.toString() + "</div>");
+                } else {
+                    tabContents.add("<div class=\"tab-pane\" id=\"tab" + tabNumber + "\">" + segment.toString() + "</div>");
+                }
+                segment.delete(0, segment.length());
+                tabNumber++;
+            }
+        }
+        if(segment.toString().length() > 0) {
+            tabContents.add("<div class=\"tab-pane\" id=\"tab" + tabNumber + "\">" + segment.toString() + "</div>");
+            tabNumber++;
+        }
+
+        nav.delete(0, nav.length());
+        nav.append("<ul class=\"nav nav-tabs\">");
+        for (int i = 0; i < tabNumber; i++) {
+            if (i == 0) {
+                nav.append("<li class=\"active\"><a href=\"#tab").append(i).append("\" data-toggle=\"tab\">").append(i+1).append("</a></li>");
+            } else {
+                nav.append("<li><a href=\"#tab").append(i).append("\" data-toggle=\"tab\">").append(i+1).append("</a></li>");
+            }
+        }
+        nav.append("</ul>");
+        StringBuilder finalContent = new StringBuilder(nav.toString());
+        finalContent.append("<div class=\"tab-content\" style=\"padding-top: 30px; padding-bottom: 30px;\">");
+        for (String tabContent : tabContents) {
+            finalContent.append(tabContent);
+        }
+        finalContent.append("</div>");
+//        System.out.println(finalContent.toString());
+        return finalContent.toString();
+
     }
 
     private boolean imagesOnTop() {

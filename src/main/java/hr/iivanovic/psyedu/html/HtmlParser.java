@@ -1,6 +1,5 @@
 package hr.iivanovic.psyedu.html;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -14,17 +13,12 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import hr.iivanovic.psyedu.db.LearningLog;
-import hr.iivanovic.psyedu.db.Sql2oModel;
-import hr.iivanovic.psyedu.db.User;
-
 /**
  * @author iivanovic
  * @date 18.09.16.
  */
 public class HtmlParser {
 
-    private Sql2oModel dbProvider = Sql2oModel.getInstance();
     private static HtmlParser instance = null;
 
     private HtmlParser() {
@@ -37,61 +31,12 @@ public class HtmlParser {
         return instance;
     }
 
-
-    public String improveDocument(File doc) {
-        try {
-            Document document = Jsoup.parse(doc, "UTF8", doc.getName());
-            return improveDocument(document.html());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-
-    public String improveDocument(String doc) {
-        Document document = Jsoup.parse(doc, "UTF8");
-        return addUniqueIdAttribute(document, "h1", "h2", "h3", "h4", "h5");
-    }
-
-    private String addUniqueIdAttribute(Document document, String... tags) {
-        for (String tag : tags) {
-            Elements elementsByTag = document.getElementsByTag(tag);
-            elementsByTag.stream().filter(element -> element.attr("id").isEmpty()).forEach(element -> element.attr("id", tag + "_" + dbProvider.nextIdx(tag)));
-        }
-        return document.html();
-    }
-
     public static List<String> getAllSubjectsLinks(String htmlDoc) {
         List<String> titles = new LinkedList<>();
         Document doc = Jsoup.parse(htmlDoc);
         Elements anchors = doc.getElementsByTag("a");
         titles.addAll(anchors.stream().map(anchor -> String.valueOf(anchor.parent())).collect(Collectors.toList()));
         return titles;
-    }
-
-    @Deprecated
-    public List<TitleLink> getAllSubjectsLinks(File htmlDoc, String uri, int subjectId, User student) {
-        List<TitleLink> titleLinks = new LinkedList<>();
-        Document doc;
-        try {
-            doc = Jsoup.parse(htmlDoc, "UTF8", uri);
-            Elements headingElements = getElements(doc, "h1", "h2", "h3", "h4", "h5");
-            for (Element element : headingElements) {
-                String title = String.valueOf(element.text());
-                String id = element.attr("id");
-                int statusId = 0;
-                if(null != student) {
-                    LearningLog learningLogStatus = dbProvider.getLearningLogStatus(student.getId(), subjectId);
-                    statusId = null == learningLogStatus ? 0 : learningLogStatus.getStatusId();
-                }
-                TitleLink titleLinkElement = new TitleLink(title, id, subjectId, id.substring(0, 2), statusId);
-                titleLinks.add(titleLinkElement);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return titleLinks;
     }
 
     public static Elements getElements(Document document, String... tags) {

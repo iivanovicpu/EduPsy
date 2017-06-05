@@ -85,8 +85,6 @@ public class Application {
         post("/upload/", "multipart/form-data", UploadController.uploadFile);
         get("/upload/:subjectId/", UploadController.uploadForm);
         post("/deletelink/", UploadController.deleteExternalLink);
-        get(Path.Web.VIEW_SUBJECT, SubjectsController.fetchOneSubject);
-        get(Path.Web.ONE_SUBJECT_QUESTIONS, SubjectQuestionsController.fetchtitlesForAddQuestions);
         get("/onetitlequestions/:subjectid/", SubjectQuestionsController.fetchOneTitleForAddQuestions);
         post(Path.Web.ONE_TITLE_QUESTIONS, SubjectQuestionsController.submitQuestion);
         post("/deletequestion/", SubjectQuestionsController.deleteQuestion);

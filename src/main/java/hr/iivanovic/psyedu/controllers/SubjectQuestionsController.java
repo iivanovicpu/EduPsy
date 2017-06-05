@@ -25,29 +25,6 @@ import spark.Route;
  * @date 26.09.16.
  */
 public class SubjectQuestionsController extends AbstractController {
-    private static HtmlParser htmlParser = HtmlParser.getInstance();
-
-    public static Route fetchtitlesForAddQuestions = (Request request, Response response) -> {
-        LoginController.ensureUserIsLoggedIn(request, response);
-        if (!LoginController.isEditAllowed(request)) {
-            return ViewUtil.notAcceptable.handle(request, response);
-        }
-        int subjectId = Integer.parseInt(request.params("id"));
-        if (clientAcceptsHtml(request)) {
-            HashMap<String, Object> model = new HashMap<>();
-            Subject subject = dbProvider.getSubject(subjectId);
-            model.put("subject", subject);
-            model.put("successmsg", "");
-            File file = new File(AppConfiguration.getInstance().getExternalLocation() + subject.getUrl());
-            List<TitleLink> titleLinks = htmlParser.getAllSubjectsLinks(file, subject.getUrl(), subject.getId(), null);
-            model.put("titles", titleLinks);
-            return ViewUtil.render(request, model, Path.Template.SUBJECTS_ONE_QUESTIONS);
-        }
-        if (clientAcceptsJson(request)) {
-            return dataToJson(dbProvider.getSubject(subjectId));
-        }
-        return ViewUtil.notAcceptable.handle(request, response);
-    };
 
     public static Route fetchOneTitleForAddQuestions = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);

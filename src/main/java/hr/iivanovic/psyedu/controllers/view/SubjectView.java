@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -167,8 +169,15 @@ public class SubjectView extends Subject {
     public String createTabbedContent(int charactersByTab) {
         StringBuilder bodyHtml = new StringBuilder();
         bodyHtml.append(super.getSummaryAndGoals())
-                .append(super.getContent())
-                .append(super.getAdditionalContent());
+                .append(super.getContent());
+        if (showAdditionalContent() && !StringUtils.isEmpty(super.getAdditionalContent())) {
+            bodyHtml.append("<div id=\"atxt\"><h4>Za one koji žele znati više:</h4>").append(super.getAdditionalContent()).append("</div>");
+        }
+        if (questionsInContent() && !CollectionUtils.isEmpty(getQuestions())) {
+            bodyHtml.append("<div class=\"bs-example\"><div class=\"panel panel-default\"><div class=\"panel-heading\">Pitanja za ponavljanje ... </div><div class=\"panel-body\">");
+            getQuestions().forEach(question -> bodyHtml.append(question.getQuestion()).append("<br>"));
+            bodyHtml.append("</div></div></div>");
+        }
         Document document = Jsoup.parse(bodyHtml.toString());
         StringBuilder nav = new StringBuilder();
 
@@ -188,7 +197,7 @@ public class SubjectView extends Subject {
                 tabNumber++;
             }
         }
-        if(segment.toString().length() > 0) {
+        if (segment.toString().length() > 0) {
             tabContents.add("<div class=\"tab-pane\" id=\"tab" + tabNumber + "\">" + segment.toString() + "</div>");
             tabNumber++;
         }
@@ -197,9 +206,9 @@ public class SubjectView extends Subject {
         nav.append("<ul class=\"nav nav-tabs\">");
         for (int i = 0; i < tabNumber; i++) {
             if (i == 0) {
-                nav.append("<li class=\"active\"><a href=\"#tab").append(i).append("\" data-toggle=\"tab\">").append(i+1).append("</a></li>");
+                nav.append("<li class=\"active\"><a href=\"#tab").append(i).append("\" data-toggle=\"tab\">").append(i + 1).append("</a></li>");
             } else {
-                nav.append("<li><a href=\"#tab").append(i).append("\" data-toggle=\"tab\">").append(i+1).append("</a></li>");
+                nav.append("<li><a href=\"#tab").append(i).append("\" data-toggle=\"tab\">").append(i + 1).append("</a></li>");
             }
         }
         nav.append("</ul>");

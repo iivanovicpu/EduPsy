@@ -2,11 +2,11 @@ package hr.iivanovic.psyedu.controllers;
 
 import static hr.iivanovic.psyedu.util.RequestUtil.clientAcceptsHtml;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import hr.iivanovic.psyedu.db.AdaptiveRule;
 import hr.iivanovic.psyedu.db.Question;
 import hr.iivanovic.psyedu.db.TitleLearningStatus;
 import hr.iivanovic.psyedu.db.User;
@@ -28,12 +28,14 @@ public class ExamController extends AbstractController {
         LoginController.ensureUserIsLoggedIn(request, response);
         int subjectid = Integer.parseInt(request.params("subjectid"));
         User student = LoginController.getCurrentUser(request);
+        boolean writeSummary = student.getUserRules().stream().anyMatch(AdaptiveRule.P10_ASK_FOR_SUMMARY::equals);
+
         if (clientAcceptsHtml(request)) {
             Map<String, Object> model = new HashMap<>();
             List<Question> questions = dbProvider.getAllQuestionsForSubjectAndTitle(subjectid);
             String htmlQuestions = "ispitna pitanja za ovo gradivo nisu unesena !";
             if (questions.size() > 0) {
-                htmlQuestions = renderQuestions(questions,LoginController.isStudent(request));
+                htmlQuestions = renderQuestions(questions, LoginController.isStudent(request), writeSummary);
             }
             model.put("questions", htmlQuestions);
             model.put("subjectId", subjectid);
@@ -48,6 +50,7 @@ public class ExamController extends AbstractController {
         LoginController.ensureUserIsLoggedIn(request, response);
         int subjectid = Integer.parseInt(request.queryParams("subjectid"));
         User student = LoginController.getCurrentUser(request);
+        boolean writeSummary = student.getUserRules().stream().anyMatch(AdaptiveRule.P10_ASK_FOR_SUMMARY::equals);
         if (clientAcceptsHtml(request)) {
             Map<String, String> questionsWithAnswers = new HashMap<>();
             for (String param : request.queryParams()) {
@@ -62,15 +65,15 @@ public class ExamController extends AbstractController {
 
             Map<String, Object> model = new HashMap<>();
             if (questions.size() > 0) {
-                htmlQuestions = renderQuestions(questions,LoginController.isStudent(request));
+                htmlQuestions = renderQuestions(questions, LoginController.isStudent(request), writeSummary);
             }
             model.put("questions", htmlQuestions);
             model.put("subjectId", subjectid);
 
             model.put("validation", sb);
-            model.put("success",success);
+            model.put("success", success);
 
-            if(success) {
+            if (success) {
                 dbProvider.logLearningStatus(student.getId(), subjectid, TitleLearningStatus.FINISHED_EXAM.getId());
             }
             return ViewUtil.render(request, model, Path.Template.EXAM);
@@ -104,6 +107,7 @@ public class ExamController extends AbstractController {
                         successPoints.setValue(dbQuestion.getPoints() + successPoints.getValue());
                     }
                 }
+                // todo: learning success save to db (svako pojedinačno pitanje)
             }
         });
         double success = successPoints.getValue() / sumOfPoints;

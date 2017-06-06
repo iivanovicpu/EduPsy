@@ -16,7 +16,7 @@ public enum AdaptiveRule {
     P7_QUESTIONS_GROUPING(7,"Pitanja po cjelini", "prikaz ispitnih pitanja po obrađenoj cjelini (za sve čestice cjeline)"),
     P8_LONGER_TEXT(8,"Prikaz duljeg teksta", "prikaz teksta i do 3000 znakova s odlomcima po 150 do 400 znakova"),
     P9_QUESTIONS_HOW_WHAT_WHY(9,"Pitanja \"Kako\", \"Što\", \"Zašto\"", "više pitanja s odgovorima u obliku eseja"),
-    P10_ASK_ESSAY(10,"Zahtjevaj sažetak o naučenom", "zahtjeva se pisanje sažetka u obliku eseja o naučenom (sustav provjerava broj ključnih riječi koje esej sadrži)"),
+    P10_ASK_FOR_SUMMARY(10,"Zahtjevaj sažetak o naučenom", "zahtjeva se pisanje sažetka u obliku eseja o naučenom (sustav provjerava broj ključnih riječi koje esej sadrži)"),
     P11_SHORT_QUESTIONS(11,"Kratka pitanja", "više pitanja s kratkim odgovorima, da/ne odgovorima i pitanja s jednostrukim ili višestrukim izborom"),
     P12_SEQUENTIAL_ANSWER_CHECK(12,"Trenutna provjera odgovora", "provjera odgovora na pitanje odmah nakon pojedinačnog upisa odgovora"),
     P13_QUESTIONS_IN_CONTENT(13,"Prikaz pitanja u sadržaju","Prikaz pitanja u posebnom okviru kao dio materijala za učenje"),

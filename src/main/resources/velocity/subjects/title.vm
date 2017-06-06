@@ -13,9 +13,7 @@
     #else
         &nbsp;&nbsp;
         <span class="glyphicon glyphicon-ok" title="završeno">&nbsp;Ispit je odrađen</span>
-
     #end
-
 
 </form>
 <br>
@@ -47,23 +45,5 @@
         </div>
         #end
     #end
-
-    #if($subject.showAdditionalContent())
-        <div id="atxt">$subject.additionalContent</div>
-    #end
-
-    #if($subject.questionsInContent())
-    <div class="bs-example">
-        <div class="panel panel-default">
-            <div class="panel-heading">Ponavljanje ... </div>
-            <div class="panel-body">
-                #foreach($question in $subject.getQuestions())
-                    $question.question<br>
-                #end
-            </div>
-        </div>
-    </div>
-    #end
-
 #end
 $subject.getHighlightJavasript()

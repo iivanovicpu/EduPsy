@@ -14,7 +14,7 @@ public enum LearningStyleRule {
     AKT_2(LearningStyle.STYLE_1_AKT, AdaptiveRule.P2_SHOW_LINKS),
     AKT_9(LearningStyle.STYLE_1_AKT, AdaptiveRule.P9_QUESTIONS_HOW_WHAT_WHY),
     REF_5(LearningStyle.STYLE_1_REF, AdaptiveRule.P5_SEQUENTIAL_NAVIGATION),
-    REF_10(LearningStyle.STYLE_1_REF, AdaptiveRule.P10_ASK_ESSAY),
+    REF_10(LearningStyle.STYLE_1_REF, AdaptiveRule.P10_ASK_FOR_SUMMARY),
     VIZ_2(LearningStyle.STYLE_2_VIS, AdaptiveRule.P2_SHOW_LINKS),
     VIZ_6(LearningStyle.STYLE_2_VIS, AdaptiveRule.P6_KEYWORDS_HIGHLIGHTING),
     VIZ_7(LearningStyle.STYLE_2_VIS, AdaptiveRule.P7_QUESTIONS_GROUPING),

@@ -1,23 +1,381 @@
-<ul class="nav nav-tabs">
-    <li class="active"><a href="#tab0" data-toggle="tab">0</a></li>
-    <li><a href="#tab1" data-toggle="tab">1</a></li>
-</ul>
-<div class="tab-content" style="padding-top: 30px; padding-bottom: 30px;">
-    <div class="tab-pane active" id="tab0"><p>Informacije za sintezu svakog pojedinog proteina sadržane su u molekuli
-        DNK odnosno u njenom slijedu dušičnih baza. Uputu za sintezu jednog polipeptidnog lanca sadrži odsječak DNK
-        molekule koji se naziva gen. Sam proces sinteze izvodi se pomoću tri vrste RNK (vidi: Nukleinske kiseline) u dva
-        stupnja:</p>
-        <ol>
-            <li><strong>prepisivanje</strong> ili <strong>transkripcija</strong> upute s DNK na mRNK</li>
-            <li><strong>prevođenje</strong> ili <strong>translacija</strong> upute s mRNK u polipeptidni lanac.</li>
-        </ol>
-        <p>Prepisivanje se odvija u jezgri gdje se očitava genski zapis s molekule DNK tako da se sintetizira mRNK
-            molekula koja ima komplementarni zapis. Molekula mRNK odlazi do ribosoma u citoplazmi gdje se odvija
-            prevođenje, odnosno isčitavanje genske upute i sinteza polipeptidnog lanca. Genska uputa se očitava u
-            <strong>tripletima</strong>, odnosno slijedovima od tri nukleotida. Jedan triplet određuje jednu
-            aminokiselinu i naziva se <strong>kod</strong>. Broj mogućih kombinacija (kodova) je 64 (4 3 ) što je više
-            nego dovoljno obzirom da, kako je već rečeno sve proteine izgrađuje 20-tak aminokiselina.</p></div>
-    <div class="tab-pane" id="tab1"><p>U prevođenju sudjeluju tRNK koje sadrže <strong>antikod</strong> odnosno
-        komplementarni triplet dušičnih baza. Molekule tRNK prenose odgovarajuće aminokiseline do ribosoma gdje se prema
-        kodovima na mRNK spajaju u polipeptidni lanac.</p></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Edu Psy</title>
+    <meta name="author" content="Igor Ivanović">
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- tags-input CSS -->
+    <link href="/css/bootstrap-tagsinput.css" rel="stylesheet">
+
+    <link href="/main_6.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">&nbsp;</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+
+                <li><a href="/index">
+                    <span style="font-size: xx-large" title="Edu Psy">&#x3A8;</span>
+                </a>
+                </li>
+                <li><a href="/subjects">
+                    Nastavni materijali
+                </a></li>
+                <li><a href="/profile">
+                    Moj Profil
+                </a></li>
+
+
+            </ul>
+            <div class="userinfo" style="float: right; color: white; padding-top: 10px; text-align: right;">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <form name="logout" method="post" action="/logout/">
+                            <div>Marko Marković STUDENT</div>
+                            <a href="javascript:document.logout.submit()"><span
+                                    class="glyphicon glyphicon-log-out"></span>&nbsp;Odjava</a>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</nav>
+
+<div class="container">
+    <header id="myCarousel" class="carousel" style="padding: 30px;">
+        &nbsp;
+    </header>
+
+
+    <div class="row content">
+        <div class="col-sm-10 text-left">
+            <form method="post" class="form-group">
+                <div class="h1">Anatomija bilja</div>
+
+                <input type="hidden" name="subjectId" value="464">
+                <button type="submit" formmethod="get" formaction="/onetitle/464/" class="btn btn-warning">
+                    Natrag
+                </button>
+                &nbsp;&nbsp;
+                <span class="glyphicon glyphicon-ok" title="završeno">&nbsp;Ispit je odrađen</span>
+
+
+            </form>
+            <br>
+            <div id="txt">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#tab0" data-toggle="tab">1</a></li>
+                    <li><a href="#tab1" data-toggle="tab">2</a></li>
+                    <li><a href="#tab2" data-toggle="tab">3</a></li>
+                    <li><a href="#tab3" data-toggle="tab">4</a></li>
+                </ul>
+                <div class="tab-content" style="padding-top: 30px; padding-bottom: 30px;">
+                    <div class="tab-pane active" id="tab0">
+                        <div style="left: 423.6px; top: 549.786px; font-size: 26.7983px; font-family: sans-serif; transform: scaleX(0.838619); text-align: left;">
+                            <h1 style="left: 423.6px; top: 549.786px; font-size: 26.7983px; font-family: sans-serif; transform: scaleX(0.838619); text-align: left;">
+                                ANATOMIJA BILJA</h1>
+                        </div>
+                        <div style="left: 423.6px; top: 549.786px; font-size: 26.7983px; font-family: sans-serif; transform: scaleX(0.838619); text-align: left;">
+                            SVEUČILIŠTE U ZAGREBU ŠUMARSKI FAKULTET
+                        </div>
+                        <div style="left: 362.4px; top: 1167.99px; font-size: 23.2px; font-family: sans-serif; transform: scaleX(0.798065); text-align: left;">
+                            Autori: Jozo Franjić, Željko Škvorc, Ivo Trinajstić
+                        </div>
+                        <div style="left: 509.2px; top: 1167.99px; font-size: 23.2px; font-family: sans-serif; transform: scaleX(0.78628); text-align: left;">
+                            Zagreb, travanj 2008. godine
+                        </div>
+                        <div style="left: 356.8px; top: 194.695px; font-size: 26.7983px; font-family: sans-serif; transform: scaleX(0.995147); text-align: center;">
+                            <h2 style="left: 509.2px; top: 1167.99px; font-size: 23.2px; font-family: sans-serif; transform: scaleX(0.78628); text-align: left;">
+                                &nbsp;</h2>
+                            <h2 style="left: 509.2px; top: 1167.99px; font-size: 23.2px; font-family: sans-serif; transform: scaleX(0.78628); text-align: left;">
+                                PREDGOVOR</h2>
+                            <div style="left: 509.2px; top: 1167.99px; font-size: 23.2px; font-family: sans-serif; transform: scaleX(0.78628);">
+                                &nbsp;
+                            </div>
+                            <p style="left: 509.2px; top: 1167.99px; font-size: 23.2px; font-family: sans-serif; transform: scaleX(0.78628); text-align: justify;">
+                                U okviru predmeta Botanika i Šumarska botanika na Šumarskome fakultetu<br>Sveučilišta u
+                                Zagrebu studenti se upoznaju s osnovnim zakonitostima botaničke znanosti. Stručnjaci
+                                koji završe Šumarski odsjek Šumarskoga fakulteta tijekom svoje profesionalne karijere
+                                baviti će se gospodarenjem i upravljanjem šumskim ekosustavima, kao i urbanim šumarstvom
+                                u najširem smislu.</p>
+                            <p style="left: 509.2px; top: 1167.99px; font-size: 23.2px; font-family: sans-serif; transform: scaleX(0.78628); text-align: justify;">
+                                &nbsp;</p>
+                            <p style="left: 509.2px; top: 1167.99px; font-size: 23.2px; font-family: sans-serif; transform: scaleX(0.78628); text-align: justify;">
+                                Ove ljudske djelatnosti izravno se oslanjaju na poznavanje biljnoga svijeta. Zbog toga
+                                će spoznaje koje studenti usvoje iz ovoga predmeta poslužiti uspješnijem praćenju mnogih
+                                drugih kolegija tijekom studija. Tako je npr. znanje o građi biljne stanice osnova za
+                                razumijevanje Fiziologije bilja, Ishrane bilja, Genetike i oplemenjivanja bilja i
+                                sl.</p>
+                            <p style="left: 509.2px; top: 1167.99px; font-size: 23.2px; font-family: sans-serif; transform: scaleX(0.78628); text-align: justify;">
+                                &nbsp;</p>
+                            <p style="left: 509.2px; top: 1167.99px; font-size: 23.2px; font-family: sans-serif; transform: scaleX(0.78628); text-align: justify;">
+                                Pored toga, osnovne spoznaje iz građe biljnoga tijela, filogenije, sistematike,<br>ontogenije,
+                                ali i botaničke terminologije i nomenklature dio su opće naobrazbe šumara i biologa,
+                                pomoću koje on komunicira s ostalim straučnjacima i znanstvenicima s kojima sve više
+                                surađuje pri riješavanju konkretnih društvenih i znanstvenih problema.</p>
+                            <p>&nbsp;</p>
+                            <p style="text-align: left;">&nbsp;<img
+                                    src="http://2.bp.blogspot.com/-Jd8myiA1bXA/Tl9bAipUfZI/AAAAAAAAAgw/TmjBdRYKyyo/s1600/biljna+stanica.JPG"
+                                    alt="biljna stanica" width="273" height="206"></p>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab1"><h2
+                            style="left: 509.2px; top: 1167.99px; font-size: 23.2px; font-family: sans-serif; transform: scaleX(0.78628); text-align: left;">
+                        UVOD</h2>
+                        <p><strong>Botanika</strong> je dio biologije tj. znanost koja proučava sve pojave života u
+                            biljaka. Riječ “botanika” dolazi od grčke riječi botane što označava grmlje, travu, bilje
+                            koje raste na livadama. Za ovu znanost upotrebljava se i naziv fitologija (grč. fiton =
+                            biljka).</p>
+                        <p>Već i sama riječ “botanika” po svom značenju i podrijetlu govori nam da su počeci botanike
+                            kao znanosti bili vezani na antičku Grčku, a osnivačem, “ocem” botanike smatra se
+                            Aristotelova učenika Teofrasta (371-286 pr. n. e.) koji je u 10 knjiga o “<em>Prirodnoj
+                                povijesti bilja</em>” sakupio sve dotadašnje botaničko znanje. Međutim razvoj botanike
+                            nemoguće je odvojiti od razvoja ljudske kulture jer je još od pretpovijesnoga vremena
+                            čovijek skupljao informacije o biljkama koje ga okružuju. Pri tome je bilo bitno koje su
+                            biljke jestive, ljekovite, otrovne ili koje se mogu koristiti kao oruđe ili oružje. To čini
+                            botaniku jednom od najstarijih znanstvenih disciplina.</p></div>
+                    <div class="tab-pane" id="tab2"><p>&nbsp;</p>
+                        <p>Kroz dugo povijesno razdoblje botanika se razvila u kompleksnu, multidisciplinarnu znanost
+                            koja u svom opsegu ujedinjuje niz različitih disciplina. Mnoge od tih disciplina proučavaju
+                            životne pojave svojstvene svim živim bićima pa su svojim metodama i mnogim spoznajama vrlo
+                            slične odgovarajućim disciplinama kod zoologije, mikologije, mikrobiologije, medicine i dr.
+                            (npr. genetika, fiziologija, ekologija, citologija i sl.). Današnja znanost nastoji pojave
+                            promatrati dinamički i u punom opsegu ne ograničavajući njihovo razumijevanje nekim
+                            unaprijed zadanim granicama znanstvenih disciplina. Zbog toga se mnoge klasične znanstvene
+                            discipline međusobno isprepliću te stalno nastaju nove. Bez obzira na to klasifikacija
+                            znanosti omogućuje lakše snalaženje u ogromnoj količini znanstvenih informacija koje su nam
+                            danas dostupne. Neke važnije botaničke discipline su:</p>
+                        <ul>
+                            <li><strong>Morfologija</strong> ili znanost o obliku proučava i opisuje biljne oblike i
+                                predstavlja osnovnu botaničku disciplinu. Kad morfologija proučava i opisuje vanjsku
+                                građu<br>- biljne organe, označava se kao <strong>organografija</strong> (morfologija u
+                                užem smislu), a<br>proučavanjem unutarnje građe bavi se <strong>anatomija</strong>.
+                            </li>
+                            <li><strong>Fiziologija</strong> proučava sve procese u biljnom tijelu tijekom života
+                                biljke.
+                            </li>
+                            <li><strong>Ekologija</strong> proučava odnos biljke prema okolišu, tj. živoj i neživoj
+                                prirodi.
+                            </li>
+                            <li><strong>Genetika</strong> proučava sve pojave i procese vezane uz nasljeđivanje i
+                                prenošenje nasljednih svojstava s roditelja na potomstvo.
+                            </li>
+                            <li><strong>Sistematika</strong> je botanička disciplina koja se bavi svrstavanjem biljaka u
+                                određene sustave.
+                            </li>
+                            <li><strong>Taksonomija</strong> se bavi imenovanjem biljaka.</li>
+                            <li><strong>Filogenija</strong> proučava srodstvene odnose između pojedinih biljnih skupina.
+                            </li>
+                            <li><strong>Fitogeografija</strong> proučava rasprostranjenost pojedinih biljnih skupina na
+                                površini Zemlje.
+                            </li>
+                            <li><strong>Fitocenologija</strong> proučava zakonitosti združivanja određenih biljnih
+                                skupina u biljne zajednice ili fitocenoze.
+                            </li>
+                            <li><strong>Paleobotanika</strong> proučava izumrle biljne skupine koje su se u zemljinoj
+                                kori sačuvale u obliku fosila.
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-pane" id="tab3"><p>Postoje i botaničke discipline koje se bave proučavanjem samo
+                        određenih biljnih skupina npr. briologija (mahovine), dendrologija (drvenaste bilje) i sl.
+                        Postoje i brojne primjenjene botaničke discipline kod kojih se botaničke spoznaje kombiniraju s
+                        drugim znanstvenim područjima npr. <strong>šumarstvo, agronomija, ekonomska
+                            botanika, </strong><strong>fitopatalogija, fitofarmacija</strong> i dr. Ova skripta donosi
+                        osnovne spoznaje o unutarnjoj građi biljnoga tijela (Anatomiji bilja). Unutarnja građa biljnoga
+                        tijela može se promatrati na tri razine. Građom stanice kao osnovne i funkcionalne jedinice
+                        biljnoga organizma bavi se citologija. Više stanica<br>koje vrše određenu funkciju ujedinjuje se
+                        u staničja ili tkiva čime se bavi histologija. Napokon, biljna tkiva čine biljne organe pa imamo
+                        anatomiju biljnih organa.</p></div>
+                </div>
+            </div>
+
+            <h4>Poveznice:</h4>
+            <hr>
+            <div class="col-md-6">
+                <a class="book" href="https://www.google.hr" target="_blank">Google pretraga</a>
+            </div>
+            <div class="col-md-6">
+                <a class="book" href="/materijali/anatomijab/playlist.todo" target="_blank">dokument</a>
+            </div>
+            <div class="col-md-6">
+                <a class="book" href="https://mail.google.com/mail/u/0/#inbox" target="_blank">Gmail</a>
+            </div>
+            <div class="col-md-6">
+                <a class="book" href="http://guthub.com" target="_blank">vanjski url</a>
+            </div>
+            <div class="col-md-6">
+                <audio controls style="width: 100%;">
+                    <source src="/materijali/anatomijab/AlanWalker-Faded.mp3" type='audio/mp4'>
+                    <p>Tvoj preglednik ne podržava HTML5 audio</p>
+                </audio>
+                <br>
+                Alan Walker - muzika za učenje :)
+            </div>
+            <div class="col-md-6">
+                <video controls style="width: 100%">
+                    <source src="/materijali/anatomijab/Sean_Paul_No_Lie_ft_Dua_Lipa_hd720.mp4" type="video/mp4">
+                    <p>Tvoj preglednik ne podržava HTML5 video</p>
+                </video>
+
+            </div>
+            <div class="col-md-6">
+                <a class="book" href="/materijali/anatomijab/settings.xml" target="_blank">upload test</a>
+            </div>
+
+
+            <div class="bs-example">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Ponavljanje ...</div>
+                    <div class="panel-body">
+                        Koje se ljudske djelatnosti izravno oslanjaju na poznavanje biljnoga svijeta?<br>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="col-sm-2 sidenav" style="color: #959595; border: solid #959595 1px; margin-bottom: 20px;">
+            <strong>Parametri korištenja:</strong><br>
+            Stilovi učenja:<br>
+            AKT - Aktivni<br>
+            VIZ - Vizualni<br>
+            SEK - Sekvencijalni<br>
+            SEN - Senzorni<br>
+            <br>
+            Vrsta inteligencije:<br>
+            NV - Non Verbal, Prostorna inteligencija
+            <hr>
+            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#debug"
+                    aria-expanded="false">Testiranje pravila
+            </button>
+            <br>
+            <div class="collapse" id="debug">
+                <input class="debugrule" type="checkbox" name="P1_SHOW_ADVANCED_SUBJECTS" id="1" value="1">Prikaži
+                materijale za napredne<br>
+                <input class="debugrule" type="checkbox" name="P2_SHOW_LINKS" id="2" value="2" checked>Prikaži vanjske
+                poveznice<br>
+                <input class="debugrule" type="checkbox" name="P3_TEXT_MAX_1000" id="3" value="3" checked>Tekst do 1000
+                znakova<br>
+                <input class="debugrule" type="checkbox" name="P4_BIGGER_PICTURES" id="4" value="4">Prikaži veće
+                slike<br>
+                <input class="debugrule" type="checkbox" name="P5_SEQUENTIAL_NAVIGATION" id="5" value="5" checked>Sekvencijalna
+                navigacija<br>
+                <input class="debugrule" type="checkbox" name="P6_KEYWORDS_HIGHLIGHTING" id="6" value="6" checked>Istakni
+                ključne riječi<br>
+                <input class="debugrule" type="checkbox" name="P7_QUESTIONS_GROUPING" id="7" value="7" checked>Pitanja
+                po cjelini<br>
+                <input class="debugrule" type="checkbox" name="P8_LONGER_TEXT" id="8" value="8">Prikaz duljeg teksta<br>
+                <input class="debugrule" type="checkbox" name="P9_QUESTIONS_HOW_WHAT_WHY" id="9" value="9" checked>Pitanja
+                "Kako", "Što", "Zašto"<br>
+                <input class="debugrule" type="checkbox" name="P10_ASK_FOR_SUMMARY" id="10" value="10">Zahtjevaj sažetak
+                o naučenom<br>
+                <input class="debugrule" type="checkbox" name="P11_SHORT_QUESTIONS" id="11" value="11" checked>Kratka
+                pitanja<br>
+                <input class="debugrule" type="checkbox" name="P12_SEQUENTIAL_ANSWER_CHECK" id="12" value="12">Trenutna
+                provjera odgovora<br>
+                <input class="debugrule" type="checkbox" name="P13_QUESTIONS_IN_CONTENT" id="13" value="13" checked>Prikaz
+                pitanja u sadržaju<br>
+                <input class="debugrule" type="checkbox" name="P14_IMMUTABLE_LEARNING_STYLE_VALUES" id="14" value="14">Perzistentne
+                vrijednosti stilova učenja<br>
+                <input class="debugrule" type="checkbox" name="P15_PICTURE_ON_THE_BEGINNING" id="15" value="15">Prikaz
+                skice ili slike na početku<br>
+                <input class="debugrule" type="checkbox" name="P16_AUDIO_OR_VIDEO_ANSWER" id="16" value="16">Odgovor u
+                obliku Audio / Video zapisa<br>
+                <input class="debugrule" type="checkbox" name="P17_MOTIVATIONAL_COMMENT" id="17" value="17">Motivacijska
+                poruka<br>
+            </div>
+            <hr>
+        </div>
+        <div class="col-sm-2 sidenav">
+            <p><a href='/onetitlechild/464/'>Anatomija bilja</a></p>
+            <p><a href='/onetitlechild/465/'>ORGANSKE MOLEKULE KOJE IZGRAĐUJU BILJNI SVIJET</a></p>
+            <p>Nukleinske kiseline</p>
+            <p>Ugljikohidrati</p>
+            <p>Proteini</p>
+            <p>Sinteza proteina</p>
+            <p>Lipidi</p>
+            <p>BILJNE STANICE</p>
+            <p>Raznolikost stanica</p>
+            <p>Evolucija eukariotske stanice</p>
+            <p>Oblik i veličina biljnih stanica</p>
+            <p>Građa biljne stanice</p>
+            <p>Stanične membrane</p>
+            <p>Citoplazma</p>
+            <p>Jezgra</p>
+            <p>Mitohondriji</p>
+            <p>Plastidi</p>
+            <p>Ribosomi</p>
+            <p>Endoplazmatski retikulum</p>
+            <p>Diktiosimi</p>
+            <p>Mikrotjelešca</p>
+            <p>Vakuola</p>
+            <p>HISTOLOGIJA</p>
+            <p>ANATOMIJA VEGETATIVNIH BILJNIH ORGANA</p>
+        </div>
+    </div>
+    <hr>
 </div>
+<footer class="container-fluid text-center">
+    <p>Footer Text</p>
+</footer>
+<script src="/js/jquery.js"></script>
+<script src='/js/jquery.highlight-5.js'></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- tags input -->
+<script src="/js/bootstrap-tagsinput.min.js"></script>
+
+<script type="application/javascript">
+    $('.debugrule').click(function () {
+        $.ajax({
+            type: "POST",
+            url: '/testrules/',
+            data: {"ruleId": $(this).attr('id'), "value": this.checked}, //--> send id of checked checkbox on other page
+            success: function (data) {
+            },
+            error: function () {
+            },
+            complete: function () {
+                location.reload();
+            }
+        });
+    });
+</script>
+</body>
+</html>
+<script type="application/javascript">$("#txt").highlight("predgovor");
+$("#txt").highlight(" uvod");
+$("#txt").highlight(" botaničke discipline");
+$("#txt").highlight("botanika");
+$("#txt").highlight(" bilja");</script>

@@ -1,6 +1,17 @@
 #parse("/velocity/layout.vm")
 #@mainLayout()
 <h2>Nastavna pitanja za: $subject.title</h2>
+    <p><h3>Uputa nastavniku</h3>
+        Za učinkovitije poučavanje potrebno je postaviti što više pitanja svih (5) vrsta.
+        Pitanje može biti postavljeno: a) kao tekst, b) kombinacija teksta i druge datoteke (grafička, video, audio…)</p>
+    <p><h5>Tipovi pitanja:</h5>
+        1)  Da – Ne pitanja: Pitanja na koje se odabire „Da“ (istina, „Slažem se“) ili „Ne“ (neistina, „ne slažem se“) kao odgovor<br>
+        2)  Kratki odgovori: su pitanja na koja se odgovara s jednom ili dvije riječi: to su pitanja koja započinju s „Kada“, „Gdje“, „Tko“.<br>
+        3)  Jednostruki izbor: Samo je jedan od ponuđenih odgovora točan.<br>
+        4)  Višestruki izbor: Od ponuđenih odgovora može biti jedan, više ili svi točni<br>
+        5)  Opisna pitanja su pitanja na koja se odgovara opisnim odgovorom i najčešće započinju s „Kako“, „Zašto“, „Što“, „Opiši“ i slično.
+    </p>
+    <hr>
     #if($validation)
     <div class="alert alert-danger fade in" id="validation">
         <a href="#" class="close" data-dismiss="alert">&times;</a>

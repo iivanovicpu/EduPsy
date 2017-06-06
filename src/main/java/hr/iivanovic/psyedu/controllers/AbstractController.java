@@ -13,8 +13,11 @@ import hr.iivanovic.psyedu.db.Sql2oModel;
 public class AbstractController {
     public static Model dbProvider = Sql2oModel.getInstance();
 
-    protected static String renderQuestions(List<Question> questions, boolean isStudent) {
+    protected static String renderQuestions(List<Question> questions, boolean isStudent, boolean writeSummary) {
         StringBuilder sb = new StringBuilder();
+        if (writeSummary) {
+            renderWriteSummary(sb);
+        }
         for (Question question : questions) {
             sb.append("<div class=\"form-group\">");
             sb.append("<hr>").append(question.getQuestion());
@@ -32,7 +35,7 @@ public class AbstractController {
             if (QuestionType.ENTER_DESCRIPTIVE_ANSWER.equals(questionType)) {
                 renderTextAreaAnswer(sb, question);
             }
-            if(!isStudent) {
+            if (!isStudent) {
                 sb.append("<form method=\"post\" action=\"/deletequestion/\">");
                 sb.append("<input type=\"hidden\" name=\"questionid\" value=\"").append(question.getId()).append("\">");
                 sb.append("<input type=\"hidden\" name=\"subjectid\" value=\"").append(question.getSubjectId()).append("\">");
@@ -43,6 +46,13 @@ public class AbstractController {
             sb.append("</div>");
         }
         return sb.toString();
+    }
+
+    private static void renderWriteSummary(StringBuilder sb) {
+        sb.append("<div class=\"form-group\">")
+                .append("<hr>")
+                .append("Napiši sažetak o naučenome:")
+                .append("<br><textarea name=\"summary\" rows=\"10\" cols=\"30\"></textarea></div>");
     }
 
     private static void renderTextAreaAnswer(StringBuilder sb, Question question) {

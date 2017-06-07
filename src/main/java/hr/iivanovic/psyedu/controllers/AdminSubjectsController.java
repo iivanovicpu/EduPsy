@@ -54,7 +54,7 @@ public class AdminSubjectsController extends AbstractController {
 
 
     public static Route fetchAllParentSubjects = (Request request, Response response) -> {
-        if (isAuthorized(request, response)) return ViewUtil.notAllowed.handle(request, response);
+        LoginController.ensureUserIsLoggedIn(request, response);
         if (clientAcceptsHtml(request)) {
             HashMap<String, Object> model = new HashMap<>();
             model.put("subjects", dbProvider.getAllParentSubjects());
@@ -83,31 +83,27 @@ public class AdminSubjectsController extends AbstractController {
     };
 
     public static Route editSubjectItem = (Request request, Response response) -> {
-        LoginController.ensureUserIsLoggedIn(request, response);
-        if (LoginController.isStudent(request)) {
-            return ViewUtil.notAllowed.handle(request, response);
-        }
+        if (isAuthorized(request, response)) return ViewUtil.notAllowed.handle(request, response);
+
         int subjectId = Integer.parseInt(request.params("id"));
         int parentSubjectId = Integer.parseInt(request.params("parentId"));
         String action = request.params("action");
-        if (clientAcceptsHtml(request)) {
-            HashMap<String, Object> model = new HashMap<>();
-            model.put("editAllowed", true);
-            model.put("action", action);
-            model.put("subjectId", subjectId);
-            model.put("parentSubjectId", parentSubjectId);
-            Subject subject = new Subject();
-            if ("edit".equals(action)) {
-                subject = dbProvider.getSubject(subjectId);
-            }
-            model.put("subject", subject);
-            return ViewUtil.render(request, model, Path.Template.EDIT_SUBJECT_ITEM);
+        HashMap<String, Object> model = new HashMap<>();
+        model.put("editAllowed", true);
+        model.put("action", action);
+        model.put("subjectId", subjectId);
+        model.put("parentSubjectId", parentSubjectId);
+        Subject subject = new Subject();
+        if ("edit".equals(action)) {
+            subject = dbProvider.getSubject(subjectId);
         }
-        return ViewUtil.notAcceptable.handle(request, response);
+        model.put("subject", subject);
+        return ViewUtil.render(request, model, Path.Template.EDIT_SUBJECT_ITEM);
     };
 
     public static Route submitEditedSubject = (Request request, Response response) -> {
         if (isAuthorized(request, response)) return ViewUtil.notAllowed.handle(request, response);
+
         HashMap<String, Object> model = new HashMap<>();
         if (clientAcceptsHtml(request) && LoginController.isEditAllowed(request)) {
             String action = request.queryParams("action");

@@ -34,7 +34,7 @@ public class SubjectView extends Subject {
     private static int SEQ_NAVIGATION_CONDITION = TitleLearningStatus.FINISHED_EXAM.getId();
 
     public SubjectView(Subject sub, User student) {
-        super(sub.getId(), sub.getTitle(), sub.getKeywords(), sub.getUrl(), sub.getSubjectId(), sub.getParentSubjectId(), sub.getSubjectLevelId(), sub.getOrder(), sub.getContent(), sub.getAdditionalContent(), null, sub.getSubjectPositionId(), sub.getSubjectPosition());
+        super(sub.getId(), sub.getTitle(), sub.getKeywords(), sub.getUrl(), sub.getSubjectId(), sub.getParentSubjectId(), sub.getSubjectLevelId(), sub.getOrder(), sub.getContent(), sub.getAdditionalContent(), sub.getSummaryAndGoals(), sub.getSubjectPositionId(), sub.getSubjectPosition());
         this.student = student;
     }
 

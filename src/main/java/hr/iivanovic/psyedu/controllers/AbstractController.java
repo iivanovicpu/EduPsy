@@ -5,6 +5,8 @@ import java.util.List;
 import hr.iivanovic.psyedu.db.Model;
 import hr.iivanovic.psyedu.db.Question;
 import hr.iivanovic.psyedu.db.Sql2oModel;
+import spark.Request;
+import spark.Response;
 
 /**
  * @author iivanovic
@@ -85,5 +87,13 @@ public class AbstractController {
             sb.append("<label><input type=\"checkbox\" name=\"").append(questionId).append("\" value=\"").append(answer).append("\">").append(answer).append("</label>");
             sb.append("</div>");
         }
+    }
+
+    protected static boolean isAuthorized(Request request, Response response) throws Exception {
+        LoginController.ensureUserIsLoggedIn(request, response);
+        if (!LoginController.isEditAllowed(request)) {
+            return true;
+        }
+        return false;
     }
 }

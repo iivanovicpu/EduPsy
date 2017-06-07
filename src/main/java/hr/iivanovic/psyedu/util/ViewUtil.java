@@ -38,6 +38,11 @@ public class ViewUtil {
         return render(request, new HashMap<>(), Path.Template.NOT_FOUND);
     };
 
+    public static Route notAllowed = (Request request, Response response) -> {
+        response.status(HttpStatus.UNAUTHORIZED_401);
+        return render(request, new HashMap<>(), "/velocity/notAllowed.vm");
+    };
+
     private static VelocityTemplateEngine strictVelocityEngine() {
         VelocityEngine configuredEngine = new VelocityEngine();
         configuredEngine.setProperty("runtime.references.strict", true);

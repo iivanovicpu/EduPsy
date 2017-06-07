@@ -31,6 +31,8 @@ public class UploadController extends AbstractController {
 
     // todo: validacija
     public static Route uploadFile = (Request request, Response response) -> {
+        if (isAuthorized(request, response)) return ViewUtil.notAllowed.handle(request, response);
+
         String location = "img";          // the directory location where files will be stored
         long maxFileSize = 100000000;       // the maximum size allowed for uploaded files
         long maxRequestSize = 100000000;    // the maximum size allowed for multipart/form-data requests
@@ -47,9 +49,9 @@ public class UploadController extends AbstractController {
             String subjectUrl = request.queryParams("subjectUrl");
             for (Part part : parts) {
                 String fileNameOrig = part.getSubmittedFileName();
-                String fileName = null != fileNameOrig ? fileNameOrig.replaceAll(" ","") : null;
+                String fileName = null != fileNameOrig ? fileNameOrig.replaceAll(" ", "") : null;
                 String appExternalLocation = AppConfiguration.getInstance().getExternalLocation();
-                String fullPath = appExternalLocation + subjectUrl.replaceFirst("/","") + "/" + fileName;
+                String fullPath = appExternalLocation + subjectUrl.replaceFirst("/", "") + "/" + fileName;
                 String url = subjectUrl + "/" + fileName;
                 java.nio.file.Path out = Paths.get(fullPath);
                 try (final InputStream in = part.getInputStream()) {
@@ -64,7 +66,7 @@ public class UploadController extends AbstractController {
                 }
             }
             parts = null;
-        } else if (linkTypeId == ExternalLinkType.URL.getId()){
+        } else if (linkTypeId == ExternalLinkType.URL.getId()) {
             String url = request.queryParams("url");
             dbProvider.createExternalLink(new ExternalLink(0, subjectId, title, url, linkTypeId));
         }
@@ -72,20 +74,17 @@ public class UploadController extends AbstractController {
     };
 
     public static Route deleteExternalLink = (Request request, Response response) -> {
-        if (clientAcceptsHtml(request) && LoginController.isEditAllowed(request)) {
-            int subjectId = Integer.parseInt(request.queryParams("subjectId"));
-            int linkId = Integer.parseInt(request.queryParams("linkId"));
-            dbProvider.deleteExternalLink(linkId);
-            return ViewUtil.render(request, createUploadModel(subjectId), Path.Template.UPLOAD);
-        }
-        return ViewUtil.notAcceptable.handle(request, response);
+        if (isAuthorized(request, response)) return ViewUtil.notAllowed.handle(request, response);
+
+        int subjectId = Integer.parseInt(request.queryParams("subjectId"));
+        int linkId = Integer.parseInt(request.queryParams("linkId"));
+        dbProvider.deleteExternalLink(linkId);
+        return ViewUtil.render(request, createUploadModel(subjectId), Path.Template.UPLOAD);
     };
 
     public static Route uploadForm = (Request request, Response response) -> {
-        LoginController.ensureUserIsLoggedIn(request, response);
-        if (LoginController.isStudent(request)) {
-            return ViewUtil.notAcceptable.handle(request, response);
-        }
+        if (isAuthorized(request, response)) return ViewUtil.notAllowed.handle(request, response);
+
         int subjectId = Integer.parseInt(request.params("subjectId"));
         if (clientAcceptsHtml(request)) {
             HashMap<String, Object> model = createUploadModel(subjectId);

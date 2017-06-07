@@ -1,0 +1,4 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+    <h1>Pristup ovoj stranici nije Vam dozvoljen. <small>(error 401)</small></h1>
+#end

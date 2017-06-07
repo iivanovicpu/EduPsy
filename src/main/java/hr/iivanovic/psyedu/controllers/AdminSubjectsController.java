@@ -29,6 +29,7 @@ import spark.utils.StringUtils;
 public class AdminSubjectsController extends AbstractController {
 
     public static Route submitAddedSubject = (request, response) -> {
+        if (isAuthorized(request, response)) return ViewUtil.notAllowed.handle(request, response);
         String title = request.queryParams("title");
         String keywords = request.queryParams("keywords");
         HashMap<String, Object> model = new HashMap<>();
@@ -53,7 +54,7 @@ public class AdminSubjectsController extends AbstractController {
 
 
     public static Route fetchAllParentSubjects = (Request request, Response response) -> {
-        LoginController.ensureUserIsLoggedIn(request, response);
+        if (isAuthorized(request, response)) return ViewUtil.notAllowed.handle(request, response);
         if (clientAcceptsHtml(request)) {
             HashMap<String, Object> model = new HashMap<>();
             model.put("subjects", dbProvider.getAllParentSubjects());
@@ -68,10 +69,7 @@ public class AdminSubjectsController extends AbstractController {
 
 
     public static Route fetchSubjectForEdit = (Request request, Response response) -> {
-        LoginController.ensureUserIsLoggedIn(request, response);
-        if (!LoginController.isEditAllowed(request)) {
-            return ViewUtil.notAcceptable.handle(request, response);
-        }
+        if (isAuthorized(request, response)) return ViewUtil.notAllowed.handle(request, response);
         int subjectId = Integer.parseInt(request.params("id"));
         if (clientAcceptsHtml(request)) {
             HashMap<String, Object> model = new HashMap<>();
@@ -87,7 +85,7 @@ public class AdminSubjectsController extends AbstractController {
     public static Route editSubjectItem = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
         if (LoginController.isStudent(request)) {
-            return ViewUtil.notAcceptable.handle(request, response);
+            return ViewUtil.notAllowed.handle(request, response);
         }
         int subjectId = Integer.parseInt(request.params("id"));
         int parentSubjectId = Integer.parseInt(request.params("parentId"));
@@ -109,7 +107,7 @@ public class AdminSubjectsController extends AbstractController {
     };
 
     public static Route submitEditedSubject = (Request request, Response response) -> {
-        LoginController.ensureUserIsLoggedIn(request, response);
+        if (isAuthorized(request, response)) return ViewUtil.notAllowed.handle(request, response);
         HashMap<String, Object> model = new HashMap<>();
         if (clientAcceptsHtml(request) && LoginController.isEditAllowed(request)) {
             String action = request.queryParams("action");

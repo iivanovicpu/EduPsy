@@ -21,7 +21,11 @@ import spark.Route;
 public class SubjectQuestionsController extends AbstractController {
 
     public static Route fetchOneTitleForAddQuestions = (Request request, Response response) -> {
-        LoginController.ensureUserIsLoggedIn(request, response);
+        if (isAuthorized(request, response)) return ViewUtil.notAllowed.handle(request, response);
+        if (!LoginController.isEditAllowed(request)) {
+            return ViewUtil.notAllowed.handle(request, response);
+        }
+
         int subjectId = Integer.parseInt(request.params("subjectid"));
         if (clientAcceptsHtml(request)) {
             HashMap<String, Object> model = createModel(subjectId);
@@ -46,7 +50,7 @@ public class SubjectQuestionsController extends AbstractController {
     }
 
     public static Route submitQuestion = (Request request, Response response) -> {
-        LoginController.ensureUserIsLoggedIn(request, response);
+        if (isAuthorized(request, response)) return ViewUtil.notAllowed.handle(request, response);
         if (clientAcceptsHtml(request)) {
             int subjectId = Integer.parseInt(request.queryParams("subjectid"));
             ValidationResult validationResult = validatedQuestion(request);
@@ -67,7 +71,7 @@ public class SubjectQuestionsController extends AbstractController {
     };
 
     public static Route deleteQuestion = (Request request, Response response) -> {
-        LoginController.ensureUserIsLoggedIn(request, response);
+        if (isAuthorized(request, response)) return ViewUtil.notAllowed.handle(request, response);
         if (clientAcceptsHtml(request)) {
             int subjectId = Integer.parseInt(request.queryParams("subjectid"));
             int questionId = Integer.parseInt(request.queryParams("questionid"));

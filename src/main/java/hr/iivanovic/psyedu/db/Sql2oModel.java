@@ -140,10 +140,52 @@ public class Sql2oModel implements Model {
                     .addColumnMapping("subject_position_id", "subjectPositionId")
                     .addColumnMapping("summary_goals", "summaryAndGoals")
                     .executeAndFetchFirst(Subject.class);
-                if(null == subject.getParentSubjectId())
-                    subject.setParentSubjectId(subject.getId());
+            if (null == subject.getParentSubjectId())
+                subject.setParentSubjectId(subject.getId());
             return subject;
         }
+    }
+
+    @Override
+    public void createStudentScore(int subjectId, int studentId, double result, boolean success) {
+        try (Connection conn = sql2o.open()) {
+            conn.createQuery("INSERT INTO STUDENT_SCORE (subjectId, studentId, result, count, success) VALUES (:subjectId, :studentId, :result, :count, :success);")
+                    .addParameter("subjectId", subjectId)
+                    .addParameter("studentId", studentId)
+                    .addParameter("result", result)
+                    .addParameter("count", 1)
+                    .addParameter("success", success)
+                    .executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void updateStudentScore(int subjectId, int studentId, double result, boolean success) {
+        try (Connection conn = sql2o.open()) {
+            conn.createQuery("UPDATE STUDENT_SCORE SET result = :result, count = count + 1, success = :success WHERE subjectId = :subjectId AND studentId = :studentId;")
+                    .addParameter("subjectId", subjectId)
+                    .addParameter("studentId", studentId)
+                    .addParameter("result", result)
+                    .addParameter("success", success)
+                    .executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public boolean studentScoreExists(int subjectId, int studentId) {
+        try (Connection conn = sql2o.open()) {
+            return 0 < conn.createQuery("SELECT count(*) FROM STUDENT_SCORE WHERE subjectId = :subjectId and studentId = :studentId;")
+                    .addParameter("subjectId", subjectId)
+                    .addParameter("studentId", studentId)
+                    .executeAndFetchFirst(Integer.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override
@@ -163,7 +205,7 @@ public class Sql2oModel implements Model {
     }
 
     @Override
-    public void deleteQuestion(int questionId){
+    public void deleteQuestion(int questionId) {
         try (Connection conn = sql2o.open()) {
             conn.createQuery("DELETE FROM questions WHERE id=:questionId;")
                     .addParameter("questionId", questionId)
@@ -182,7 +224,7 @@ public class Sql2oModel implements Model {
 
     @Override
     public List<ExternalLink> getAllExternalLinksBySubjectId(int subjectId) {
-        try (Connection conn = sql2o.open()){
+        try (Connection conn = sql2o.open()) {
             return conn.createQuery("select id, title, url, subject_id, linktypeid from external_links where subject_id=:subjectId")
                     .addParameter("subjectId", subjectId)
                     .addColumnMapping("subject_id", "subjectId")
@@ -192,7 +234,7 @@ public class Sql2oModel implements Model {
     }
 
     @Override
-    public void createExternalLink(ExternalLink externalLink){
+    public void createExternalLink(ExternalLink externalLink) {
         try (Connection conn = sql2o.open()) {
             conn.createQuery("insert into external_links (title, url, subject_id, linktypeid ) values (:title, :url, :subjectId, :linkTypeId);")
                     .addParameter("title", externalLink.getTitle())
@@ -204,7 +246,7 @@ public class Sql2oModel implements Model {
     }
 
     @Override
-    public void deleteExternalLink(int id){
+    public void deleteExternalLink(int id) {
         try (Connection conn = sql2o.open()) {
             conn.createQuery("delete from external_links where id = :id;")
                     .addParameter("id", id)
@@ -343,7 +385,7 @@ public class Sql2oModel implements Model {
                     .addColumnMapping("summary_goals", "summaryAndGoals")
                     .executeAndFetch(Subject.class);
             for (Subject subject : subjects) {
-                if(null == subject.getParentSubjectId())
+                if (null == subject.getParentSubjectId())
                     subject.setParentSubjectId(parentSubjectId);
             }
             return subjects.stream().sorted(Comparator.comparing(Subject::getId)).collect(Collectors.toList());

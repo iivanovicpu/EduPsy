@@ -1,5 +1,7 @@
 package hr.iivanovic.psyedu.controllers;
 
+import static hr.iivanovic.psyedu.controllers.QuestionType.ENTER_DESCRIPTIVE_ANSWER;
+import static hr.iivanovic.psyedu.controllers.QuestionType.ENTER_SHORT_ANSWER;
 import static hr.iivanovic.psyedu.util.RequestUtil.clientAcceptsHtml;
 
 import java.util.HashMap;
@@ -60,7 +62,7 @@ public class ExamController extends AbstractController {
             List<Question> questions = dbProvider.getAllQuestionsForSubjectAndTitle(subjectid);
             StringBuilder sb = new StringBuilder();
 
-            boolean success = validateExam(questions, questionsWithAnswers, sb);
+            boolean success = validateExam(questions, questionsWithAnswers, sb, subjectid, student.getId());
             String htmlQuestions = "ispitna pitanja za ovo gradivo nisu unesena !";
 
             Map<String, Object> model = new HashMap<>();
@@ -81,15 +83,16 @@ public class ExamController extends AbstractController {
         return ViewUtil.notAcceptable.handle(request, response);
     };
 
-    private static boolean validateExam(List<Question> questions, Map<String, String> questionsWithAnswers, StringBuilder sb) {
-        double sumOfPoints = questions.stream().mapToInt(Question::getPoints).sum();
+    private static boolean validateExam(List<Question> questions, Map<String, String> questionsWithAnswers, StringBuilder sb, int subjectId, int studentId) {
+        // ne računaj bodove za esejska pitanja todo: provjeriti
+        double sumOfPoints = questions.stream().filter(question -> question.getQuestionTypeId() != ENTER_DESCRIPTIVE_ANSWER.getId()).mapToInt(Question::getPoints).sum();
         ValueHolder<Double> successPoints = new ValueHolder<>(0d);
         questionsWithAnswers.forEach((key, answer) -> {
             String questionHtmlId = key.split("_")[0];
             if (!questionHtmlId.toLowerCase().contains("subjectid".toLowerCase())) {
                 int questionId = Integer.parseInt(questionHtmlId);
                 Question dbQuestion = questions.stream().filter(question -> question.getId() == questionId).findFirst().get();
-                boolean match = false;
+                boolean match;
                 if (dbQuestion.getQuestionTypeId() < 3) {
                     String[] correctAnswers = dbQuestion.getCorrectAnswers().split(",");
                     double pointsByAnswer = dbQuestion.getPoints() / correctAnswers.length;
@@ -100,25 +103,38 @@ public class ExamController extends AbstractController {
                             successPoints.setValue(pointsByAnswer + successPoints.getValue());
                         }
                     }
-                } else {
-                    match = dbQuestion.getCorrectAnswers().toLowerCase().trim().contains(answer.toLowerCase().trim());
+                }
+                if(dbQuestion.getQuestionTypeId() == ENTER_DESCRIPTIVE_ANSWER.getId()){
+                    // todo: provjeriti što s ovime
+                }
+                if (dbQuestion.getQuestionTypeId() == ENTER_SHORT_ANSWER.getId() ){
+                    match =  dbQuestion.getCorrectAnswers().toLowerCase().trim().contains(answer.toLowerCase().trim());
                     System.out.println(answer + " " + match);
                     if (match) {
                         successPoints.setValue(dbQuestion.getPoints() + successPoints.getValue());
                     }
                 }
-                // todo: learning success save to db (svako pojedinačno pitanje)
             }
         });
-        double success = successPoints.getValue() / sumOfPoints;
-        if (SUCCESSFUL_EXAM_PERCENT > success) {
-            sb.append("Nažalost, ispit nije uspješno riješen. Postotak: ").append(success * 100).append("%");
+        double result = successPoints.getValue() / sumOfPoints;
+        boolean success = SUCCESSFUL_EXAM_PERCENT <= result;
+        if (!success) {
+            sb.append("Nažalost, ispit nije uspješno riješen. Postotak: ").append(result * 100).append("%");
             sb.append("\n(").append(successPoints.getValue()).append("/").append(sumOfPoints).append(")");
-            return false;
         } else {
-            sb.append("Bravo, ispit je uspješno riješen. Postotak: ").append(success * 100).append("%");
+            sb.append("Bravo, ispit je uspješno riješen. Postotak: ").append(result * 100).append("%");
             sb.append("\n(").append(successPoints.getValue()).append("/").append(sumOfPoints).append(")");
-            return true;
+        }
+        saveStudentSuccess(subjectId, studentId, result, success);
+        return success;
+    }
+
+    private static void saveStudentSuccess(int subjectId, int studentId, double result, boolean success) {
+        if (dbProvider.studentScoreExists(subjectId, studentId)) {
+            // todo: provjeriti da li prepisati stari rezultat (iako je možda uspješniji ??)
+            dbProvider.updateStudentScore(subjectId, studentId, result, success);
+        } else {
+            dbProvider.createStudentScore(subjectId, studentId, result, success);
         }
     }
 

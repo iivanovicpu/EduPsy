@@ -18,6 +18,12 @@ public interface Model {
 
     Subject getSubject(long id);
 
+    void createStudentScore(int subjectId, int studentId, double result, boolean success);
+
+    void updateStudentScore(int subjectId, int studentId, double result, boolean success);
+
+    boolean studentScoreExists(int subjectId, int studentId);
+
     void createQuestion(Question question);
 
     void deleteQuestion(int questionId);

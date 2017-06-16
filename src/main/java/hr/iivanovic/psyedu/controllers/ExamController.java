@@ -5,8 +5,10 @@ import static hr.iivanovic.psyedu.controllers.QuestionType.ENTER_SHORT_ANSWER;
 import static hr.iivanovic.psyedu.util.RequestUtil.clientAcceptsHtml;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import hr.iivanovic.psyedu.db.AdaptiveRule;
 import hr.iivanovic.psyedu.db.Question;
@@ -30,17 +32,10 @@ public class ExamController extends AbstractController {
         LoginController.ensureUserIsLoggedIn(request, response);
         int subjectid = Integer.parseInt(request.params("subjectid"));
         User student = LoginController.getCurrentUser(request);
-        boolean writeSummary = student.getUserRules().stream().anyMatch(AdaptiveRule.P10_ASK_FOR_SUMMARY::equals);
 
         if (clientAcceptsHtml(request)) {
-            Map<String, Object> model = new HashMap<>();
             List<Question> questions = dbProvider.getAllQuestionsForSubjectAndTitle(subjectid);
-            String htmlQuestions = "ispitna pitanja za ovo gradivo nisu unesena !";
-            if (questions.size() > 0) {
-                htmlQuestions = renderQuestions(questions, LoginController.isStudent(request), writeSummary);
-            }
-            model.put("questions", htmlQuestions);
-            model.put("subjectId", subjectid);
+            Map<String, Object> model = createExamModel(request, subjectid, student, questions);
             model.put("validation", false);
             dbProvider.logLearningStatus(student.getId(), subjectid, TitleLearningStatus.OPENED_EXAM.getId());
             return ViewUtil.render(request, model, Path.Template.EXAM);
@@ -48,11 +43,34 @@ public class ExamController extends AbstractController {
         return ViewUtil.notAcceptable.handle(request, response);
     };
 
+    private static String createHtmlQuestions(Request request, User student, List<Question> questions) {
+        String htmlQuestions = "ispitna pitanja za ovo gradivo nisu unesena !";
+        boolean writeSummary = student.getUserRules().stream().anyMatch(AdaptiveRule.P10_ASK_FOR_SUMMARY::equals);
+        boolean askDescriptive = student.getUserRules().stream().anyMatch(AdaptiveRule.P9_QUESTIONS_HOW_WHAT_WHY::equals);
+        boolean askShort = student.getUserRules().stream().anyMatch(AdaptiveRule.P11_SHORT_QUESTIONS::equals);
+        List<Question> filteredQuestions = new LinkedList<>();
+        if(askDescriptive){
+            filteredQuestions.addAll(questions.stream().filter(question -> question.getQuestionTypeId() == QuestionType.ENTER_DESCRIPTIVE_ANSWER.getId()).collect(Collectors.toList()));
+            if(filteredQuestions.size() > 0 && !askShort){
+                return renderQuestions(filteredQuestions, LoginController.isStudent(request), writeSummary);
+            }
+        }
+        if (askShort){
+            filteredQuestions.addAll(questions.stream().filter(question -> question.getQuestionTypeId() == QuestionType.ENTER_SHORT_ANSWER.getId()).collect(Collectors.toList()));
+            if(filteredQuestions.size() > 0){
+                return renderQuestions(filteredQuestions, LoginController.isStudent(request), writeSummary);
+            }
+        }
+        if (questions.size() > 0) {
+            htmlQuestions = renderQuestions(questions, LoginController.isStudent(request), writeSummary);
+        }
+        return htmlQuestions;
+    }
+
     public static Route submitExamQuestions = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
         int subjectid = Integer.parseInt(request.queryParams("subjectid"));
         User student = LoginController.getCurrentUser(request);
-        boolean writeSummary = student.getUserRules().stream().anyMatch(AdaptiveRule.P10_ASK_FOR_SUMMARY::equals);
         if (clientAcceptsHtml(request)) {
             Map<String, String> questionsWithAnswers = new HashMap<>();
             for (String param : request.queryParams()) {
@@ -63,15 +81,8 @@ public class ExamController extends AbstractController {
             StringBuilder sb = new StringBuilder();
 
             boolean success = validateExam(questions, questionsWithAnswers, sb, subjectid, student.getId());
-            String htmlQuestions = "ispitna pitanja za ovo gradivo nisu unesena !";
 
-            Map<String, Object> model = new HashMap<>();
-            if (questions.size() > 0) {
-                htmlQuestions = renderQuestions(questions, LoginController.isStudent(request), writeSummary);
-            }
-            model.put("questions", htmlQuestions);
-            model.put("subjectId", subjectid);
-
+            Map<String, Object> model = createExamModel(request, subjectid, student, questions);
             model.put("validation", sb);
             model.put("success", success);
 
@@ -83,13 +94,21 @@ public class ExamController extends AbstractController {
         return ViewUtil.notAcceptable.handle(request, response);
     };
 
+    private static Map<String, Object> createExamModel(Request request, int subjectid, User student, List<Question> questions) {
+        Map<String, Object> model = new HashMap<>();
+        String htmlQuestions = createHtmlQuestions(request, student, questions);
+        model.put("questions", htmlQuestions);
+        model.put("subjectId", subjectid);
+        return model;
+    }
+
     private static boolean validateExam(List<Question> questions, Map<String, String> questionsWithAnswers, StringBuilder sb, int subjectId, int studentId) {
         // ne računaj bodove za esejska pitanja todo: provjeriti
         double sumOfPoints = questions.stream().filter(question -> question.getQuestionTypeId() != ENTER_DESCRIPTIVE_ANSWER.getId()).mapToInt(Question::getPoints).sum();
         ValueHolder<Double> successPoints = new ValueHolder<>(0d);
         questionsWithAnswers.forEach((key, answer) -> {
             String questionHtmlId = key.split("_")[0];
-            if (!questionHtmlId.toLowerCase().contains("subjectid".toLowerCase())) {
+            if (!questionHtmlId.toLowerCase().contains("subjectid".toLowerCase()) && !questionHtmlId.toLowerCase().contains("summary".toLowerCase())) {
                 int questionId = Integer.parseInt(questionHtmlId);
                 Question dbQuestion = questions.stream().filter(question -> question.getId() == questionId).findFirst().get();
                 boolean match;
@@ -104,11 +123,11 @@ public class ExamController extends AbstractController {
                         }
                     }
                 }
-                if(dbQuestion.getQuestionTypeId() == ENTER_DESCRIPTIVE_ANSWER.getId()){
+                if (dbQuestion.getQuestionTypeId() == ENTER_DESCRIPTIVE_ANSWER.getId()) {
                     // todo: provjeriti što s ovime
                 }
-                if (dbQuestion.getQuestionTypeId() == ENTER_SHORT_ANSWER.getId() ){
-                    match =  dbQuestion.getCorrectAnswers().toLowerCase().trim().contains(answer.toLowerCase().trim());
+                if (dbQuestion.getQuestionTypeId() == ENTER_SHORT_ANSWER.getId()) {
+                    match = dbQuestion.getCorrectAnswers().toLowerCase().trim().contains(answer.toLowerCase().trim());
                     System.out.println(answer + " " + match);
                     if (match) {
                         successPoints.setValue(dbQuestion.getPoints() + successPoints.getValue());

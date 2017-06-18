@@ -6,7 +6,6 @@ import java.util.Map;
 
 import hr.iivanovic.psyedu.db.IntelligenceType;
 import hr.iivanovic.psyedu.db.User;
-import hr.iivanovic.psyedu.util.Path;
 import hr.iivanovic.psyedu.util.ViewUtil;
 import lombok.Data;
 import spark.Request;
@@ -18,6 +17,9 @@ import spark.Route;
  * @date 10.10.16.
  */
 public class StudentsController extends AbstractController {
+    private final static String STUDENTS = "/velocity/students.vm";
+    private final static String STUDENTS_ADD = "/velocity/addstudent.vm";
+    private final static String STUDENT_DETAILS = "/velocity/studentDetails.vm";
 
     public static Route fetchAllStudents = (Request request, Response response) -> {
         if (isAuthorized(request, response)) return ViewUtil.notAllowed.handle(request, response);
@@ -25,7 +27,7 @@ public class StudentsController extends AbstractController {
         List<User> students = dbProvider.getAllStudents();
         Map<String, Object> model = new HashMap<>();
         model.put("students", students);
-        return ViewUtil.render(request, model, Path.Template.STUDENTS);
+        return ViewUtil.render(request, model, STUDENTS);
     };
 
     public static Route fetchStudentDetails = (Request request, Response response) -> {
@@ -39,7 +41,7 @@ public class StudentsController extends AbstractController {
             model.put("student", student);
             model.put("styles", LearningStyle.values());
             model.put("intelligenceType", IntelligenceType.getById(student.getIntelligenceTypeId()).getDescription());
-            return ViewUtil.render(request, model, Path.Template.STUDENT_DETAILS);
+            return ViewUtil.render(request, model, STUDENT_DETAILS);
         }
         return ViewUtil.notAcceptable.handle(request, response);
     };
@@ -51,7 +53,7 @@ public class StudentsController extends AbstractController {
         model.put("validation", false);
         StudentView student = new StudentView();
         model.put("student", student);
-        return ViewUtil.render(request, model, Path.Template.STUDENTS_ADD);
+        return ViewUtil.render(request, model, STUDENTS_ADD);
     };
 
     public static Route submitStudent = (Request request, Response response) -> {
@@ -74,7 +76,7 @@ public class StudentsController extends AbstractController {
         if (!notValid) {
             dbProvider.createUser(studentView.getUsername(), studentView.getPassword(), studentView.getFirstName(), studentView.getLastName(), studentView.getPassword(), studentView.getStatus());
         }
-        return ViewUtil.render(request, model, Path.Template.STUDENTS_ADD);
+        return ViewUtil.render(request, model, STUDENTS_ADD);
     };
 
     private static String validateStudent(Integer id, String firstName, String lastName, String email, String password, String passwordr) {

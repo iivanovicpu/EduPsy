@@ -27,6 +27,22 @@ import spark.utils.StringUtils;
  * @date 29.08.16.
  */
 public class AdminSubjectsController extends AbstractController {
+    private final static String SUBJECT_ADD = "/velocity/subjects/add.vm";
+    private final static String SUBJECTS_ALL = "/velocity/subjects/all.vm";
+    private final static String EDIT_SUBJECT = "/velocity/subjects/edit_subject.vm";
+    private final static String EDIT_SUBJECT_ITEM = "/velocity/subjects/edit_subject_item.vm";
+
+    public static Route addNewSubject = (Request request, Response response) -> {
+        if (clientAcceptsHtml(request)) {
+            HashMap<String, Object> model = new HashMap<>();
+            Subject subject = new Subject();
+            model.put("subject", subject);
+            model.put("validation", false);
+            model.put("editAllowed", LoginController.isEditAllowed(request));
+            return ViewUtil.render(request, model, SUBJECT_ADD);
+        }
+        return ViewUtil.notAcceptable.handle(request, response);
+    };
 
     public static Route submitAddedSubject = (request, response) -> {
         if (isAuthorized(request, response)) return ViewUtil.notAllowed.handle(request, response);
@@ -37,7 +53,7 @@ public class AdminSubjectsController extends AbstractController {
         if (!StringUtils.isEmpty(validationMsg)) {
             model.put("validation", validationMsg);
             model.put("editAllowed", LoginController.isEditAllowed(request));
-            return ViewUtil.render(request, model, Path.Template.SUBJECT_ADD);
+            return ViewUtil.render(request, model, SUBJECT_ADD);
         }
         String titleReplaced = title.replaceAll(" ", "").replaceAll("[^\\x00-\\x7F]", "");
         String filename = titleReplaced.substring(0, titleReplaced.length() > 10 ? 10 : titleReplaced.length()).toLowerCase();
@@ -59,7 +75,7 @@ public class AdminSubjectsController extends AbstractController {
             HashMap<String, Object> model = new HashMap<>();
             model.put("subjects", dbProvider.getAllParentSubjects());
             model.put("editAllowed", LoginController.isEditAllowed(request));
-            return ViewUtil.render(request, model, Path.Template.SUBJECTS_ALL);
+            return ViewUtil.render(request, model, SUBJECTS_ALL);
         }
         if (clientAcceptsJson(request)) {
             return dataToJson(dbProvider.getAllSubjects());
@@ -76,7 +92,7 @@ public class AdminSubjectsController extends AbstractController {
             List<Subject> subjects = dbProvider.getSubjectsByParentSubjectId(subjectId);
             model.put("subjects", subjects);
             model.put("successmsg", "");
-            return ViewUtil.render(request, model, Path.Template.EDIT_SUBJECT);
+            return ViewUtil.render(request, model, EDIT_SUBJECT);
 
         }
         return ViewUtil.notAcceptable.handle(request, response);
@@ -98,7 +114,7 @@ public class AdminSubjectsController extends AbstractController {
             subject = dbProvider.getSubject(subjectId);
         }
         model.put("subject", subject);
-        return ViewUtil.render(request, model, Path.Template.EDIT_SUBJECT_ITEM);
+        return ViewUtil.render(request, model, EDIT_SUBJECT_ITEM);
     };
 
     public static Route submitEditedSubject = (Request request, Response response) -> {

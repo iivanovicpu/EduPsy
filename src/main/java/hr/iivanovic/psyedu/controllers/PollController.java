@@ -7,7 +7,6 @@ import java.util.Objects;
 
 import hr.iivanovic.psyedu.db.IntelligenceType;
 import hr.iivanovic.psyedu.db.User;
-import hr.iivanovic.psyedu.util.Path;
 import hr.iivanovic.psyedu.util.ViewUtil;
 import spark.Request;
 import spark.Response;
@@ -18,13 +17,16 @@ import spark.Route;
  * @date 26.10.16.
  */
 public class PollController extends AbstractController {
+    private final static String POLL_INTELLIGENCE_TYPE = "/velocity/pollIntelligenceType.vm";
+    private final static String POLL_LEARNING_STYLE = "/velocity/pollLearningType.vm";
+
 
     public static Route showPollIntelligenceType = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
         if (clientAcceptsHtml(request)) {
             HashMap<String, Object> model = new HashMap<>();
             model.put("validation", false);
-            return ViewUtil.render(request, model, Path.Template.POLL_INTELLIGENCE_TYPE);
+            return ViewUtil.render(request, model, POLL_INTELLIGENCE_TYPE);
         }
         return ViewUtil.notAcceptable.handle(request, response);
     };
@@ -57,18 +59,18 @@ public class PollController extends AbstractController {
                 }
             }
             int intelligenceTypeId = 0;
-            if(verbal > nonVerbal && verbal > mathLogic){
+            if (verbal > nonVerbal && verbal > mathLogic) {
                 intelligenceTypeId = IntelligenceType.V.getId();
             }
-            if(nonVerbal > verbal && nonVerbal > mathLogic){
+            if (nonVerbal > verbal && nonVerbal > mathLogic) {
                 intelligenceTypeId = IntelligenceType.NV.getId();
             }
-            if(mathLogic > verbal && mathLogic > nonVerbal){
+            if (mathLogic > verbal && mathLogic > nonVerbal) {
                 intelligenceTypeId = IntelligenceType.ML.getId();
             }
             dbProvider.updateStudentIntelligenceType(user.getId(), intelligenceTypeId);
             model.put("validation", "Anketa je uspješno ispunjena, zahvaljujemo!");
-            return ViewUtil.render(request, model, Path.Template.POLL_INTELLIGENCE_TYPE);
+            return ViewUtil.render(request, model, POLL_INTELLIGENCE_TYPE);
         }
         return ViewUtil.notAcceptable.handle(request, response);
     };
@@ -78,7 +80,7 @@ public class PollController extends AbstractController {
         if (clientAcceptsHtml(request)) {
             HashMap<String, Object> model = new HashMap<>();
             model.put("validation", false);
-            return ViewUtil.render(request, model, Path.Template.POLL_LEARNING_STYLE);
+            return ViewUtil.render(request, model, POLL_LEARNING_STYLE);
         }
         return ViewUtil.notAcceptable.handle(request, response);
     };
@@ -98,27 +100,27 @@ public class PollController extends AbstractController {
             HashMap<String, Object> model = new HashMap<>();
             for (int i = 1; i < 45; i++) {
                 String odgovor = request.queryParams("odgovor" + i);
-                if(null != odgovor) {
+                if (null != odgovor) {
                     if (i == 1 || i == 5 || i == 9 || i == 13 || i == 17 || i == 21 || i == 25 || i == 29 || i == 33 || i == 37 || i == 41) {
-                        if(Objects.equals(odgovor, "a"))
+                        if (Objects.equals(odgovor, "a"))
                             aktivni++;
                         else
                             reflektivni++;
                     }
-                    if (i == 2 || i == 6 || i == 10 || i == 14 || i == 18 || i == 22 || i == 26 || i == 30 || i == 34 || i == 38 || i == 42){
-                        if(Objects.equals(odgovor, "a"))
+                    if (i == 2 || i == 6 || i == 10 || i == 14 || i == 18 || i == 22 || i == 26 || i == 30 || i == 34 || i == 38 || i == 42) {
+                        if (Objects.equals(odgovor, "a"))
                             opazajni++;
                         else
                             intuitivni++;
                     }
-                    if (i== 3 || i == 7 || i == 11 || i == 15 || i == 19 || i == 23 || i == 27 || i == 31 || i == 35 || i == 39 || i == 43){
-                        if(Objects.equals(odgovor, "a"))
+                    if (i == 3 || i == 7 || i == 11 || i == 15 || i == 19 || i == 23 || i == 27 || i == 31 || i == 35 || i == 39 || i == 43) {
+                        if (Objects.equals(odgovor, "a"))
                             vizualni++;
                         else
                             verbalni++;
                     }
-                    if (i== 4 || i == 8 || i == 12 | i==16 || i == 20 || i == 24 || i == 28 || i == 32 || i == 36 || i == 40 || i == 44){
-                        if(Objects.equals(odgovor, "a"))
+                    if (i == 4 || i == 8 || i == 12 | i == 16 || i == 20 || i == 24 || i == 28 || i == 32 || i == 36 || i == 40 || i == 44) {
+                        if (Objects.equals(odgovor, "a"))
                             sekvencijalni++;
                         else
                             globalni++;
@@ -127,7 +129,7 @@ public class PollController extends AbstractController {
             }
             dbProvider.updateStudentLearningStylePollResult(user.getId(), aktivni, reflektivni, opazajni, intuitivni, vizualni, verbalni, sekvencijalni, globalni);
             model.put("validation", "Anketa je uspješno ispunjena, zahvaljujemo!");
-            return ViewUtil.render(request, model, Path.Template.POLL_LEARNING_STYLE);
+            return ViewUtil.render(request, model, POLL_LEARNING_STYLE);
         }
         return ViewUtil.notAcceptable.handle(request, response);
     };

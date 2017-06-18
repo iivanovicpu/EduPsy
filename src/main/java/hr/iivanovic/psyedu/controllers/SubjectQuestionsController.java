@@ -7,7 +7,6 @@ import java.util.List;
 
 import hr.iivanovic.psyedu.db.Question;
 import hr.iivanovic.psyedu.db.Subject;
-import hr.iivanovic.psyedu.util.Path;
 import hr.iivanovic.psyedu.util.ViewUtil;
 import lombok.Data;
 import spark.Request;
@@ -19,6 +18,7 @@ import spark.Route;
  * @date 26.09.16.
  */
 public class SubjectQuestionsController extends AbstractController {
+    private final static String SUBJECT_ONE_TITLE_QUESTIONS = "/velocity/subjects/onetitlequestions.vm";
 
     public static Route fetchOneTitleForAddQuestions = (Request request, Response response) -> {
         if (isAuthorized(request, response)) return ViewUtil.notAllowed.handle(request, response);
@@ -33,7 +33,7 @@ public class SubjectQuestionsController extends AbstractController {
             String htmlQuestions = renderQuestions(questions, LoginController.isStudent(request), false);
             model.put("questions", htmlQuestions);
 
-            return ViewUtil.render(request, model, Path.Template.SUBJECT_ONE_TITLE_QUESTIONS);
+            return ViewUtil.render(request, model, SUBJECT_ONE_TITLE_QUESTIONS);
         }
         return ViewUtil.notAcceptable.handle(request, response);
     };
@@ -65,7 +65,7 @@ public class SubjectQuestionsController extends AbstractController {
             List<Question> questions = dbProvider.getAllQuestionsForSubjectAndTitle(subjectId);
             String htmlQuestions = renderQuestions(questions, LoginController.isStudent(request), false);
             model.put("questions", htmlQuestions);
-            return ViewUtil.render(request, model, Path.Template.SUBJECT_ONE_TITLE_QUESTIONS);
+            return ViewUtil.render(request, model, SUBJECT_ONE_TITLE_QUESTIONS);
         }
         return ViewUtil.notAcceptable.handle(request, response);
     };
@@ -82,7 +82,7 @@ public class SubjectQuestionsController extends AbstractController {
             List<Question> questions = dbProvider.getAllQuestionsForSubjectAndTitle(subjectId);
             String htmlQuestions = renderQuestions(questions, LoginController.isStudent(request), false);
             model.put("questions", htmlQuestions);
-            return ViewUtil.render(request, model, Path.Template.SUBJECT_ONE_TITLE_QUESTIONS);
+            return ViewUtil.render(request, model, SUBJECT_ONE_TITLE_QUESTIONS);
         }
         return ViewUtil.notAcceptable.handle(request, response);
     };

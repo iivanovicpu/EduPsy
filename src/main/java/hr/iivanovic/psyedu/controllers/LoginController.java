@@ -24,16 +24,17 @@ import spark.Response;
 import spark.Route;
 
 public class LoginController {
+    private final static String LOGIN = "/velocity/login/login.vm";
 
     public static final String CURRENT_USER = "currentUser";
 
-    public static boolean developmentMode = AppConfiguration.getInstance().isDevelopmentMode();
+    private static boolean developmentMode = AppConfiguration.getInstance().isDevelopmentMode();
 
     public static Route serveLoginPage = (Request request, Response response) -> {
         Map<String, Object> model = new HashMap<>();
         model.put("loggedOut", removeSessionAttrLoggedOut(request));
         model.put("loginRedirect", removeSessionAttrLoginRedirect(request));
-        return ViewUtil.render(request, model, Path.Template.LOGIN);
+        return ViewUtil.render(request, model, LOGIN);
     };
 
     public static Route handleLoginPost = (Request request, Response response) -> {
@@ -41,7 +42,7 @@ public class LoginController {
         User user = authenticate(getQueryUsername(request), getQueryPassword(request));
         if (null == user) {
             model.put("authenticationFailed", true);
-            return ViewUtil.render(request, model, Path.Template.LOGIN);
+            return ViewUtil.render(request, model, LOGIN);
         }
         model.put("authenticationSucceeded", true);
         request.session().attribute(CURRENT_USER, user);
@@ -64,7 +65,7 @@ public class LoginController {
         if(isStudent(request) && developmentMode){
             fillDebugData(user);
         }
-        return ViewUtil.render(request, model, Path.Template.LOGIN);
+        return ViewUtil.render(request, model, LOGIN);
     };
 
     private static void fillDebugData(User user){

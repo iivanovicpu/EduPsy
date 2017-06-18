@@ -78,7 +78,7 @@
                 #if($currentUser)
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <form name="logout" method="post" action="$WebPath.getLOGOUT()">
+                            <form name="logout" method="post" action="/logout/">
                                 <div>$currentUser.firstName $currentUser.lastName $currentUser.status</div>
                                 <a href="javascript:document.logout.submit()"><span class="glyphicon glyphicon-log-out"></span>&nbsp;Odjava</a>
                         </form>

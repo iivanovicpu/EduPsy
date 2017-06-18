@@ -23,7 +23,6 @@ import hr.iivanovic.psyedu.db.Subject;
 import hr.iivanovic.psyedu.db.TitleLearningStatus;
 import hr.iivanovic.psyedu.db.User;
 import hr.iivanovic.psyedu.html.HtmlParser;
-import hr.iivanovic.psyedu.util.Path;
 import hr.iivanovic.psyedu.util.ViewUtil;
 import spark.Request;
 import spark.Response;
@@ -34,6 +33,8 @@ import spark.Route;
  * @date 29.08.16.
  */
 public class SubjectsController extends AbstractController {
+    private final static String SUBJECTS_ONE = "/velocity/subjects/one.vm";
+    private final static String SUBJECT_ONE_TITLE = "/velocity/subjects/title.vm";
 
     private static HtmlParser htmlParser = HtmlParser.getInstance();
 
@@ -48,7 +49,7 @@ public class SubjectsController extends AbstractController {
             model.put("subjects", subjects);
             model.put("nextParent", subjectView.getNextParentId());
             model.put("nextChild", subjectView.getNextChildId());
-            return ViewUtil.render(request, model, Path.Template.SUBJECTS_ONE);
+            return ViewUtil.render(request, model, SUBJECTS_ONE);
         }
         return ViewUtil.notAcceptable.handle(request, response);
     };
@@ -68,7 +69,7 @@ public class SubjectsController extends AbstractController {
 
             dbProvider.logLearningStatus(currentUser.getId(), subject.getId(), TitleLearningStatus.OPENED.getId());
 
-            return ViewUtil.render(request, model, Path.Template.SUBJECT_ONE_TITLE);
+            return ViewUtil.render(request, model, SUBJECT_ONE_TITLE);
 
         }
         return ViewUtil.notAcceptable.handle(request, response);
@@ -93,20 +94,8 @@ public class SubjectsController extends AbstractController {
                 Subject subject = dbProvider.getSubject(subjectId);
                 String content = htmlParser.getOneTitleContent(AppConfiguration.getInstance().getExternalLocation() + subject.getUrl().substring(1, subject.getUrl().length()), titleId);
                 model.put("content", content);
-                return ViewUtil.render(request, model, Path.Template.SUBJECT_ONE_TITLE);
+                return ViewUtil.render(request, model, SUBJECT_ONE_TITLE);
             }
-        }
-        return ViewUtil.notAcceptable.handle(request, response);
-    };
-
-    public static Route addNewSubject = (Request request, Response response) -> {
-        if (clientAcceptsHtml(request)) {
-            HashMap<String, Object> model = new HashMap<>();
-            Subject subject = new Subject();
-            model.put("subject", subject);
-            model.put("validation", false);
-            model.put("editAllowed", LoginController.isEditAllowed(request));
-            return ViewUtil.render(request, model, Path.Template.SUBJECT_ADD);
         }
         return ViewUtil.notAcceptable.handle(request, response);
     };

@@ -14,7 +14,6 @@ import hr.iivanovic.psyedu.db.AdaptiveRule;
 import hr.iivanovic.psyedu.db.Question;
 import hr.iivanovic.psyedu.db.TitleLearningStatus;
 import hr.iivanovic.psyedu.db.User;
-import hr.iivanovic.psyedu.util.Path;
 import hr.iivanovic.psyedu.util.ViewUtil;
 import spark.Request;
 import spark.Response;
@@ -25,6 +24,7 @@ import spark.Route;
  * @date 09.10.16.
  */
 public class ExamController extends AbstractController {
+    private final static String EXAM = "/velocity/exam.vm";
 
     private static final double SUCCESSFUL_EXAM_PERCENT = 0.8;
 
@@ -38,7 +38,7 @@ public class ExamController extends AbstractController {
             Map<String, Object> model = createExamModel(request, subjectid, student, questions);
             model.put("validation", false);
             dbProvider.logLearningStatus(student.getId(), subjectid, TitleLearningStatus.OPENED_EXAM.getId());
-            return ViewUtil.render(request, model, Path.Template.EXAM);
+            return ViewUtil.render(request, model, EXAM);
         }
         return ViewUtil.notAcceptable.handle(request, response);
     };
@@ -89,7 +89,7 @@ public class ExamController extends AbstractController {
             if (success) {
                 dbProvider.logLearningStatus(student.getId(), subjectid, TitleLearningStatus.FINISHED_EXAM.getId());
             }
-            return ViewUtil.render(request, model, Path.Template.EXAM);
+            return ViewUtil.render(request, model, EXAM);
         }
         return ViewUtil.notAcceptable.handle(request, response);
     };

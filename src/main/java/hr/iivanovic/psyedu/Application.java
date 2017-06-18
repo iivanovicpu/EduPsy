@@ -4,7 +4,6 @@ import static hr.iivanovic.psyedu.controllers.LoginController.CURRENT_USER;
 import static hr.iivanovic.psyedu.util.JsonUtil.dataToJson;
 import static spark.Spark.after;
 import static spark.Spark.before;
-import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.port;
 import static spark.Spark.post;
@@ -27,7 +26,6 @@ import hr.iivanovic.psyedu.db.Model;
 import hr.iivanovic.psyedu.db.Sql2oModel;
 import hr.iivanovic.psyedu.db.User;
 import hr.iivanovic.psyedu.util.Filters;
-import hr.iivanovic.psyedu.util.Path;
 import hr.iivanovic.psyedu.util.ViewUtil;
 
 public class Application {
@@ -79,50 +77,55 @@ public class Application {
         before("*", Filters.handleLocaleChange);
 
         // Set up routes
-        get(Path.Web.INDEX, IndexController.serveIndexPage);
+        get("/index/", IndexController.serveIndexPage);
 
-        // upload todo: napravit odvnojeni controller
+        // upload todo: napravit odvojeni controller
         post("/upload/", "multipart/form-data", UploadController.uploadFile);
         get("/upload/:subjectId/", UploadController.uploadForm);
         post("/deletelink/", UploadController.deleteExternalLink);
+
         get("/onetitlequestions/:subjectid/", SubjectQuestionsController.fetchOneTitleForAddQuestions);
-        post(Path.Web.ONE_TITLE_QUESTIONS, SubjectQuestionsController.submitQuestion);
+        post("/onetitlequestions/:subjectid/", SubjectQuestionsController.submitQuestion);
         post("/deletequestion/", SubjectQuestionsController.deleteQuestion);
-        get(Path.Web.ADD_SUBJECT, SubjectsController.addNewSubject);
-        post(Path.Web.ADD_SUBJECT, AdminSubjectsController.submitAddedSubject);
-        get(Path.Web.ONE_PARENT_TITLE, SubjectsController.fetchOneTitle);
-        get(Path.Web.ONE_CHILD_TITLE, SubjectsController.fetchOneChildTitle);
-        post(Path.Web.ONE_CHILD_TITLE, SubjectsController.submitOneTitleStatus);
 
-        get(Path.Web.SUBJECTS, AdminSubjectsController.fetchAllParentSubjects);
-        get(Path.Web.EDIT_SUBJECT, AdminSubjectsController.fetchSubjectForEdit);
-        get(Path.Web.EDIT_SUBJECT_ITEM, AdminSubjectsController.editSubjectItem);
-        post(Path.Web.EDIT_SUBJECT_ITEM, AdminSubjectsController.submitEditedSubject);
+        get("/addsubject/", AdminSubjectsController.addNewSubject);
+        post("/addsubject/", AdminSubjectsController.submitAddedSubject);
 
-        get(Path.Web.EXAM, ExamController.fetchQuestionsForTitle);
-        post(Path.Web.EXAM, ExamController.submitExamQuestions);
+        get("/onetitle/:id/", SubjectsController.fetchOneTitle);
+        get("/onetitlechild/:id/", SubjectsController.fetchOneChildTitle);
+        post("/onetitlechild/:id/", SubjectsController.submitOneTitleStatus);
 
-        get(Path.Web.STUDENTS, StudentsController.fetchAllStudents);
-        get(Path.Web.ADDSTUDENT, StudentsController.addStudent);
-        post(Path.Web.ADDSTUDENT, StudentsController.submitStudent);
-        get(Path.Web.STUDENT_DETAILS, StudentsController.fetchStudentDetails);
+        get("/subjects/", AdminSubjectsController.fetchAllParentSubjects);
+        get("/edit_subject/:id/", AdminSubjectsController.fetchSubjectForEdit);
+        get("/edit_subject_item/:id/:parentId/:action/", AdminSubjectsController.editSubjectItem);
+        post("/edit_subject_item/:id/:parentId/:action/", AdminSubjectsController.submitEditedSubject);
 
-        get(Path.Web.PERSONAL_PROFILE, ProfileController.fetchPersonalProfile);
-        post(Path.Web.PERSONAL_PROFILE, ProfileController.submitPersonalProfile);
+        get("/exam/:subjectid/", ExamController.fetchQuestionsForTitle);
+        post("/exam/:subjectid/", ExamController.submitExamQuestions);
 
-        get(Path.Web.ADMIN_RULES, AdaptiveRulesController.fetchAllRulesForAdmin);
+        get("/students/", StudentsController.fetchAllStudents);
+        get( "/addstudent/", StudentsController.addStudent);
+        post("/addstudent/", StudentsController.submitStudent);
+        get("/studentdtl/:id/", StudentsController.fetchStudentDetails);
 
-        get(Path.Web.INTELLIGENCE_POLL, PollController.showPollIntelligenceType);
-        post(Path.Web.INTELLIGENCE_POLL, PollController.submitPollIntelligenceType);
+        get("/profile/", ProfileController.fetchPersonalProfile);
+        post("/profile/", ProfileController.submitPersonalProfile);
 
-        get(Path.Web.LEARNING_STYLE_POLL, PollController.showPollLearningStyle);
-        post(Path.Web.LEARNING_STYLE_POLL, PollController.submitPollLearningStyle);
+        get("/adminrules/", AdaptiveRulesController.fetchAllRulesForAdmin);
+
+        get("/intelligencepoll/", PollController.showPollIntelligenceType);
+        post("/intelligencepoll/", PollController.submitPollIntelligenceType);
+
+        get("/learningstylepoll/", PollController.showPollLearningStyle);
+        post("/learningstylepoll/", PollController.submitPollLearningStyle);
 
 //        post(Path.Web.DEBUG, DebugController.submitDebugRules);
 
-        get(Path.Web.LOGIN, LoginController.serveLoginPage);
-        post(Path.Web.LOGIN, LoginController.handleLoginPost);
-        post(Path.Web.LOGOUT, LoginController.handleLogoutPost);
+        get("/login/", LoginController.serveLoginPage);
+        post("/login/", LoginController.handleLoginPost);
+
+        post("/logout/", LoginController.handleLogoutPost);
+
         get("*", ViewUtil.notFound);
 
         //Set up after-filters (called after each get/post)

@@ -8,7 +8,6 @@ import java.util.HashMap;
 
 import hr.iivanovic.psyedu.db.IntelligenceType;
 import hr.iivanovic.psyedu.db.User;
-import hr.iivanovic.psyedu.util.Path;
 import hr.iivanovic.psyedu.util.ViewUtil;
 import spark.Request;
 import spark.Response;
@@ -19,6 +18,7 @@ import spark.Route;
  * @date 05.10.16.
  */
 public class ProfileController extends AbstractController {
+    private final static String PERSONAL_PROFILE = "/velocity/profile.vm";
 
     public static Route fetchPersonalProfile = (Request request, Response response)-> {
         LoginController.ensureUserIsLoggedIn(request, response);
@@ -36,7 +36,7 @@ public class ProfileController extends AbstractController {
         HashMap<String, Object> model = new HashMap<>();
         model.put("validation", false);
         model.put("intelligenceType", IntelligenceType.getById(user.getIntelligenceTypeId()).getDescription());
-        return ViewUtil.render(request, model, Path.Template.PERSONAL_PROFILE);
+        return ViewUtil.render(request, model, PERSONAL_PROFILE);
     }
 
     public static Route submitPersonalProfile = (Request request, Response response)-> {

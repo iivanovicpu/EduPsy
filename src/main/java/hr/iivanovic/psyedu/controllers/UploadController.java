@@ -17,7 +17,6 @@ import hr.iivanovic.psyedu.AppConfiguration;
 import hr.iivanovic.psyedu.db.ExternalLink;
 import hr.iivanovic.psyedu.db.ExternalLinkType;
 import hr.iivanovic.psyedu.db.Subject;
-import hr.iivanovic.psyedu.util.Path;
 import hr.iivanovic.psyedu.util.ViewUtil;
 import spark.Request;
 import spark.Response;
@@ -28,6 +27,7 @@ import spark.Route;
  * @date 22.05.17.
  */
 public class UploadController extends AbstractController {
+    private final static String UPLOAD = "/velocity/upload.vm";
 
     // todo: validacija
     public static Route uploadFile = (Request request, Response response) -> {
@@ -70,7 +70,7 @@ public class UploadController extends AbstractController {
             String url = request.queryParams("url");
             dbProvider.createExternalLink(new ExternalLink(0, subjectId, title, url, linkTypeId));
         }
-        return ViewUtil.render(request, createUploadModel(subjectId), Path.Template.UPLOAD);
+        return ViewUtil.render(request, createUploadModel(subjectId), UPLOAD);
     };
 
     public static Route deleteExternalLink = (Request request, Response response) -> {
@@ -79,7 +79,7 @@ public class UploadController extends AbstractController {
         int subjectId = Integer.parseInt(request.queryParams("subjectId"));
         int linkId = Integer.parseInt(request.queryParams("linkId"));
         dbProvider.deleteExternalLink(linkId);
-        return ViewUtil.render(request, createUploadModel(subjectId), Path.Template.UPLOAD);
+        return ViewUtil.render(request, createUploadModel(subjectId), UPLOAD);
     };
 
     public static Route uploadForm = (Request request, Response response) -> {
@@ -88,7 +88,7 @@ public class UploadController extends AbstractController {
         int subjectId = Integer.parseInt(request.params("subjectId"));
         if (clientAcceptsHtml(request)) {
             HashMap<String, Object> model = createUploadModel(subjectId);
-            return ViewUtil.render(request, model, Path.Template.UPLOAD);
+            return ViewUtil.render(request, model, UPLOAD);
         }
         return ViewUtil.notAcceptable.handle(request, response);
 

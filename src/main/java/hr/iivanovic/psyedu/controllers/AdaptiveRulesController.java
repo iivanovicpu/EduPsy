@@ -7,7 +7,6 @@ import java.util.Map;
 import hr.iivanovic.psyedu.db.AdaptiveRule;
 import hr.iivanovic.psyedu.db.IntelligenceTypeDb;
 import hr.iivanovic.psyedu.db.LearningStyleDb;
-import hr.iivanovic.psyedu.util.Path;
 import hr.iivanovic.psyedu.util.ViewUtil;
 import spark.Request;
 import spark.Response;
@@ -18,12 +17,14 @@ import spark.Route;
  * @date 11.10.16.
  */
 public class AdaptiveRulesController extends AbstractController {
+    private final static String ADAPTIVE_RULES_ADMIN = "/velocity/adaptiverules.vm";
+
     public static Route fetchAllRulesForAdmin = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
         if (LoginController.isEditAllowed(request)) {
 
             Map<String, Object> model = createModel();
-            return ViewUtil.render(request, model, Path.Template.ADAPTIVE_RULES_ADMIN);
+            return ViewUtil.render(request, model, ADAPTIVE_RULES_ADMIN);
 
         }
         return ViewUtil.notAcceptable.handle(request, response);

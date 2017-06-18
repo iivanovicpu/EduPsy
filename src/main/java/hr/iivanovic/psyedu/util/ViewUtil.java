@@ -16,6 +16,7 @@ import spark.Route;
 import spark.template.velocity.VelocityTemplateEngine;
 
 public class ViewUtil {
+    private static final String NOT_FOUND = "/velocity/notFound.vm";
 
     // Renders a template given a model and a request
     // The request is needed to check the user session for language settings
@@ -35,7 +36,7 @@ public class ViewUtil {
 
     public static Route notFound = (Request request, Response response) -> {
         response.status(HttpStatus.NOT_FOUND_404);
-        return render(request, new HashMap<>(), Path.Template.NOT_FOUND);
+        return render(request, new HashMap<>(), NOT_FOUND);
     };
 
     public static Route notAllowed = (Request request, Response response) -> {

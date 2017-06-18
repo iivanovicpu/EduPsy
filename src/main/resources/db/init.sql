@@ -1,4 +1,3 @@
---  todo: ukloniti drop nakon development-a
 /*
 DROP TABLE IF EXISTS USER;
 DROP TABLE IF EXISTS SUBJECT;

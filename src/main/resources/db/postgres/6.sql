@@ -7,3 +7,8 @@ CREATE TABLE IF NOT EXISTS STUDENT_SCORE (
   count              INT NOT NULL,
   success            BOOLEAN DEFAULT FALSE
 );
+
+ALTER TABLE users ADD COLUMN intelligence_verbal_points INT;
+ALTER TABLE users ADD COLUMN intelligence_not_verbal_points INT;
+ALTER TABLE users ADD COLUMN intelligence_math_logic_points INT;
+ALTER TABLE users DROP COLUMN intelligencetypeid;

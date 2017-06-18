@@ -95,6 +95,9 @@ public class Sql2oModel implements Model {
     public List<User> getAllUsers() {
         try (Connection conn = sql2o.open()) {
             List<User> users = conn.createQuery("select * from users")
+                    .addColumnMapping("intelligence_verbal_points","intelligencePointsVerbal")
+                    .addColumnMapping("intelligence_not_verbal_points","intelligencePointsNotVerbal")
+                    .addColumnMapping("intelligence_math_logic_points","intelligencePointsMathLogic")
                     .executeAndFetch(User.class);
             return users;
         }
@@ -105,6 +108,9 @@ public class Sql2oModel implements Model {
         try (Connection conn = sql2o.open()) {
             User user = conn.createQuery("select * from users where username=:username")
                     .addParameter("username", username)
+                    .addColumnMapping("intelligence_verbal_points","intelligencePointsVerbal")
+                    .addColumnMapping("intelligence_not_verbal_points","intelligencePointsNotVerbal")
+                    .addColumnMapping("intelligence_math_logic_points","intelligencePointsMathLogic")
                     .executeAndFetchFirst(User.class);
 
             return user;
@@ -309,12 +315,38 @@ public class Sql2oModel implements Model {
     }
 
     @Override
-    public void updateStudentIntelligenceType(int userId, int intelligenceTypeId) {
+    public void updateStudentIntelligenceTypePoints(int userId, int intelligencePointsVerbal, int intelligencePointsNotVerbal, int intelligencePointsMathLogic) {
         try (Connection conn = sql2o.open()) {
-            conn.createQuery("update users set intelligenceTypeId = :intelligenceTypeId, completedIntelligencePoll = TRUE where id = :id")
-                    .addParameter("intelligenceTypeId", intelligenceTypeId)
+            conn.createQuery("update users set intelligence_verbal_points = :intelligencePointsVerbal, " +
+                    "intelligence_not_verbal_points = :intelligencePointsNotVerbal, " +
+                    "intelligence_math_logic_points = :intelligencePointsMathLogic, " +
+                    "completedIntelligencePoll = TRUE where id = :id")
+                    .addParameter("intelligencePointsVerbal", intelligencePointsVerbal)
+                    .addParameter("intelligencePointsNotVerbal", intelligencePointsNotVerbal)
+                    .addParameter("intelligencePointsMathLogic", intelligencePointsMathLogic)
                     .addParameter("id", userId)
                     .executeUpdate();
+        }
+    }
+
+    @Override
+    public void decreaseIntelligenceTypePoints(int userId, IntelligenceType intelligenceType) {
+        String querySegment = null;
+        if(IntelligenceType.ML.equals(intelligenceType)){
+            querySegment = "intelligence_math_logic_points = intelligence_math_logic_points -1";
+        }
+        if(IntelligenceType.V.equals(intelligenceType)){
+            querySegment = "intelligence_verbal_points = intelligence_verbal_points -1";
+        }
+        if(IntelligenceType.NV.equals(intelligenceType)){
+            querySegment = "intelligence_not_verbal_points = intelligence_not_verbal_points -1";
+        }
+        if(null != querySegment){
+            try (Connection conn = sql2o.open()) {
+                conn.createQuery("update users set " + querySegment + " where id = :id")
+                        .addParameter("id", userId)
+                        .executeUpdate();
+            }
         }
     }
 

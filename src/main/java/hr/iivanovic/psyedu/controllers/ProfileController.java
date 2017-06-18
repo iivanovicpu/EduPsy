@@ -35,7 +35,7 @@ public class ProfileController extends AbstractController {
     private static Object createProfileModel(Request request, User user) {
         HashMap<String, Object> model = new HashMap<>();
         model.put("validation", false);
-        model.put("intelligenceType", IntelligenceType.getById(user.getIntelligenceTypeId()).getDescription());
+        model.put("intelligenceType", user.getIntelligenceType().getDescription());
         return ViewUtil.render(request, model, PERSONAL_PROFILE);
     }
 

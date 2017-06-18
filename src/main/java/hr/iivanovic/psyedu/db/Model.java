@@ -48,7 +48,9 @@ public interface Model {
 
     List<User> getAllStudents();
 
-    void updateStudentIntelligenceType(int id, int intelligenceTypeId);
+    void updateStudentIntelligenceTypePoints(int userId, int intelligencePointsVerbal, int intelligencePointsNotVerbal, int intelligencePointsMathLogic);
+
+    void decreaseIntelligenceTypePoints(int userId, IntelligenceType intelligenceType);
 
     User getUserById(int studentId);
 

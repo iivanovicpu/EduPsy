@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import hr.iivanovic.psyedu.db.AdaptiveRule;
+import hr.iivanovic.psyedu.db.IntelligenceType;
 import hr.iivanovic.psyedu.db.Question;
 import hr.iivanovic.psyedu.db.TitleLearningStatus;
 import hr.iivanovic.psyedu.db.User;
@@ -80,8 +81,10 @@ public class ExamController extends AbstractController {
             List<Question> questions = dbProvider.getAllQuestionsForSubjectAndTitle(subjectid);
             StringBuilder sb = new StringBuilder();
 
-            boolean success = validateExam(questions, questionsWithAnswers, sb, subjectid, student.getId());
-
+            // ako student ima aktivno pravilo P14 (immutable), validira se test s općom inteligencijom (ona se ne update-a)
+            IntelligenceType intelligenceType = student.hasImmutableIntelligenceTypeRule() ? IntelligenceType.O : student.getIntelligenceType();
+            boolean success = validateExam(questions, questionsWithAnswers, sb, subjectid, student.getId(), intelligenceType);
+            student.resolveIntelligenceType();
             Map<String, Object> model = createExamModel(request, subjectid, student, questions);
             model.put("validation", sb);
             model.put("success", success);
@@ -102,7 +105,7 @@ public class ExamController extends AbstractController {
         return model;
     }
 
-    private static boolean validateExam(List<Question> questions, Map<String, String> questionsWithAnswers, StringBuilder sb, int subjectId, int studentId) {
+    private static boolean validateExam(List<Question> questions, Map<String, String> questionsWithAnswers, StringBuilder sb, int subjectId, int studentId, IntelligenceType intelligenceType) {
         // ne računaj bodove za esejska pitanja todo: provjeriti
         double sumOfPoints = questions.stream().filter(question -> question.getQuestionTypeId() != ENTER_DESCRIPTIVE_ANSWER.getId()).mapToInt(Question::getPoints).sum();
         ValueHolder<Double> successPoints = new ValueHolder<>(0d);
@@ -144,16 +147,20 @@ public class ExamController extends AbstractController {
             sb.append("Bravo, ispit je uspješno riješen. Postotak: ").append(result * 100).append("%");
             sb.append("\n(").append(successPoints.getValue()).append("/").append(sumOfPoints).append(")");
         }
-        saveStudentSuccess(subjectId, studentId, result, success);
+        saveStudentSuccess(subjectId, studentId, result, success, intelligenceType);
         return success;
     }
 
-    private static void saveStudentSuccess(int subjectId, int studentId, double result, boolean success) {
+    private static void saveStudentSuccess(int subjectId, int studentId, double result, boolean success, IntelligenceType intelligenceType) {
         if (dbProvider.studentScoreExists(subjectId, studentId)) {
             // todo: provjeriti da li prepisati stari rezultat (iako je možda uspješniji ??)
             dbProvider.updateStudentScore(subjectId, studentId, result, success);
         } else {
             dbProvider.createStudentScore(subjectId, studentId, result, success);
+        }
+        if(!success){
+            // todo: update intelligenceType
+            dbProvider.decreaseIntelligenceTypePoints(studentId, intelligenceType);
         }
     }
 

@@ -1,6 +1,5 @@
 package hr.iivanovic.psyedu.db;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,7 +22,6 @@ public class User {
     private String email;
     private String status;
     private String color;
-    private int intelligenceTypeId;
     private int learningStyleId;
     private boolean completedLearningStylePoll;
     private boolean completedIntelligencePoll;
@@ -37,6 +35,10 @@ public class User {
     private int lsPointsIntuitive;
     private int lsPointsSensor;
 
+    private int intelligencePointsVerbal;
+    private int intelligencePointsNotVerbal;
+    private int intelligencePointsMathLogic;
+
     private List<LearningStyle> learningStyles;
     private IntelligenceType intelligenceType;
 
@@ -48,6 +50,19 @@ public class User {
         userRules = new LinkedList<>();
         learningStyles.forEach(learningStyle -> userRules.addAll(LearningStyleRule.findRulesByLearningStyle(learningStyle)));
         userRules.addAll(IntelligenceTypeRule.findRulesByIntelligenceType(intelligenceType));
+    }
+
+    public void resolveIntelligenceType(){
+        if(!completedIntelligencePoll){
+            intelligenceType = IntelligenceType.O;
+        } else if (intelligencePointsVerbal > intelligencePointsNotVerbal && intelligencePointsVerbal > intelligencePointsMathLogic){
+            intelligenceType = IntelligenceType.V;
+        } else if (intelligencePointsNotVerbal > intelligencePointsVerbal && intelligencePointsNotVerbal > intelligencePointsMathLogic){
+            intelligenceType = IntelligenceType.NV;
+        }
+        if (intelligencePointsMathLogic > intelligencePointsVerbal && intelligencePointsMathLogic > intelligencePointsNotVerbal) {
+            intelligenceType = IntelligenceType.ML;
+        }
     }
 
     public List<AdaptiveRule> getUserRules() {
@@ -64,6 +79,10 @@ public class User {
             userRules.add(adaptiveRule);
         }
         log.info("debug: adaptive rule {} added to user rules", adaptiveRule);
+    }
+
+    public boolean hasImmutableIntelligenceTypeRule(){
+        return userRules.stream().anyMatch(AdaptiveRule.P14_IMMUTABLE_LEARNING_STYLE_VALUES::equals);
     }
 
 }

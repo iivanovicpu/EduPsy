@@ -40,7 +40,8 @@ public class StudentsController extends AbstractController {
             model.put("validation", false);
             model.put("student", student);
             model.put("styles", LearningStyle.values());
-            model.put("intelligenceType", IntelligenceType.getById(student.getIntelligenceTypeId()).getDescription());
+            student.resolveIntelligenceType();
+            model.put("intelligenceType", student.getIntelligenceType().getDescription());
             return ViewUtil.render(request, model, STUDENT_DETAILS);
         }
         return ViewUtil.notAcceptable.handle(request, response);

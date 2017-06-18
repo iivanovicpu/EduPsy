@@ -103,7 +103,7 @@ public class LoginController {
             styles.add(LearningStyle.STYLE_4_NIS);
         }
         user.setLearningStyles(styles);
-        user.setIntelligenceType(IntelligenceType.getById(user.getIntelligenceTypeId()));
+        user.resolveIntelligenceType();
         user.fillUserAdaptiveRules();
     }
 

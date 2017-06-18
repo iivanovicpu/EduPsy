@@ -58,17 +58,8 @@ public class PollController extends AbstractController {
                     }
                 }
             }
-            int intelligenceTypeId = 0;
-            if (verbal > nonVerbal && verbal > mathLogic) {
-                intelligenceTypeId = IntelligenceType.V.getId();
-            }
-            if (nonVerbal > verbal && nonVerbal > mathLogic) {
-                intelligenceTypeId = IntelligenceType.NV.getId();
-            }
-            if (mathLogic > verbal && mathLogic > nonVerbal) {
-                intelligenceTypeId = IntelligenceType.ML.getId();
-            }
-            dbProvider.updateStudentIntelligenceType(user.getId(), intelligenceTypeId);
+            dbProvider.updateStudentIntelligenceTypePoints(user.getId(), verbal, nonVerbal, mathLogic);
+            user.resolveIntelligenceType();
             model.put("validation", "Anketa je uspješno ispunjena, zahvaljujemo!");
             return ViewUtil.render(request, model, POLL_INTELLIGENCE_TYPE);
         }

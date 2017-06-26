@@ -21,6 +21,17 @@
                 #if($subject.getLearningStatus().id == 4)
                     <span class="glyphicon glyphicon-ok" title="završeno"></span>
                 #end
+                #if($subject.isGroupedQuestions() &&
+                    ($subject.isLinkAllowed() || $subject.id == $nextParent || $subject.id == $nextChild || $subject.subjectPositionId == 1))
+                    #if($subject.getLearningStatus().id < 4)
+                        <button type="submit" formaction="/exam/$subject.id/" formmethod="get" title="ispitna pitanja" class="btn btn-default">
+                            <span class="glyphicon glyphicon-question-sign" title="ispitna pitanja"></span>Otvori ispit</button>
+                    #else
+                        &nbsp;&nbsp;
+                        <button type="submit" formaction="/exam/$subject.id/" formmethod="get" title="ispitna pitanja" class="btn btn-default">
+                            <span class="glyphicon glyphicon-question-sign" title="ispitna pitanja"></span>Otvori ispit ponovno</button>
+                    #end
+                #end
 
             </div>
         </div>

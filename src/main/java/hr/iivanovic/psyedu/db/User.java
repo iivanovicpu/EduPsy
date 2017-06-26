@@ -59,8 +59,7 @@ public class User {
             intelligenceType = IntelligenceType.V;
         } else if (intelligencePointsNotVerbal > intelligencePointsVerbal && intelligencePointsNotVerbal > intelligencePointsMathLogic){
             intelligenceType = IntelligenceType.NV;
-        }
-        if (intelligencePointsMathLogic > intelligencePointsVerbal && intelligencePointsMathLogic > intelligencePointsNotVerbal) {
+        } else if (intelligencePointsMathLogic > intelligencePointsVerbal && intelligencePointsMathLogic > intelligencePointsNotVerbal) {
             intelligenceType = IntelligenceType.ML;
         }
     }
@@ -83,6 +82,18 @@ public class User {
 
     public boolean hasImmutableIntelligenceTypeRule(){
         return userRules.stream().anyMatch(AdaptiveRule.P14_IMMUTABLE_LEARNING_STYLE_VALUES::equals);
+    }
+
+    public boolean groupQuestions(){
+        return getUserRules().stream().anyMatch(AdaptiveRule.P7_QUESTIONS_GROUPING::equals);
+    }
+
+    public boolean essayQuestions(){
+        return getUserRules().stream().anyMatch(AdaptiveRule.P9_QUESTIONS_HOW_WHAT_WHY::equals);
+    }
+
+    public boolean shortQuestions(){
+        return getUserRules().stream().anyMatch(AdaptiveRule.P11_SHORT_QUESTIONS::equals);
     }
 
 }

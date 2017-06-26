@@ -28,7 +28,7 @@ public interface Model {
 
     void deleteQuestion(int questionId);
 
-    List<Question> getAllQuestionsForSubjectAndTitle(int subjectId);
+    List<Question> getAllQuestionsForSubject(int subjectId, boolean grouped);
 
     List<ExternalLink> getAllExternalLinksBySubjectId(int subjectId);
 

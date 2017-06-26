@@ -33,9 +33,8 @@ public class ExamController extends AbstractController {
         LoginController.ensureUserIsLoggedIn(request, response);
         int subjectid = Integer.parseInt(request.params("subjectid"));
         User student = LoginController.getCurrentUser(request);
-
         if (clientAcceptsHtml(request)) {
-            List<Question> questions = dbProvider.getAllQuestionsForSubjectAndTitle(subjectid);
+            List<Question> questions = dbProvider.getAllQuestionsForSubject(subjectid, student.groupQuestions());
             Map<String, Object> model = createExamModel(request, subjectid, student, questions);
             model.put("validation", false);
             dbProvider.logLearningStatus(student.getId(), subjectid, TitleLearningStatus.OPENED_EXAM.getId());
@@ -76,14 +75,13 @@ public class ExamController extends AbstractController {
             Map<String, String> questionsWithAnswers = new HashMap<>();
             for (String param : request.queryParams()) {
                 questionsWithAnswers.put(param, request.queryParams(param));
-                System.out.println(param + " " + request.queryParams(param));
             }
-            List<Question> questions = dbProvider.getAllQuestionsForSubjectAndTitle(subjectid);
+            List<Question> questions = dbProvider.getAllQuestionsForSubject(subjectid, student.groupQuestions());
             StringBuilder sb = new StringBuilder();
 
             // ako student ima aktivno pravilo P14 (immutable), validira se test s općom inteligencijom (ona se ne update-a)
             IntelligenceType intelligenceType = student.hasImmutableIntelligenceTypeRule() ? IntelligenceType.O : student.getIntelligenceType();
-            boolean success = validateExam(questions, questionsWithAnswers, sb, subjectid, student.getId(), intelligenceType);
+            boolean success = validateExam(questions, questionsWithAnswers, sb, subjectid, student, intelligenceType);
             student.resolveIntelligenceType();
             Map<String, Object> model = createExamModel(request, subjectid, student, questions);
             model.put("validation", sb);
@@ -105,9 +103,17 @@ public class ExamController extends AbstractController {
         return model;
     }
 
-    private static boolean validateExam(List<Question> questions, Map<String, String> questionsWithAnswers, StringBuilder sb, int subjectId, int studentId, IntelligenceType intelligenceType) {
+    private static boolean validateExam(List<Question> questions, Map<String, String> questionsWithAnswers, StringBuilder sb, int subjectId, User student, IntelligenceType intelligenceType) {
         // ne računaj bodove za esejska pitanja todo: provjeriti
-        double sumOfPoints = questions.stream().filter(question -> question.getQuestionTypeId() != ENTER_DESCRIPTIVE_ANSWER.getId()).mapToInt(Question::getPoints).sum();
+        boolean shortQuestions = student.shortQuestions();
+        double sumOfPoints = questions.stream()
+                .filter(question -> question.getQuestionTypeId() != ENTER_DESCRIPTIVE_ANSWER.getId())
+                .filter(question -> question.getQuestionTypeId() == QuestionType.ENTER_SHORT_ANSWER.getId() && shortQuestions)
+                .filter(question -> question.getQuestionTypeId() <= 2 && !shortQuestions)
+                .mapToInt(Question::getPoints).sum();
+        // todo: ovdje isfiltrirati i pitanja koja nisu prikazana po pravilima
+        // todo: ako je max broj mogućih bodova 0 - success
+        System.out.println("ukupni broj bodova: " + sumOfPoints);
         ValueHolder<Double> successPoints = new ValueHolder<>(0d);
         questionsWithAnswers.forEach((key, answer) -> {
             String questionHtmlId = key.split("_")[0];
@@ -147,7 +153,7 @@ public class ExamController extends AbstractController {
             sb.append("Bravo, ispit je uspješno riješen. Postotak: ").append(result * 100).append("%");
             sb.append("\n(").append(successPoints.getValue()).append("/").append(sumOfPoints).append(")");
         }
-        saveStudentSuccess(subjectId, studentId, result, success, intelligenceType);
+        saveStudentSuccess(subjectId, student.getId(), result, success, intelligenceType);
         return success;
     }
 

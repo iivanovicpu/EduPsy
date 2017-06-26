@@ -220,11 +220,24 @@ public class Sql2oModel implements Model {
     }
 
     @Override
-    public List<Question> getAllQuestionsForSubjectAndTitle(int subjectId) {
-        try (Connection conn = sql2o.open()) {
-            return conn.createQuery("select * from questions where subjectId=:subjectId")
-                    .addParameter("subjectId", subjectId)
-                    .executeAndFetch(Question.class);
+    public List<Question> getAllQuestionsForSubject(int subjectId, boolean grouped) {
+        if(grouped){
+            List<Question> groupedQuestions = new LinkedList<>();
+            List<Integer> subjectIds = getSubjectsByParentSubjectId(subjectId).stream().map(Subject::getId).collect(Collectors.toList());
+            try (Connection conn = sql2o.open()) {
+                for (Integer subId : subjectIds) {
+                    groupedQuestions.addAll(conn.createQuery("select * from questions where subjectId=:subjectId")
+                            .addParameter("subjectId", subId)
+                            .executeAndFetch(Question.class));
+                }
+            }
+            return groupedQuestions;
+        } else {
+            try (Connection conn = sql2o.open()) {
+                return conn.createQuery("select * from questions where subjectId=:subjectId")
+                        .addParameter("subjectId", subjectId)
+                        .executeAndFetch(Question.class);
+            }
         }
     }
 

@@ -35,6 +35,7 @@ public class SubjectView extends Subject {
 
     public SubjectView(Subject sub, User student) {
         super(sub.getId(), sub.getTitle(), sub.getKeywords(), sub.getUrl(), sub.getSubjectId(), sub.getParentSubjectId(), sub.getSubjectLevelId(), sub.getOrder(), sub.getContent(), sub.getAdditionalContent(), sub.getSummaryAndGoals(), sub.getSubjectPositionId(), sub.getSubjectPosition());
+        setSubjectPosition(SubjectPosition.getById(getSubjectPositionId()));
         this.student = student;
     }
 
@@ -75,6 +76,11 @@ public class SubjectView extends Subject {
             return sb.toString();
         }
         return "";
+    }
+
+    public boolean isGroupedQuestions(){
+        return SubjectPosition.CJELINA.equals(getSubjectPosition())
+        && getAdaptiveRules().stream().anyMatch(adaptiveRule -> adaptiveRule.equals(AdaptiveRule.P7_QUESTIONS_GROUPING));
     }
 
     public boolean isHighlightNeeded() {
@@ -236,12 +242,12 @@ public class SubjectView extends Subject {
     }
 
     public boolean questionsInContent() {
-        List<Question> questions = dbProvider.getAllQuestionsForSubjectAndTitle(getId());
+        List<Question> questions = dbProvider.getAllQuestionsForSubject(getId(), false);
         return questions.size() > 0 && getAdaptiveRules().stream().anyMatch(adaptiveRule -> adaptiveRule.equals(AdaptiveRule.P13_QUESTIONS_IN_CONTENT));
     }
 
     public List<Question> getQuestions() {
-        return dbProvider.getAllQuestionsForSubjectAndTitle(getId());
+        return dbProvider.getAllQuestionsForSubject(getId(), false);
     }
 
     public int getNextParentId() {

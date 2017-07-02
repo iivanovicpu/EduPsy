@@ -119,8 +119,6 @@ public class Application {
         get("/learningstylepoll/", PollController.showPollLearningStyle);
         post("/learningstylepoll/", PollController.submitPollLearningStyle);
 
-//        post(Path.Web.DEBUG, DebugController.submitDebugRules);
-
         get("/login/", LoginController.serveLoginPage);
         post("/login/", LoginController.handleLoginPost);
 

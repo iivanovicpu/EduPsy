@@ -2,6 +2,8 @@ package hr.iivanovic.psyedu.controllers;
 
 import static hr.iivanovic.psyedu.controllers.QuestionType.ENTER_DESCRIPTIVE_ANSWER;
 import static hr.iivanovic.psyedu.controllers.QuestionType.ENTER_SHORT_ANSWER;
+import static hr.iivanovic.psyedu.db.Question.hasDescriptiveAnswer;
+import static hr.iivanovic.psyedu.db.Question.hasShortAnswer;
 import static hr.iivanovic.psyedu.util.RequestUtil.clientAcceptsHtml;
 
 import java.util.HashMap;
@@ -49,15 +51,15 @@ public class ExamController extends AbstractController {
         boolean askDescriptive = student.getUserRules().stream().anyMatch(AdaptiveRule.P9_QUESTIONS_HOW_WHAT_WHY::equals);
         boolean askShort = student.getUserRules().stream().anyMatch(AdaptiveRule.P11_SHORT_QUESTIONS::equals);
         List<Question> filteredQuestions = new LinkedList<>();
-        if(askDescriptive){
-            filteredQuestions.addAll(questions.stream().filter(question -> question.getQuestionTypeId() == QuestionType.ENTER_DESCRIPTIVE_ANSWER.getId()).collect(Collectors.toList()));
-            if(filteredQuestions.size() > 0 && !askShort){
+        if (askDescriptive) {
+            filteredQuestions.addAll(questions.stream().filter(hasDescriptiveAnswer()).collect(Collectors.toList()));
+            if (filteredQuestions.size() > 0 && !askShort) {
                 return renderQuestions(filteredQuestions, LoginController.isStudent(request), writeSummary);
             }
         }
-        if (askShort){
-            filteredQuestions.addAll(questions.stream().filter(question -> question.getQuestionTypeId() == QuestionType.ENTER_SHORT_ANSWER.getId()).collect(Collectors.toList()));
-            if(filteredQuestions.size() > 0){
+        if (askShort) {
+            filteredQuestions.addAll(questions.stream().filter(hasShortAnswer()).collect(Collectors.toList()));
+            if (filteredQuestions.size() > 0) {
                 return renderQuestions(filteredQuestions, LoginController.isStudent(request), writeSummary);
             }
         }
@@ -107,7 +109,7 @@ public class ExamController extends AbstractController {
         // ne računaj bodove za esejska pitanja todo: provjeriti
         boolean shortQuestions = student.shortQuestions();
         double sumOfPoints = questions.stream()
-                .filter(question -> question.getQuestionTypeId() != ENTER_DESCRIPTIVE_ANSWER.getId())
+                .filter(hasDescriptiveAnswer())
                 .filter(question -> question.getQuestionTypeId() == QuestionType.ENTER_SHORT_ANSWER.getId() && shortQuestions)
                 .filter(question -> question.getQuestionTypeId() <= 2 && !shortQuestions)
                 .mapToInt(Question::getPoints).sum();
@@ -164,7 +166,7 @@ public class ExamController extends AbstractController {
         } else {
             dbProvider.createStudentScore(subjectId, studentId, result, success);
         }
-        if(!success){
+        if (!success) {
             // todo: update intelligenceType
             dbProvider.decreaseIntelligenceTypePoints(studentId, intelligenceType);
         }

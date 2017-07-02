@@ -1,5 +1,8 @@
 package hr.iivanovic.psyedu.db;
 
+import java.util.function.Predicate;
+
+import hr.iivanovic.psyedu.controllers.QuestionType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -27,6 +30,13 @@ public class Question {
         this.questionTypeId = questionTypeId;
     }
 
+    public static Predicate<Question> hasDescriptiveAnswer(){
+        return question -> question.getQuestionTypeId() == QuestionType.ENTER_DESCRIPTIVE_ANSWER.getId();
+    }
+
+    public static Predicate<Question> hasShortAnswer(){
+        return question -> question.getQuestionTypeId() == QuestionType.ENTER_SHORT_ANSWER.getId();
+    }
 
 
 }

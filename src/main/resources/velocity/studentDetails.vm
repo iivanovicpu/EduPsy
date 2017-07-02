@@ -50,6 +50,25 @@
             </div>
         </div>
 
+        <h3>Raspodjela bodova prema tipu inteligencije</h3>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Verbalni</th>
+                    <th>Neverbalni</th>
+                    <th>Matematičko-logički</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>$student.intelligencePointsVerbal</td>
+                    <td>$student.intelligencePointsNotVerbal</td>
+                    <td>$student.intelligencePointsMathLogic</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
         <h3>Raspodjela bodova stilova učenja</h3>
         <div class="table-responsive">
             <table class="table" id="table">

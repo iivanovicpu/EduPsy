@@ -9,10 +9,6 @@ public class RequestUtil {
         return request.queryParams("locale");
     }
 
-    public static String getParamIsbn(Request request) {
-        return request.params("isbn");
-    }
-
     public static String getQueryUsername(Request request) {
         return request.queryParams("username");
     }

@@ -96,4 +96,7 @@ public class User {
         return getUserRules().stream().anyMatch(AdaptiveRule.P11_SHORT_QUESTIONS::equals);
     }
 
+    public String getIntelligenceTypeDescription(){
+        return null != getIntelligenceType() ? getIntelligenceType().getDescription() : "";
+    }
 }

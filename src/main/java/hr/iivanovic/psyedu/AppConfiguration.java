@@ -18,8 +18,6 @@ public class AppConfiguration {
 
     private static final String EXTERNAL_LOCATION = "external.location";
 
-    private static final String H2_DB_FILE_LOCATION = "h2.db.file.location";
-
     private static final String DEVELOPMENT_MODE = "development.mode";
 
     private static final String DATABASE_URL = "database.url";
@@ -56,10 +54,6 @@ public class AppConfiguration {
 
     public String getExternalLocation() {
         return config.getProperty(EXTERNAL_LOCATION);
-    }
-
-    public String getH2DbFileLocation() {
-        return config.getProperty(H2_DB_FILE_LOCATION);
     }
 
     public String getDatabaseName() {

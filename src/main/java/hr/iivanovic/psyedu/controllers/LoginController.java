@@ -15,7 +15,6 @@ import java.util.Map;
 
 import hr.iivanovic.psyedu.AppConfiguration;
 import hr.iivanovic.psyedu.db.AdaptiveRule;
-import hr.iivanovic.psyedu.db.IntelligenceType;
 import hr.iivanovic.psyedu.db.User;
 import hr.iivanovic.psyedu.util.Path;
 import hr.iivanovic.psyedu.util.ViewUtil;
@@ -46,9 +45,6 @@ public class LoginController {
         }
         model.put("authenticationSucceeded", true);
         request.session().attribute(CURRENT_USER, user);
-
-        //todo: uvjetovati postavkom iz config-a
-        boolean debug = true;
 
         if (isStudent(request)) {
             fillLearningStylesAndIntelligence(user);

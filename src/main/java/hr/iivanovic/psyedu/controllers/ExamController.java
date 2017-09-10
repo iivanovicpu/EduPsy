@@ -1,6 +1,5 @@
 package hr.iivanovic.psyedu.controllers;
 
-import static hr.iivanovic.psyedu.controllers.QuestionType.ENTER_DESCRIPTIVE_ANSWER;
 import static hr.iivanovic.psyedu.controllers.QuestionType.ENTER_SHORT_ANSWER;
 import static hr.iivanovic.psyedu.db.Question.hasDescriptiveAnswer;
 import static hr.iivanovic.psyedu.db.Question.hasShortAnswer;
@@ -136,9 +135,6 @@ public class ExamController extends AbstractController {
                         }
                     }
                 }
-                if (dbQuestion.getQuestionTypeId() == ENTER_DESCRIPTIVE_ANSWER.getId()) {
-                    // todo: provjeriti što s ovime
-                }
                 if (dbQuestion.getQuestionTypeId() == ENTER_SHORT_ANSWER.getId()) {
                     match = dbQuestion.getCorrectAnswers().toLowerCase().trim().contains(answer.toLowerCase().trim());
                     System.out.println(answer + " " + match);
@@ -148,7 +144,7 @@ public class ExamController extends AbstractController {
                 }
             }
         });
-        double result = successPoints.getValue() / sumOfPoints; // todo: dijeljenje s nulom ?
+        double result = successPoints.getValue() > 0d ? successPoints.getValue() / sumOfPoints : 0d;
         boolean success = SUCCESSFUL_EXAM_PERCENT <= result;
         if (!success) {
             sb.append("Nažalost, ispit nije uspješno riješen. Postotak: ").append(result * 100).append("%");

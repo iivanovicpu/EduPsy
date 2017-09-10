@@ -153,6 +153,7 @@ public class ExamController extends AbstractController {
         if (!success) {
             sb.append("Nažalost, ispit nije uspješno riješen. Postotak: ").append(result * 100).append("%");
             sb.append("\n(").append(successPoints.getValue()).append("/").append(sumOfPoints).append(")");
+            sb.append("<p>").append(dbProvider.getRandomMotivationalMessage()).append("</p>");
         } else {
             sb.append("Bravo, ispit je uspješno riješen. Postotak: ").append(result * 100).append("%");
             sb.append("\n(").append(successPoints.getValue()).append("/").append(sumOfPoints).append(")");

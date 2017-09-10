@@ -12,6 +12,8 @@ public interface Model {
 
     List<User> getAllUsers();
 
+    String getRandomMotivationalMessage();
+
     User getUserByUsername(String username);
 
     List<Subject> getAllSubjects();

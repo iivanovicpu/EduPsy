@@ -104,6 +104,14 @@ public class Sql2oModel implements Model {
     }
 
     @Override
+    public String getRandomMotivationalMessage() {
+        try (Connection conn = sql2o.open()) {
+            return conn.createQuery("SELECT message FROM motivational_messages OFFSET floor(random()*(select count(*) from motivational_messages)) LIMIT 1;")
+                    .executeAndFetchFirst(String.class);
+        }
+    }
+
+    @Override
     public User getUserByUsername(String username) {
         try (Connection conn = sql2o.open()) {
             User user = conn.createQuery("select * from users where username=:username")

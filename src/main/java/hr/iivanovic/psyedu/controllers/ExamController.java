@@ -37,7 +37,7 @@ public class ExamController extends AbstractController {
         User student = LoginController.getCurrentUser(request);
         if (clientAcceptsHtml(request)) {
             List<Question> questions = dbProvider.getAllQuestionsForSubject(subjectid, student.groupQuestions());
-            Map<String, Object> model = createExamModel(request, subjectid, student, questions);
+            Map<String, Object> model = createExamModel(request, subjectid, student, questions, null);
             model.put("validation", false);
             dbProvider.logLearningStatus(student.getId(), subjectid, TitleLearningStatus.OPENED_EXAM.getId());
             return ViewUtil.render(request, model, EXAM);
@@ -45,7 +45,7 @@ public class ExamController extends AbstractController {
         return ViewUtil.notAcceptable.handle(request, response);
     };
 
-    private static String createHtmlQuestions(Request request, User student, List<Question> questions) {
+    private static String createHtmlQuestions(Request request, User student, List<Question> questions, Map<String, String> questionsWithAnswers) {
         String htmlQuestions = "ispitna pitanja za ovo gradivo nisu unesena !";
         boolean writeSummary = student.getUserRules().stream().anyMatch(AdaptiveRule.P10_ASK_FOR_SUMMARY::equals);
         boolean askDescriptive = student.getUserRules().stream().anyMatch(AdaptiveRule.P9_QUESTIONS_HOW_WHAT_WHY::equals);
@@ -54,17 +54,17 @@ public class ExamController extends AbstractController {
         if (askDescriptive) {
             filteredQuestions.addAll(questions.stream().filter(hasDescriptiveAnswer()).collect(Collectors.toList()));
             if (filteredQuestions.size() > 0 && !askShort) {
-                return renderQuestions(filteredQuestions, LoginController.isStudent(request), writeSummary);
+                return renderQuestions(filteredQuestions, LoginController.isStudent(request), writeSummary, questionsWithAnswers);
             }
         }
         if (askShort) {
             filteredQuestions.addAll(questions.stream().filter(hasShortAnswer()).collect(Collectors.toList()));
             if (filteredQuestions.size() > 0) {
-                return renderQuestions(filteredQuestions, LoginController.isStudent(request), writeSummary);
+                return renderQuestions(filteredQuestions, LoginController.isStudent(request), writeSummary, questionsWithAnswers);
             }
         }
         if (questions.size() > 0) {
-            htmlQuestions = renderQuestions(questions, LoginController.isStudent(request), writeSummary);
+            htmlQuestions = renderQuestions(questions, LoginController.isStudent(request), writeSummary,questionsWithAnswers);
         }
         return htmlQuestions;
     }
@@ -76,7 +76,9 @@ public class ExamController extends AbstractController {
         if (clientAcceptsHtml(request)) {
             Map<String, String> questionsWithAnswers = new HashMap<>();
             for (String param : request.queryParams()) {
-                questionsWithAnswers.put(param, request.queryParams(param));
+                if(param.matches("\\d+?_\\d+?")) {
+                    questionsWithAnswers.put(param, request.queryParams(param));
+                }
             }
             List<Question> questions = dbProvider.getAllQuestionsForSubject(subjectid, student.groupQuestions());
             StringBuilder sb = new StringBuilder();
@@ -85,7 +87,7 @@ public class ExamController extends AbstractController {
             IntelligenceType intelligenceType = student.hasImmutableIntelligenceTypeRule() ? IntelligenceType.O : student.getIntelligenceType();
             boolean success = validateExam(questions, questionsWithAnswers, sb, subjectid, student, intelligenceType);
             student.resolveIntelligenceType();
-            Map<String, Object> model = createExamModel(request, subjectid, student, questions);
+            Map<String, Object> model = createExamModel(request, subjectid, student, questions, questionsWithAnswers);
             model.put("validation", sb);
             model.put("success", success);
 
@@ -97,9 +99,9 @@ public class ExamController extends AbstractController {
         return ViewUtil.notAcceptable.handle(request, response);
     };
 
-    private static Map<String, Object> createExamModel(Request request, int subjectid, User student, List<Question> questions) {
+    private static Map<String, Object> createExamModel(Request request, int subjectid, User student, List<Question> questions, Map<String, String> questionsWithAnswers) {
         Map<String, Object> model = new HashMap<>();
-        String htmlQuestions = createHtmlQuestions(request, student, questions);
+        String htmlQuestions = createHtmlQuestions(request, student, questions, questionsWithAnswers);
         model.put("questions", htmlQuestions);
         model.put("subjectId", subjectid);
         return model;
@@ -146,7 +148,7 @@ public class ExamController extends AbstractController {
                 }
             }
         });
-        double result = successPoints.getValue() / sumOfPoints;
+        double result = successPoints.getValue() / sumOfPoints; // todo: dijeljenje s nulom ?
         boolean success = SUCCESSFUL_EXAM_PERCENT <= result;
         if (!success) {
             sb.append("Nažalost, ispit nije uspješno riješen. Postotak: ").append(result * 100).append("%");

@@ -112,7 +112,6 @@ public class Sql2oModel implements Model {
                     .addColumnMapping("intelligence_not_verbal_points","intelligencePointsNotVerbal")
                     .addColumnMapping("intelligence_math_logic_points","intelligencePointsMathLogic")
                     .executeAndFetchFirst(User.class);
-
             return user;
         }
     }

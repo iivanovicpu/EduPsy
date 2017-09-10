@@ -114,7 +114,7 @@
                 #end
                 <br>
                 Vrsta inteligencije:<br>
-                $currentUser.intelligenceType.description
+                $!currentUser.intelligenceType.description
                 #if($currentUser.debug)
                     <hr>
                     <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#debug" aria-expanded="false">Testiranje pravila</button>

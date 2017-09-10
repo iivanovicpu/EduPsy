@@ -55,11 +55,11 @@ public class User {
     public void resolveIntelligenceType(){
         if(!completedIntelligencePoll){
             intelligenceType = IntelligenceType.O;
-        } else if (intelligencePointsVerbal > intelligencePointsNotVerbal && intelligencePointsVerbal > intelligencePointsMathLogic){
+        } else if (intelligencePointsVerbal >= intelligencePointsNotVerbal && intelligencePointsVerbal >= intelligencePointsMathLogic){
             intelligenceType = IntelligenceType.V;
-        } else if (intelligencePointsNotVerbal > intelligencePointsVerbal && intelligencePointsNotVerbal > intelligencePointsMathLogic){
+        } else if (intelligencePointsNotVerbal >= intelligencePointsVerbal && intelligencePointsNotVerbal >= intelligencePointsMathLogic){
             intelligenceType = IntelligenceType.NV;
-        } else if (intelligencePointsMathLogic > intelligencePointsVerbal && intelligencePointsMathLogic > intelligencePointsNotVerbal) {
+        } else if (intelligencePointsMathLogic >= intelligencePointsVerbal && intelligencePointsMathLogic >= intelligencePointsNotVerbal) {
             intelligenceType = IntelligenceType.ML;
         }
     }

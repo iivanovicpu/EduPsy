@@ -1,6 +1,8 @@
 package hr.iivanovic.psyedu.controllers;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import hr.iivanovic.psyedu.db.Model;
 import hr.iivanovic.psyedu.db.Question;
@@ -15,7 +17,7 @@ import spark.Response;
 public class AbstractController {
     public static Model dbProvider = Sql2oModel.getInstance();
 
-    protected static String renderQuestions(List<Question> questions, boolean isStudent, boolean writeSummary) {
+    protected static String renderQuestions(List<Question> questions, boolean isStudent, boolean writeSummary, Map<String, String> questionsWithAnswers) {
         StringBuilder sb = new StringBuilder();
         if (writeSummary) {
             renderWriteSummary(sb);
@@ -24,6 +26,19 @@ public class AbstractController {
             sb.append("<div class=\"form-group\">");
             sb.append("<hr>").append(question.getQuestion());
             QuestionType questionType = QuestionType.getById(question.getQuestionTypeId());
+
+            if (Objects.nonNull(questionsWithAnswers)) {
+                questionsWithAnswers.forEach((key, value) -> {
+                    String[] split = key.split("_");
+                    String s = split.length > 0 ? split[0] : null;
+                    if(null != s) {
+                        int k = Integer.parseInt(s);
+                        if (k == question.getId()) {
+                            sb.append("<p style=\"padding: 5px; color: grey; border: 1px solid gray;\">").append(value).append("</p>");
+                        }
+                    }
+                });
+            }
 
             if (QuestionType.SELECT_MULTIPLE_ANSWERS.equals(questionType)) {
                 renderCheckBoxesAnswer(sb, question);

@@ -30,7 +30,7 @@ public class SubjectQuestionsController extends AbstractController {
         if (clientAcceptsHtml(request)) {
             HashMap<String, Object> model = createModel(subjectId);
             List<Question> questions = dbProvider.getAllQuestionsForSubject(subjectId, false);
-            String htmlQuestions = renderQuestions(questions, LoginController.isStudent(request), false);
+            String htmlQuestions = renderQuestions(questions, LoginController.isStudent(request), false, null);
             model.put("questions", htmlQuestions);
 
             return ViewUtil.render(request, model, SUBJECT_ONE_TITLE_QUESTIONS);
@@ -63,7 +63,7 @@ public class SubjectQuestionsController extends AbstractController {
             }
             model.put("validation", validationResult.getValidationMessage());
             List<Question> questions = dbProvider.getAllQuestionsForSubject(subjectId, false);
-            String htmlQuestions = renderQuestions(questions, LoginController.isStudent(request), false);
+            String htmlQuestions = renderQuestions(questions, LoginController.isStudent(request), false, null);
             model.put("questions", htmlQuestions);
             return ViewUtil.render(request, model, SUBJECT_ONE_TITLE_QUESTIONS);
         }
@@ -80,7 +80,7 @@ public class SubjectQuestionsController extends AbstractController {
             HashMap<String, Object> model = createModel(subjectId);
             model.put("validation", "zapis uspješno obrisan!");
             List<Question> questions = dbProvider.getAllQuestionsForSubject(subjectId, false);
-            String htmlQuestions = renderQuestions(questions, LoginController.isStudent(request), false);
+            String htmlQuestions = renderQuestions(questions, LoginController.isStudent(request), false, null);
             model.put("questions", htmlQuestions);
             return ViewUtil.render(request, model, SUBJECT_ONE_TITLE_QUESTIONS);
         }

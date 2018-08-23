@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>submit example</title>
+    <script src="/js/jquery.js"></script>
+</head>
+<body>
+<form id="657_657" name="657_657">
+
+    <input type="text" id="widgetFieldInput">
+
+    <!--todo: svako pitanje treba imati svoj form i skriptu-->
+    <script>
+        $('#657_657').change(function () {
+            $.ajax({
+                data: $('#657_657').serialize(),
+                type: "GET",
+                url: "/api/subjects/",
+                success: function(result) {
+                    alert('hello\n' + result );
+                    //$('#657_657').submit();
+                }
+            });
+        });
+    </script>
+    <!--<input name="select_date" type="submit"/>-->
+</form>
+
+<script type="application/javascript">
+
+    $(document).ready(function () {
+    });
+</script>
+
+</body>
+</html>

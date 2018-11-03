@@ -1,9 +1,10 @@
 package hr.iivanovic.psyedu.controllers;
 
-import static hr.iivanovic.psyedu.controllers.QuestionType.ENTER_SHORT_ANSWER;
-import static hr.iivanovic.psyedu.db.Question.hasDescriptiveAnswer;
-import static hr.iivanovic.psyedu.db.Question.hasShortAnswer;
-import static hr.iivanovic.psyedu.util.RequestUtil.clientAcceptsHtml;
+import hr.iivanovic.psyedu.db.*;
+import hr.iivanovic.psyedu.util.ViewUtil;
+import spark.Request;
+import spark.Response;
+import spark.Route;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -11,22 +12,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import hr.iivanovic.psyedu.db.AdaptiveRule;
-import hr.iivanovic.psyedu.db.IntelligenceType;
-import hr.iivanovic.psyedu.db.Question;
-import hr.iivanovic.psyedu.db.TitleLearningStatus;
-import hr.iivanovic.psyedu.db.User;
-import hr.iivanovic.psyedu.util.ViewUtil;
-import spark.Request;
-import spark.Response;
-import spark.Route;
+import static hr.iivanovic.psyedu.controllers.QuestionType.ENTER_SHORT_ANSWER;
+import static hr.iivanovic.psyedu.db.Question.hasDescriptiveAnswer;
+import static hr.iivanovic.psyedu.db.Question.hasShortAnswer;
+import static hr.iivanovic.psyedu.util.RequestUtil.clientAcceptsHtml;
 
 /**
  * @author iivanovic
  * @date 09.10.16.
  */
 public class ExamController extends AbstractController {
-    private final static String EXAM = "/velocity/exam.vm";
+    public final static String EXAM = "/velocity/exam.vm";
 
     private static final double SUCCESSFUL_EXAM_PERCENT = 0.8;
 
@@ -49,6 +45,7 @@ public class ExamController extends AbstractController {
         boolean writeSummary = student.getUserRules().stream().anyMatch(AdaptiveRule.P10_ASK_FOR_SUMMARY::equals);
         boolean askDescriptive = student.getUserRules().stream().anyMatch(AdaptiveRule.P9_QUESTIONS_HOW_WHAT_WHY::equals);
         boolean askShort = student.getUserRules().stream().anyMatch(AdaptiveRule.P11_SHORT_QUESTIONS::equals);
+        boolean audioVideoAnswer = student.getUserRules().stream().anyMatch(AdaptiveRule.P16_AUDIO_OR_VIDEO_ANSWER::equals);
         List<Question> filteredQuestions = new LinkedList<>();
         if (askDescriptive) {
             filteredQuestions.addAll(questions.stream().filter(hasDescriptiveAnswer()).collect(Collectors.toList()));
@@ -63,7 +60,7 @@ public class ExamController extends AbstractController {
             }
         }
         if (questions.size() > 0) {
-            htmlQuestions = renderQuestions(questions, LoginController.isStudent(request), writeSummary,questionsWithAnswers);
+            htmlQuestions = renderQuestions(questions, LoginController.isStudent(request), writeSummary, questionsWithAnswers);
         }
         return htmlQuestions;
     }
@@ -75,7 +72,7 @@ public class ExamController extends AbstractController {
         if (clientAcceptsHtml(request)) {
             Map<String, String> questionsWithAnswers = new HashMap<>();
             for (String param : request.queryParams()) {
-                if(param.matches("\\d+?_\\d+?")) {
+                if (param.matches("\\d+?_\\d+?")) {
                     questionsWithAnswers.put(param, request.queryParams(param));
                 }
             }
@@ -98,10 +95,17 @@ public class ExamController extends AbstractController {
         return ViewUtil.notAcceptable.handle(request, response);
     };
 
-    private static Map<String, Object> createExamModel(Request request, int subjectid, User student, List<Question> questions, Map<String, String> questionsWithAnswers) {
+    public static Map<String, Object> createExamModel(Request request, int subjectid, User student, List<Question> questions, Map<String, String> questionsWithAnswers) {
         Map<String, Object> model = new HashMap<>();
-        String htmlQuestions = createHtmlQuestions(request, student, questions, questionsWithAnswers);
-        model.put("questions", htmlQuestions);
+        boolean videoAudio = student.getUserRules().stream().anyMatch(AdaptiveRule.P16_AUDIO_OR_VIDEO_ANSWER::equals);
+        model.put("audioVideo", videoAudio);
+        model.put("studentId", student.getId());
+        if (videoAudio) {
+            model.put("questions", questions);
+        } else {
+            String htmlQuestions = createHtmlQuestions(request, student, questions, questionsWithAnswers);
+            model.put("questions", htmlQuestions);
+        }
         model.put("subjectId", subjectid);
         return model;
     }
@@ -186,4 +190,5 @@ public class ExamController extends AbstractController {
             this.value = value;
         }
     }
+
 }

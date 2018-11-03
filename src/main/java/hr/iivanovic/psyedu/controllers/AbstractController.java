@@ -1,14 +1,14 @@
 package hr.iivanovic.psyedu.controllers;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
 import hr.iivanovic.psyedu.db.Model;
 import hr.iivanovic.psyedu.db.Question;
 import hr.iivanovic.psyedu.db.Sql2oModel;
 import spark.Request;
 import spark.Response;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author iivanovic
@@ -31,7 +31,7 @@ public class AbstractController {
                 questionsWithAnswers.forEach((key, value) -> {
                     String[] split = key.split("_");
                     String s = split.length > 0 ? split[0] : null;
-                    if(null != s) {
+                    if (null != s) {
                         int k = Integer.parseInt(s);
                         if (k == question.getId()) {
                             sb.append("<p style=\"padding: 5px; color: grey; border: 1px solid gray;\">").append(value).append("</p>");
@@ -52,6 +52,7 @@ public class AbstractController {
             if (QuestionType.ENTER_DESCRIPTIVE_ANSWER.equals(questionType)) {
                 renderTextAreaAnswer(sb, question);
             }
+
             if (!isStudent) {
                 sb.append("<form method=\"post\" action=\"/deletequestion/\">");
                 sb.append("<input type=\"hidden\" name=\"questionid\" value=\"").append(question.getId()).append("\">");
@@ -104,11 +105,8 @@ public class AbstractController {
         }
     }
 
-    protected static boolean isAuthorized(Request request, Response response) throws Exception {
+    static boolean isAuthorized(Request request, Response response) throws Exception {
         LoginController.ensureUserIsLoggedIn(request, response);
-        if (!LoginController.isEditAllowed(request)) {
-            return true;
-        }
-        return false;
+        return !LoginController.isEditAllowed(request);
     }
 }

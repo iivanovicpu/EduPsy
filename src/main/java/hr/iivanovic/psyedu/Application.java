@@ -10,17 +10,7 @@ import static spark.Spark.post;
 import static spark.Spark.staticFiles;
 import static spark.debug.DebugScreen.enableDebugScreen;
 
-import hr.iivanovic.psyedu.controllers.AdaptiveRulesController;
-import hr.iivanovic.psyedu.controllers.AdminSubjectsController;
-import hr.iivanovic.psyedu.controllers.ExamController;
-import hr.iivanovic.psyedu.controllers.IndexController;
-import hr.iivanovic.psyedu.controllers.LoginController;
-import hr.iivanovic.psyedu.controllers.PollController;
-import hr.iivanovic.psyedu.controllers.ProfileController;
-import hr.iivanovic.psyedu.controllers.StudentsController;
-import hr.iivanovic.psyedu.controllers.SubjectQuestionsController;
-import hr.iivanovic.psyedu.controllers.SubjectsController;
-import hr.iivanovic.psyedu.controllers.UploadController;
+import hr.iivanovic.psyedu.controllers.*;
 import hr.iivanovic.psyedu.db.AdaptiveRule;
 import hr.iivanovic.psyedu.db.Model;
 import hr.iivanovic.psyedu.db.Sql2oModel;
@@ -78,6 +68,8 @@ public class Application {
 
         // Set up routes
         get("/index/", IndexController.serveIndexPage);
+
+        post("/uploadanswer/", "multipart/form-data", UploadAnswerController.uploadFile);
 
         // upload todo: napravit odvojeni controller
         post("/upload/", "multipart/form-data", UploadController.uploadFile);

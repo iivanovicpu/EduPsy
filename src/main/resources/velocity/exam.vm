@@ -5,6 +5,28 @@
     #parse("/velocity/validationmsg.vm")
 
 <div>
+    #if($audioVideo)
+        #foreach($question in $questions)
+        <p>$question.question</p>
+        <form class="form-horizontal" action="/uploadanswer/" enctype="multipart/form-data" method="post" id="uploadForm">
+            <input type="hidden" name="subjectId" value="$subjectId"/>
+            <input type="hidden" name="questionId" value="$question.id"/>
+            <input type="hidden" name="studentId" value="$studentId">
+            <div class="form-group" id="upload">
+                <label class="control-label col-sm-2" class="control-label col-sm-2">Odaberi datoteku:</label>
+                <div class="col-sm-10">
+                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                        <span class="btn btn-default btn-file"><span>Odaberi datoteku: </span><input type="file" multiple name="file"/></span>
+                        <span class="fileinput-filename"></span><span class="fileinput-new">No file chosen</span>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-warning">Pošalji odgovor</button>
+        </form>
+            <hr/>
+
+        #end
+    #else
     <form method="post" class="form-horizontal" id="questionForm">
         <input type="hidden" name="subjectid" value="$subjectId"/>
 
@@ -15,5 +37,6 @@
         <button type="submit" class="btn btn-primary">Pošalji odgovore</button>
         <button type="submit" formmethod="get" formaction="/onetitlechild/$subjectId" class="btn btn-warning">Odustani</button>
     </form>
+    #end
 </div>
 #end

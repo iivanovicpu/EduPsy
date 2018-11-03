@@ -1,10 +1,5 @@
 package hr.iivanovic.psyedu.controllers;
 
-import static hr.iivanovic.psyedu.util.RequestUtil.clientAcceptsHtml;
-
-import java.util.HashMap;
-import java.util.List;
-
 import hr.iivanovic.psyedu.db.Question;
 import hr.iivanovic.psyedu.db.Subject;
 import hr.iivanovic.psyedu.util.ViewUtil;
@@ -12,6 +7,11 @@ import lombok.Data;
 import spark.Request;
 import spark.Response;
 import spark.Route;
+
+import java.util.HashMap;
+import java.util.List;
+
+import static hr.iivanovic.psyedu.util.RequestUtil.clientAcceptsHtml;
 
 /**
  * @author iivanovic

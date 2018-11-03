@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -101,9 +102,15 @@ public class SubjectView extends Subject {
 
     public boolean isLinkAllowed() {
         if (isSequenceNavigation()) {
-            return getLearningStatus().isFinished() || SubjectPosition.PREDMET.equals(getSubjectPosition());
+            return getLearningStatus().isFinished() ||
+                    SubjectPosition.PREDMET.equals(getSubjectPosition()) ||
+                    questionsNotDefinedYet();
         }
         return true;
+    }
+
+    private boolean questionsNotDefinedYet() {
+        return CollectionUtils.isEmpty(getQuestions());
     }
 
     public String[] keywords() {

@@ -45,7 +45,6 @@ public class ExamController extends AbstractController {
         boolean writeSummary = student.getUserRules().stream().anyMatch(AdaptiveRule.P10_ASK_FOR_SUMMARY::equals);
         boolean askDescriptive = student.getUserRules().stream().anyMatch(AdaptiveRule.P9_QUESTIONS_HOW_WHAT_WHY::equals);
         boolean askShort = student.getUserRules().stream().anyMatch(AdaptiveRule.P11_SHORT_QUESTIONS::equals);
-        boolean audioVideoAnswer = student.getUserRules().stream().anyMatch(AdaptiveRule.P16_AUDIO_OR_VIDEO_ANSWER::equals);
         List<Question> filteredQuestions = new LinkedList<>();
         if (askDescriptive) {
             filteredQuestions.addAll(questions.stream().filter(hasDescriptiveAnswer()).collect(Collectors.toList()));
@@ -98,6 +97,7 @@ public class ExamController extends AbstractController {
     public static Map<String, Object> createExamModel(Request request, int subjectid, User student, List<Question> questions, Map<String, String> questionsWithAnswers) {
         Map<String, Object> model = new HashMap<>();
         boolean videoAudio = student.getUserRules().stream().anyMatch(AdaptiveRule.P16_AUDIO_OR_VIDEO_ANSWER::equals);
+//        boolean seqAnswCheck = student.getUserRules().stream().anyMatch(AdaptiveRule.P12_SEQUENTIAL_ANSWER_CHECK::equals);
         model.put("audioVideo", videoAudio);
         model.put("studentId", student.getId());
         if (videoAudio) {

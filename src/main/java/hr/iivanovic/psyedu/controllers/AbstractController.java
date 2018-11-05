@@ -100,8 +100,16 @@ public class AbstractController {
         for (String answer : possibleAnswers) {
             sb.append("<div class=\"checkbox\">");
             String questionId = question.getId() + "_" + idx++;
-            sb.append("<label><input type=\"checkbox\" name=\"").append(questionId).append("\" value=\"").append(answer).append("\">").append(answer).append("</label>");
+            sb.append("<label><input type=\"checkbox\" name=\"").append(questionId).append("\" value=\"").append(answer)
+                    .append("\" onchange=\"check(")
+                    .append(question.getId())
+                    .append(",'").append(answer).append("','")
+                    .append(questionId).append("')\"/>")
+                    .append(answer)
+                    .append("</label>");
             sb.append("</div>");
+            sb.append("<div id=\"").append(questionId).append("\">")
+                    .append("</div>");
         }
     }
 

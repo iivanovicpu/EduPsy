@@ -62,6 +62,15 @@ public class Application {
             return dataToJson(adaptiveRule);
         });
 
+        post("/checkanswer/", (request, response) -> {
+            //todo: check question and return response
+//            int questionId = Integer.parseInt(request.queryParams("questionId"));
+//            String answer = request.queryParams("answer");
+            response.status(200);
+            response.type("application/json");
+            return dataToJson(request.session().attribute(CURRENT_USER));
+        });
+
         // Set up before-filters (called before each get/post)
         before("*", Filters.addTrailingSlashes);
         before("*", Filters.handleLocaleChange);

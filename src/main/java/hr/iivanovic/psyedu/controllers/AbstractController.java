@@ -78,16 +78,31 @@ public class AbstractController {
     }
 
     private static void renderTextInputAnswer(StringBuilder sb, Question question) {
-        sb.append("<br><input type=\"text\" name=\"").append(question.getId()).append("_").append(question.getId()).append("\">");
+        sb.append("<div id=\"").append(question.getId()).append("_").append(question.getId()).append("\">")
+                .append("</div>");
+        sb.append("<br><input type=\"text\" name=\"").append(question.getId()).append("_").append(question.getId())
+                .append("\" onchange=\"check(")
+                .append(question.getId())
+                .append(",'").append("this.value()").append("','")
+                .append(question.getId()).append("_").append(question.getId()).append("')\"/>");
     }
 
     private static void renderRadioButtonsAnswer(StringBuilder sb, Question question) {
         String questionPossibleAnswers = question.getPossibleAnswers();
         String[] possibleAnswers = null != questionPossibleAnswers ? questionPossibleAnswers.split(",") : new String[0];
+        sb.append("<div id=\"").append(question.getId()).append("_").append(question.getId()).append("\">")
+                .append("</div>");
         for (String answer : possibleAnswers) {
+
             sb.append("<div class=\"radio\">");
             sb.append("<label><input type=\"radio\" name=\"").append(question.getId()).append("_").append(question.getId())
-                    .append("\" value=\"").append(answer).append("\">")
+                    .append("\" value=\"").append(answer)
+
+                    .append("\" onchange=\"check(")
+                    .append(question.getId())
+                    .append(",'").append(answer).append("','")
+                    .append(question.getId()).append("_").append(question.getId()).append("')\"/>")
+
                     .append(answer).append("</label>");
             sb.append("</div>");
         }

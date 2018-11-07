@@ -32,6 +32,8 @@ public interface Model {
 
     List<Question> getAllQuestionsForSubject(int subjectId, boolean grouped);
 
+    Question getQuestionById(int questionId);
+
     List<ExternalLink> getAllExternalLinksBySubjectId(int subjectId);
 
     void createExternalLink(ExternalLink externalLink);

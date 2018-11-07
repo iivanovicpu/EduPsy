@@ -1,15 +1,14 @@
 package hr.iivanovic.psyedu.db;
 
+import hr.iivanovic.psyedu.util.DbUtil;
+import org.sql2o.Connection;
+import org.sql2o.Sql2o;
+
 import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import org.sql2o.Connection;
-import org.sql2o.Sql2o;
-
-import hr.iivanovic.psyedu.util.DbUtil;
 
 public class Sql2oModel implements Model {
 
@@ -95,9 +94,9 @@ public class Sql2oModel implements Model {
     public List<User> getAllUsers() {
         try (Connection conn = sql2o.open()) {
             List<User> users = conn.createQuery("select * from users")
-                    .addColumnMapping("intelligence_verbal_points","intelligencePointsVerbal")
-                    .addColumnMapping("intelligence_not_verbal_points","intelligencePointsNotVerbal")
-                    .addColumnMapping("intelligence_math_logic_points","intelligencePointsMathLogic")
+                    .addColumnMapping("intelligence_verbal_points", "intelligencePointsVerbal")
+                    .addColumnMapping("intelligence_not_verbal_points", "intelligencePointsNotVerbal")
+                    .addColumnMapping("intelligence_math_logic_points", "intelligencePointsMathLogic")
                     .executeAndFetch(User.class);
             return users;
         }
@@ -116,9 +115,9 @@ public class Sql2oModel implements Model {
         try (Connection conn = sql2o.open()) {
             User user = conn.createQuery("select * from users where username=:username")
                     .addParameter("username", username)
-                    .addColumnMapping("intelligence_verbal_points","intelligencePointsVerbal")
-                    .addColumnMapping("intelligence_not_verbal_points","intelligencePointsNotVerbal")
-                    .addColumnMapping("intelligence_math_logic_points","intelligencePointsMathLogic")
+                    .addColumnMapping("intelligence_verbal_points", "intelligencePointsVerbal")
+                    .addColumnMapping("intelligence_not_verbal_points", "intelligencePointsNotVerbal")
+                    .addColumnMapping("intelligence_math_logic_points", "intelligencePointsMathLogic")
                     .executeAndFetchFirst(User.class);
             return user;
         }
@@ -228,7 +227,7 @@ public class Sql2oModel implements Model {
 
     @Override
     public List<Question> getAllQuestionsForSubject(int subjectId, boolean grouped) {
-        if(grouped){
+        if (grouped) {
             List<Question> groupedQuestions = new LinkedList<>();
             List<Integer> subjectIds = getSubjectsByParentSubjectId(subjectId).stream().map(Subject::getId).collect(Collectors.toList());
             try (Connection conn = sql2o.open()) {
@@ -245,6 +244,15 @@ public class Sql2oModel implements Model {
                         .addParameter("subjectId", subjectId)
                         .executeAndFetch(Question.class);
             }
+        }
+    }
+
+    @Override
+    public Question getQuestionById(int questionId) {
+        try (Connection conn = sql2o.open()) {
+            return conn.createQuery("select * from questions where id=:questionId")
+                    .addParameter("questionId", questionId)
+                    .executeAndFetchFirst(Question.class);
         }
     }
 
@@ -352,16 +360,16 @@ public class Sql2oModel implements Model {
     @Override
     public void decreaseIntelligenceTypePoints(int userId, IntelligenceType intelligenceType) {
         String querySegment = null;
-        if(IntelligenceType.ML.equals(intelligenceType)){
+        if (IntelligenceType.ML.equals(intelligenceType)) {
             querySegment = "intelligence_math_logic_points = intelligence_math_logic_points -1";
         }
-        if(IntelligenceType.V.equals(intelligenceType)){
+        if (IntelligenceType.V.equals(intelligenceType)) {
             querySegment = "intelligence_verbal_points = intelligence_verbal_points -1";
         }
-        if(IntelligenceType.NV.equals(intelligenceType)){
+        if (IntelligenceType.NV.equals(intelligenceType)) {
             querySegment = "intelligence_not_verbal_points = intelligence_not_verbal_points -1";
         }
-        if(null != querySegment){
+        if (null != querySegment) {
             try (Connection conn = sql2o.open()) {
                 conn.createQuery("update users set " + querySegment + " where id = :id")
                         .addParameter("id", userId)

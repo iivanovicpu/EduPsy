@@ -1,22 +1,14 @@
 package hr.iivanovic.psyedu;
 
-import static hr.iivanovic.psyedu.controllers.LoginController.CURRENT_USER;
-import static hr.iivanovic.psyedu.util.JsonUtil.dataToJson;
-import static spark.Spark.after;
-import static spark.Spark.before;
-import static spark.Spark.get;
-import static spark.Spark.port;
-import static spark.Spark.post;
-import static spark.Spark.staticFiles;
-import static spark.debug.DebugScreen.enableDebugScreen;
-
 import hr.iivanovic.psyedu.controllers.*;
-import hr.iivanovic.psyedu.db.AdaptiveRule;
-import hr.iivanovic.psyedu.db.Model;
-import hr.iivanovic.psyedu.db.Sql2oModel;
-import hr.iivanovic.psyedu.db.User;
+import hr.iivanovic.psyedu.db.*;
 import hr.iivanovic.psyedu.util.Filters;
 import hr.iivanovic.psyedu.util.ViewUtil;
+
+import static hr.iivanovic.psyedu.controllers.LoginController.CURRENT_USER;
+import static hr.iivanovic.psyedu.util.JsonUtil.dataToJson;
+import static spark.Spark.*;
+import static spark.debug.DebugScreen.enableDebugScreen;
 
 public class Application {
 
@@ -64,11 +56,13 @@ public class Application {
 
         post("/checkanswer/", (request, response) -> {
             //todo: check question and return response
-//            int questionId = Integer.parseInt(request.queryParams("questionId"));
-//            String answer = request.queryParams("answer");
+            int questionId = Integer.parseInt(request.queryParams("questionId"));
+            String answer = request.queryParams("answer");
             response.status(200);
             response.type("application/json");
-            return dataToJson(request.session().attribute(CURRENT_USER));
+            Question question = model.getQuestionById(questionId);
+            String correctAnswers = question.getCorrectAnswers();
+            return dataToJson(correctAnswers.contains(answer));
         });
 
         // Set up before-filters (called before each get/post)
@@ -105,7 +99,7 @@ public class Application {
         post("/exam/:subjectid/", ExamController.submitExamQuestions);
 
         get("/students/", StudentsController.fetchAllStudents);
-        get( "/addstudent/", StudentsController.addStudent);
+        get("/addstudent/", StudentsController.addStudent);
         post("/addstudent/", StudentsController.submitStudent);
         get("/studentdtl/:id/", StudentsController.fetchStudentDetails);
 
